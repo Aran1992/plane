@@ -1,70 +1,7 @@
 <html>
-
 <head>
-    <script src="js/pixi.js"></script>
-    <script src="js/planck.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="config.js"></script>
+    <script type="module" src="js/main.js"></script>
 </head>
-
 <body>
-<script>
-    const
-        {
-            Application,
-            Container,
-            Sprite,
-            loader,
-        } = PIXI,
-        resources = loader.resources,
-        {
-            Vec2,
-            World,
-        } = planck;
-
-    class Game {
-        init() {
-            this.app = new Application({
-                width: config.sceneWidth,
-                height: config.sceneHeight,
-                transparent: false,
-                resolution: config.resolution,
-                backgroundColor: config.backgroundColor
-            });
-            document.body.appendChild(this.app.view);
-
-            this.world = new World({gravity: Vec2(0, 0)});
-
-            loader
-                .add(values(TEXTURE_PATH))
-                .load(this.onLoaded.bind(this));
-        }
-
-        onLoaded() {
-            this.gameContainer = new Container();
-            this.app.stage.addChild(this.gameContainer);
-
-            // this.bgSprite = new Sprite(resources[TEXTURE_PATH.bg].texture);
-            // this.gameContainer.addChild(this.bgSprite);
-
-            this.createPlayer();
-
-            this.app.ticker.add(this.gameLoop.bind(this));
-        }
-
-        createPlayer() {
-            let texturePath = TEXTURE_PATH.rocket;
-            this.playerSprite = new Sprite(resources[texturePath].texture);
-            // this.playerSprite.scale.set(5, 5);
-            this.gameContainer.addChild(this.playerSprite);
-        }
-
-        gameLoop(delta) {
-        }
-    }
-
-    new Game().init()
-</script>
 </body>
-
 </html>

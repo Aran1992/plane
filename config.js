@@ -1,14 +1,13 @@
-let config = {
-    // sceneWidth: 256,
-    // sceneHeight: 144,
-    // resolution: 5,
-    sceneWidth: 1280,
-    sceneHeight: 720,
-    resolution: 1,
+export default {
+    designWidth: 1280,
+    designHeight: 720,
     backgroundColor: 0x888888,
-};
-
-let TEXTURE_PATH = {
-    bg: "images/bg.png",
-    rocket: "images/rocket1.png",
+    fps: 60,
+    gravity: 10,
+    planeImagePath: "/images/rocket.png",
+    pixel2meter: 0.0625,
+    meter2pixel: 16,
+    planeHalfWidth: 2.65625,
+    planeHalfHeight: 2.03125,
+    planeVelocity: 5,
 };
