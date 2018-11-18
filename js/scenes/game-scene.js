@@ -74,13 +74,15 @@ export default class GameScene extends Scene {
             this.planeBody.setAngle(angle);
         }
 
-        let velocity = this.planeBody.getLinearVelocity();
-        if (Math.abs(velocity.x) < Math.abs(config.planeVelocity * Math.cos(angle)) || Math.abs(velocity.y) < Math.abs(config.planeVelocity * Math.sin(angle))) {
-            let fx = config.planeEngineForce * Math.cos(angle);
-            let fy = config.planeEngineForce * Math.sin(angle);
-            // this.planeBody.setLinearVelocity(Vec2(fx, fy));
-            this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
-        }
+        // let tvx = config.planeVelocity * Math.cos(angle);
+        // let tvy = config.planeVelocity * Math.sin(angle);
+        // let cv = this.planeBody.getLinearVelocity();
+        // let forceAngle = this.getAngle(tvx - cv.x, tvy - cv.y);
+
+        let fx = config.planeEngineForce * Math.cos(angle);
+        let fy = config.planeEngineForce * Math.sin(angle);
+        this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
+
         this.planeBody.setAngularVelocity(0);
 
         this.world.step(1 / config.fps);
@@ -108,22 +110,44 @@ export default class GameScene extends Scene {
         this.endPointCircle.position.set(this.startPoint.x, this.startPoint.y);
     }
 
+    getAngle(x, y) {
+        let angle;
+        if (x === 0) {
+            if (y > 0) {
+                return Math.PI / 2;
+            } else if (y < 0) {
+                return Math.PI / 2 * 3;
+            } else {
+                return 0;
+            }
+        }
+        if (y === 0) {
+            if (x > 0) {
+                return 0;
+            } else {
+                return Math.PI;
+            }
+        }
+        if (x > 0 && y > 0) {
+            angle = Math.atan(y / x);
+        } else if (x < 0 && y > 0) {
+            angle = Math.PI + Math.atan(y / x);
+        } else if (x < 0 && y < 0) {
+            angle = Math.atan(y / x) - Math.PI;
+        } else if (x > 0 && y < 0) {
+            angle = Math.atan(y / x);
+        }
+        if (angle < 0) {
+            angle = 2 * Math.PI + angle;
+        }
+        return angle;
+    }
+
     onPointermove(event) {
         if (this.startPoint) {
             let y = event.data.global.y - this.startPoint.y;
             let x = event.data.global.x - this.startPoint.x;
-            if (x > 0 && y > 0) {
-                this.targetAngle = Math.atan(y / x);
-            } else if (x < 0 && y > 0) {
-                this.targetAngle = Math.PI + Math.atan(y / x);
-            } else if (x < 0 && y < 0) {
-                this.targetAngle = Math.atan(y / x) - Math.PI;
-            } else if (x > 0 && y < 0) {
-                this.targetAngle = Math.atan(y / x);
-            }
-            if (this.targetAngle < 0) {
-                this.targetAngle = 2 * Math.PI + this.targetAngle;
-            }
+            this.targetAngle = this.getAngle(x, y);
 
             this.endPointCircle.position.set(event.data.global.x, event.data.global.y);
             if (this.directionLine) {
@@ -194,4 +218,5 @@ export default class GameScene extends Scene {
             config.designHeight * config.pixel2meter / 2));
         // this.planeBody.setLinearVelocity(Vec2(config.planeVelocity, 0));
     }
+
 }
