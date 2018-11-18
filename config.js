@@ -9,7 +9,7 @@ export default {
     pixel2meter: 0.0625,
     meter2pixel: 16,
     planeRadius: 2.65625,
-    planeVelocity: 10,
-    planeEngineForce: 10000,
+    planeVelocity: 1,
+    planeEngineForce: 50,
     planeAngleVelocity: Math.PI / 180 *15,
 };

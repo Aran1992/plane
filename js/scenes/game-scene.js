@@ -75,14 +75,12 @@ export default class GameScene extends Scene {
         }
 
         let velocity = this.planeBody.getLinearVelocity();
-        let linearVelocity = Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2);
-        if (linearVelocity < config.planeVelocity) {
+        if (Math.abs(velocity.x) < Math.abs(config.planeVelocity * Math.cos(angle)) || Math.abs(velocity.y) < Math.abs(config.planeVelocity * Math.sin(angle))) {
             let fx = config.planeEngineForce * Math.cos(angle);
             let fy = config.planeEngineForce * Math.sin(angle);
             // this.planeBody.setLinearVelocity(Vec2(fx, fy));
-            this.planeBody.applyForceToCenter(Vec2(fx, fy));
+            this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
         }
-
         this.planeBody.setAngularVelocity(0);
 
         this.world.step(1 / config.fps);
@@ -194,6 +192,6 @@ export default class GameScene extends Scene {
         this.planeBody.createFixture(Circle(config.planeRadius), {friction: 1, density: 1});
         this.planeBody.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
             config.designHeight * config.pixel2meter / 2));
-        this.planeBody.setLinearVelocity(Vec2(config.planeVelocity, 0));
+        // this.planeBody.setLinearVelocity(Vec2(config.planeVelocity, 0));
     }
 }
