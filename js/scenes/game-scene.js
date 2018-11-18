@@ -1,8 +1,8 @@
 import Scene from "../base/scene.js"
-import {Container, Rectangle, resources, Sprite} from "../libs/pixi-wrapper.js"
+import {Container, Graphics, Rectangle, resources, Sprite} from "../libs/pixi-wrapper.js"
 import {app} from "../my-application.js"
 import config from "../../config.js"
-import {Box, Vec2, World} from "../libs/planck-wrapper.js"
+import {Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -12,52 +12,188 @@ export default class GameScene extends Scene {
         this.gameContainer.buttonMode = true;
         this.gameContainer.hitArea = new Rectangle(0, 0, config.designWidth, config.designHeight);
         this.gameContainer.on("pointerdown", this.onPointerdown.bind(this));
+        this.gameContainer.on("pointermove", this.onPointermove.bind(this));
         this.gameContainer.on("pointerup", this.onPointerup.bind(this));
         this.gameContainer.on("pointerupoutside", this.onPointerup.bind(this));
-        this.gameContainer.on("pointermove", this.onPointermove.bind(this));
     }
 
     onShow() {
-        app.loadResources([config.planeImagePath], this.onLoaded.bind(this));
+        app.loadResources([
+            config.planeImagePath,
+            config.bgImagePath,
+        ], this.onLoaded.bind(this));
     }
 
     onLoaded() {
         this.world = new World({gravity: Vec2(0, config.gravity)});
+        this.createBg();
+        this.createWall();
         this.createPlane();
         app.ticker.add(this.onUpdate.bind(this));
     }
 
     onUpdate() {
-        this.planeBody.setAngle(this.planeBody.getAngle() + 0.01);
+        let angle = this.planeBody.getAngle();
+        if (angle < 0) {
+            angle = 2 * Math.PI + angle;
+        }
+        if (this.targetAngle && angle !== this.targetAngle) {
+            if (this.targetAngle > angle) {
+                let diff = this.targetAngle - angle;
+                let diff2 = 2 * Math.PI - diff;
+                if (diff < diff2) {
+                    if (config.planeAngleVelocity > diff) {
+                        angle = this.targetAngle;
+                    } else {
+                        angle += config.planeAngleVelocity;
+                    }
+                } else {
+                    if (config.planeAngleVelocity > diff2) {
+                        angle = this.targetAngle;
+                    } else {
+                        angle -= config.planeAngleVelocity;
+                    }
+                }
+            } else if (this.targetAngle < angle) {
+                let diff = angle - this.targetAngle;
+                let diff2 = 2 * Math.PI - diff;
+                if (diff < diff2) {
+                    if (config.planeAngleVelocity > diff) {
+                        angle = this.targetAngle;
+                    } else {
+                        angle -= config.planeAngleVelocity;
+                    }
+                } else {
+                    if (config.planeAngleVelocity > diff2) {
+                        angle = this.targetAngle;
+                    } else {
+                        angle += config.planeAngleVelocity;
+                    }
+                }
+            }
+            this.planeBody.setAngle(angle);
+        }
+
+        let velocity = this.planeBody.getLinearVelocity();
+        let linearVelocity = Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2);
+        if (linearVelocity < config.planeVelocity) {
+            let fx = config.planeEngineForce * Math.cos(angle);
+            let fy = config.planeEngineForce * Math.sin(angle);
+            // this.planeBody.setLinearVelocity(Vec2(fx, fy));
+            this.planeBody.applyForceToCenter(Vec2(fx, fy));
+        }
+
+        this.planeBody.setAngularVelocity(0);
+
         this.world.step(1 / config.fps);
+
         let pos = this.planeBody.getPosition();
         this.planeSprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
-        let angle = this.planeBody.getAngle();
         this.planeSprite.rotation = angle;
-        let x = config.planeVelocity * Math.cos(angle);
-        let y = config.planeVelocity * Math.sin(angle);
-        this.planeBody.setLinearVelocity(Vec2(x, y));
     }
 
-    onPointerdown(...args) {
-        // console.log("down", ...args);
+    onPointerdown(event) {
+        this.startPoint = {x: event.data.global.x, y: event.data.global.y};
+
+        this.startPointCircle = new Graphics();
+        this.addChild(this.startPointCircle);
+        this.startPointCircle.beginFill(0xff0000);
+        this.startPointCircle.drawCircle(0, 0, 5);
+        this.startPointCircle.endFill();
+        this.startPointCircle.position.set(this.startPoint.x, this.startPoint.y);
+
+        this.endPointCircle = new Graphics();
+        this.addChild(this.endPointCircle);
+        this.endPointCircle.beginFill(0x00ff00);
+        this.endPointCircle.drawCircle(0, 0, 5);
+        this.endPointCircle.endFill();
+        this.endPointCircle.position.set(this.startPoint.x, this.startPoint.y);
     }
 
-    onPointerup(...args) {
-        // console.log("up", ...args);
+    onPointermove(event) {
+        if (this.startPoint) {
+            let y = event.data.global.y - this.startPoint.y;
+            let x = event.data.global.x - this.startPoint.x;
+            if (x > 0 && y > 0) {
+                this.targetAngle = Math.atan(y / x);
+            } else if (x < 0 && y > 0) {
+                this.targetAngle = Math.PI + Math.atan(y / x);
+            } else if (x < 0 && y < 0) {
+                this.targetAngle = Math.atan(y / x) - Math.PI;
+            } else if (x > 0 && y < 0) {
+                this.targetAngle = Math.atan(y / x);
+            }
+            if (this.targetAngle < 0) {
+                this.targetAngle = 2 * Math.PI + this.targetAngle;
+            }
+
+            this.endPointCircle.position.set(event.data.global.x, event.data.global.y);
+            if (this.directionLine) {
+                this.directionLine.parent.removeChild(this.directionLine);
+            }
+            this.directionLine = new Graphics();
+            this.addChild(this.directionLine);
+            this.directionLine.beginFill(0x0000ff);
+            this.directionLine.lineStyle(5, 0x0000ff, 0.5, 0.5);
+            this.directionLine.moveTo(this.startPoint.x, this.startPoint.y);
+            this.directionLine.lineTo(event.data.global.x, event.data.global.y);
+            this.directionLine.endFill();
+        }
     }
 
-    onPointermove(...args) {
-        // console.log("move", ...args);
+    onPointerup() {
+        this.startPoint = undefined;
+        this.targetAngle = undefined;
+        if (this.startPointCircle) {
+            this.startPointCircle.parent.removeChild(this.startPointCircle);
+            this.startPointCircle = undefined;
+        }
+        if (this.endPointCircle) {
+            this.endPointCircle.parent.removeChild(this.endPointCircle);
+            this.endPointCircle = undefined;
+        }
+        if (this.directionLine) {
+            this.directionLine.parent.removeChild(this.directionLine);
+            this.directionLine = undefined;
+        }
+    }
+
+    createBg() {
+        let sprite = new Sprite(resources[config.bgImagePath].texture);
+        this.gameContainer.addChild(sprite);
+    }
+
+    createWall() {
+        let wall = this.world.createBody();
+
+        let opt = {density: 0, friction: 0};
+        wall.createFixture(Edge(Vec2(0, 0),
+            Vec2(config.designWidth * config.pixel2meter, 0)),
+            opt);
+
+        wall.createFixture(Edge(Vec2(config.designWidth * config.pixel2meter, 0),
+            Vec2(config.designWidth * config.pixel2meter, config.designHeight * config.pixel2meter)),
+            opt);
+
+        wall.createFixture(Edge(Vec2(config.designWidth * config.pixel2meter, config.designHeight * config.pixel2meter),
+            Vec2(0, config.designHeight * config.pixel2meter)),
+            opt);
+
+        wall.createFixture(Edge(Vec2(0, config.designHeight * config.pixel2meter),
+            Vec2(0, 0)),
+            opt);
     }
 
     createPlane() {
         this.planeSprite = new Sprite(resources[config.planeImagePath].texture);
         this.gameContainer.addChild(this.planeSprite);
         this.planeSprite.anchor.set(0.5, 0.5);
-        this.planeSprite.position.set(config.planeHalfWidth * config.meter2pixel, config.planeHalfHeight * config.meter2pixel);
+        this.planeSprite.position.set(config.planeRadius * config.meter2pixel, config.planeRadius * config.meter2pixel);
+
         this.planeBody = this.world.createDynamicBody();
-        this.planeBody.createFixture(Box(config.planeHalfWidth, config.planeHalfHeight), {friction: 1, density: 1});
-        this.planeBody.setPosition(Vec2(config.planeHalfWidth, config.planeHalfHeight));
+        this.planeBody.createFixture(Circle(config.planeRadius), {friction: 1, density: 1});
+        this.planeBody.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
+            config.designHeight * config.pixel2meter / 2));
+        this.planeBody.setLinearVelocity(Vec2(config.planeVelocity, 0));
     }
 }
