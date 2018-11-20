@@ -1,4 +1,4 @@
-import {Application, loader, resources} from "./libs/pixi-wrapper.js"
+import  {Application, loader, resources}  from "./libs/pixi-wrapper.js"
 import GameScene from "./scenes/game-scene.js"
 
 export let app;

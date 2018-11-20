@@ -1,4 +1,4 @@
-import "./pixi.js"
+import * as PIXI from "pixi.js"
 
 export const Application = PIXI.Application;
 export const Container = PIXI.Container;
