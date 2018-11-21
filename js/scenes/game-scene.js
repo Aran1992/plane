@@ -15,12 +15,19 @@ export default class GameScene extends Scene {
         this.gameContainer.on("pointermove", this.onPointermove.bind(this));
         this.gameContainer.on("pointerup", this.onPointerup.bind(this));
         this.gameContainer.on("pointerupoutside", this.onPointerup.bind(this));
+
         let textStyle = new TextStyle({
             fontSize: 50,
             fill: "white"
         },);
+
+        this.fpsText = new Text("FPS:0", textStyle);
+        this.addChild(this.fpsText);
+
         this.countText = new Text("count:0", textStyle);
         this.addChild(this.countText);
+        this.countText.anchor.set(1, 0);
+        this.countText.position.set(app.sceneWidth, 0);
         this.count = 0;
     }
 
@@ -79,7 +86,9 @@ export default class GameScene extends Scene {
         }
     }
 
-    onUpdate() {
+    onUpdate(delta) {
+        this.fpsText.text = `FPS:${Math.floor(delta * config.fps)}`;
+
         let angle = this.planeBody.getAngle();
         if (angle < 0) {
             angle = 2 * Math.PI + angle;
@@ -121,8 +130,11 @@ export default class GameScene extends Scene {
             this.planeBody.setAngle(angle);
         }
 
-        let fx = config.planeEngineForce * Math.cos(angle);
-        let fy = config.planeEngineForce * Math.sin(angle);
+        let velocity = this.planeBody.getLinearVelocity();
+        let forceAngle = this.getAngle(config.planeVelocity * Math.cos(angle) - velocity.x,
+            config.planeVelocity * Math.sin(angle) - velocity.y);
+        let fx = config.planeEngineForce * Math.cos(forceAngle);
+        let fy = config.planeEngineForce * Math.sin(forceAngle);
         this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
 
         this.planeBody.setAngularVelocity(0);
@@ -139,7 +151,7 @@ export default class GameScene extends Scene {
             meteor.sprite.rotation = meteor.body.getAngle();
         });
 
-        if (Math.random() < config.refreshMeteorProbability) {
+        if (this.meteorList.length < config.meteorExistMaxCount && Math.random() < config.refreshMeteorProbability) {
             let count = config.refreshMeteorMinCount + Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
             for (let i = 0; i < count; i++) {
                 this.meteorList.push(this.createMeteor());
