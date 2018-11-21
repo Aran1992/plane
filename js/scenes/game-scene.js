@@ -1,5 +1,5 @@
 import Scene from "../base/scene.js"
-import {Container, Graphics, Rectangle, resources, Sprite} from "../libs/pixi-wrapper.js"
+import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js"
 import {app} from "../my-application.js"
 import config from "../../config.js"
 import {Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
@@ -15,21 +15,68 @@ export default class GameScene extends Scene {
         this.gameContainer.on("pointermove", this.onPointermove.bind(this));
         this.gameContainer.on("pointerup", this.onPointerup.bind(this));
         this.gameContainer.on("pointerupoutside", this.onPointerup.bind(this));
+        let textStyle = new TextStyle({
+            fontSize: 50,
+            fill: "white"
+        },);
+        this.countText = new Text("count:0", textStyle);
+        this.addChild(this.countText);
+        this.count = 0;
     }
 
     onShow() {
         app.loadResources([
             config.planeImagePath,
             config.bgImagePath,
+            config.meteorImagePath,
         ], this.onLoaded.bind(this));
     }
 
     onLoaded() {
         this.world = new World({gravity: Vec2(0, config.gravity)});
+        // this.world.on("pre-solve", this.onPreSolve.bind(this));
+        this.world.on('begin-contact', this.onBeginContact.bind(this));
         this.createBg();
         this.createWall();
         this.createPlane();
+        this.meteorList = [];
+        let count = config.meteorMinCount + Math.random() * (config.meteorMaxCount - config.meteorMinCount);
+        for (let i = 0; i < count; i++) {
+            this.meteorList.push(this.createMeteor());
+        }
         app.ticker.add(this.onUpdate.bind(this));
+    }
+
+    onPreSolve(contact) {
+        let bodyList = [
+            contact.getFixtureA().getBody(),
+            contact.getFixtureB().getBody(),
+        ];
+        let index = bodyList.findIndex(body => body.getUserData() && body.getUserData().type === "meteor");
+        if (index !== -1) {
+            bodyList.splice(index, 1);
+            let body = bodyList[0];
+            let userData = body.getUserData();
+            if (userData && userData.type === "wall") {
+                contact.setEnabled(false);
+            }
+        }
+    }
+
+    onBeginContact(contact) {
+        let fixtureList = [
+            contact.getFixtureA(),
+            contact.getFixtureB(),
+        ];
+        let index = fixtureList.map(fixture => fixture.getBody()).indexOf(this.planeBody);
+        if (index !== -1) {
+            fixtureList.splice(index, 1);
+            let userData = fixtureList[0].getBody().getUserData();
+            if (userData && userData.type === "meteor") {
+                this.count++;
+                this.countText.text = `count:${this.count}`;
+            }
+        }
     }
 
     onUpdate() {
@@ -74,11 +121,6 @@ export default class GameScene extends Scene {
             this.planeBody.setAngle(angle);
         }
 
-        // let tvx = config.planeVelocity * Math.cos(angle);
-        // let tvy = config.planeVelocity * Math.sin(angle);
-        // let cv = this.planeBody.getLinearVelocity();
-        // let forceAngle = this.getAngle(tvx - cv.x, tvy - cv.y);
-
         let fx = config.planeEngineForce * Math.cos(angle);
         let fy = config.planeEngineForce * Math.sin(angle);
         this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
@@ -90,6 +132,19 @@ export default class GameScene extends Scene {
         let pos = this.planeBody.getPosition();
         this.planeSprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
         this.planeSprite.rotation = angle;
+
+        this.meteorList.forEach(meteor => {
+            let pos = meteor.body.getPosition();
+            meteor.sprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
+            meteor.sprite.rotation = meteor.body.getAngle();
+        });
+
+        if (Math.random() < config.refreshMeteorProbability) {
+            let count = config.refreshMeteorMinCount + Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
+            for (let i = 0; i < count; i++) {
+                this.meteorList.push(this.createMeteor());
+            }
+        }
     }
 
     onPointerdown(event) {
@@ -188,6 +243,8 @@ export default class GameScene extends Scene {
     createWall() {
         let wall = this.world.createBody();
 
+        wall.setUserData({type: "wall"});
+
         let opt = {density: 0, friction: 0};
         wall.createFixture(Edge(Vec2(0, 0),
             Vec2(config.designWidth * config.pixel2meter, 0)),
@@ -213,10 +270,53 @@ export default class GameScene extends Scene {
         this.planeSprite.position.set(config.planeRadius * config.meter2pixel, config.planeRadius * config.meter2pixel);
 
         this.planeBody = this.world.createDynamicBody();
-        this.planeBody.createFixture(Circle(config.planeRadius), {friction: 1, density: 1});
+        this.planeBody.createFixture(Circle(config.planeRadius), {friction: 0, density: 1});
         this.planeBody.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
             config.designHeight * config.pixel2meter / 2));
-        // this.planeBody.setLinearVelocity(Vec2(config.planeVelocity, 0));
     }
 
+    createMeteor() {
+        let sprite = new Sprite(resources[config.meteorImagePath].texture);
+        this.gameContainer.addChild(sprite);
+        sprite.anchor.set(0.5, 0.5);
+
+        let body = this.world.createDynamicBody();
+        body.createFixture(Circle(config.meteorRadius), {
+            friction: 0,
+            density: 1,
+            restitution: config.meteorRestitution
+        });
+        body.setUserData({type: "meteor"});
+
+        let {x, y, radian, velocity} = this.getRandomInitArgs(config.meteorRadius * config.meter2pixel);
+        sprite.position.set(x, y);
+        sprite.rotation = radian;
+        body.setPosition(Vec2(x * config.pixel2meter, y * config.pixel2meter));
+        body.setAngle(radian);
+
+        body.setLinearVelocity(Vec2(velocity * Math.cos(radian), velocity * Math.sin(radian)));
+        body.setAngularVelocity(5);
+
+        return {sprite, body};
+    }
+
+    getRandomInitArgs(radius) {
+        radius = -radius;
+        let w = config.designWidth, h = config.designHeight;
+        let length = (w + h) * 2;
+        let pos = Math.random() * length;
+        let radian = Math.random() * Math.PI;
+        let args;
+        if (pos < w) {
+            args = {x: pos, y: -radius, radian: radian};
+        } else if (pos < w + h) {
+            args = {x: w + radius, y: pos - w, radian: Math.PI / 2 + radian};
+        } else if (pos < w * 2 + h) {
+            args = {x: pos - w - h, y: h + radius, radian: Math.PI + radian};
+        } else {
+            args = {x: -radius, y: pos - w * w - h, radian: Math.PI / 2 * 3 + radian};
+        }
+        args.velocity = config.meteorMinVelocity + Math.random() * (config.meteorMaxVelocity - config.meteorMinVelocity);
+        return args;
+    }
 }
