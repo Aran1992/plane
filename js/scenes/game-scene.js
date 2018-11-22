@@ -2,7 +2,7 @@ import Scene from "../base/scene.js"
 import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js"
 import {app} from "../my-application.js"
 import config from "../../config.js"
-import {Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
+import {Circle, Edge, Vec2, World, Box} from "../libs/planck-wrapper.js"
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -19,16 +19,16 @@ export default class GameScene extends Scene {
         let textStyle = new TextStyle({
             fontSize: 50,
             fill: "white"
-        },);
+        });
 
         this.fpsText = new Text("FPS:0", textStyle);
         this.addChild(this.fpsText);
 
-        this.countText = new Text("count:0", textStyle);
-        this.addChild(this.countText);
-        this.countText.anchor.set(1, 0);
-        this.countText.position.set(app.sceneWidth, 0);
-        this.count = 0;
+        this.survivalTimeText = new Text("Survival Time:0", textStyle);
+        this.addChild(this.survivalTimeText);
+        this.survivalTimeText.anchor.set(1, 0);
+        this.survivalTimeText.position.set(app.sceneWidth, 0);
+        this.survivalTime = 0;
     }
 
     onShow() {
@@ -36,21 +36,19 @@ export default class GameScene extends Scene {
             config.planeImagePath,
             config.bgImagePath,
             config.meteorImagePath,
+            config.wormImagePath,
         ], this.onLoaded.bind(this));
     }
 
     onLoaded() {
         this.world = new World({gravity: Vec2(0, config.gravity)});
-        // this.world.on("pre-solve", this.onPreSolve.bind(this));
-        this.world.on('begin-contact', this.onBeginContact.bind(this));
+        this.world.on("pre-solve", this.onPreSolve.bind(this));
+        // this.world.on('begin-contact', this.onBeginContact.bind(this));
         this.createBg();
         this.createWall();
-        this.createPlane();
-        this.meteorList = [];
-        let count = config.meteorMinCount + Math.random() * (config.meteorMaxCount - config.meteorMinCount);
-        for (let i = 0; i < count; i++) {
-            this.meteorList.push(this.createMeteor());
-        }
+        this.createWorms();
+        this.createMeteors();
+        this.plane = this.createPlane();
         app.ticker.add(this.onUpdate.bind(this));
     }
 
@@ -61,102 +59,80 @@ export default class GameScene extends Scene {
         ];
         let index = bodyList.findIndex(body => body.getUserData() && body.getUserData().type === "meteor");
         if (index !== -1) {
+            let meteorBody = bodyList[index];
             bodyList.splice(index, 1);
-            let body = bodyList[0];
-            let userData = body.getUserData();
-            if (userData && userData.type === "wall") {
-                contact.setEnabled(false);
+            let wormBody = bodyList[0];
+            let userData = wormBody.getUserData();
+            if (userData && userData.type === "worm") {
+                meteorBody.getUserData().destroied = true;
+                wormBody.getUserData().destroied = true;
             }
         }
     }
 
-    onBeginContact(contact) {
-        let fixtureList = [
-            contact.getFixtureA(),
-            contact.getFixtureB(),
-        ];
-        let index = fixtureList.map(fixture => fixture.getBody()).indexOf(this.planeBody);
-        if (index !== -1) {
-            fixtureList.splice(index, 1);
-            let userData = fixtureList[0].getBody().getUserData();
-            if (userData && userData.type === "meteor") {
-                this.count++;
-                this.countText.text = `count:${this.count}`;
-            }
-        }
-    }
+    // onBeginContact(contact) {
+    //     let fixtureList = [
+    //         contact.getFixtureA(),
+    //         contact.getFixtureB(),
+    //     ];
+    //     let index = fixtureList.map(fixture => fixture.getBody()).indexOf(this.plane.body);
+    //     if (index !== -1) {
+    //         fixtureList.splice(index, 1);
+    //         let userData = fixtureList[0].getBody().getUserData();
+    //         if (userData && userData.type === "meteor") {
+    //         }
+    //     }
+    // }
 
     onUpdate(delta) {
         this.fpsText.text = `FPS:${Math.floor(delta * config.fps)}`;
 
-        let angle = this.planeBody.getAngle();
-        if (angle < 0) {
-            angle = 2 * Math.PI + angle;
-        }
-        if (this.targetAngle && angle !== this.targetAngle) {
-            if (this.targetAngle > angle) {
-                let diff = this.targetAngle - angle;
-                let diff2 = 2 * Math.PI - diff;
-                if (diff < diff2) {
-                    if (config.planeAngleVelocity > diff) {
-                        angle = this.targetAngle;
-                    } else {
-                        angle += config.planeAngleVelocity;
-                    }
-                } else {
-                    if (config.planeAngleVelocity > diff2) {
-                        angle = this.targetAngle;
-                    } else {
-                        angle -= config.planeAngleVelocity;
-                    }
-                }
-            } else if (this.targetAngle < angle) {
-                let diff = angle - this.targetAngle;
-                let diff2 = 2 * Math.PI - diff;
-                if (diff < diff2) {
-                    if (config.planeAngleVelocity > diff) {
-                        angle = this.targetAngle;
-                    } else {
-                        angle -= config.planeAngleVelocity;
-                    }
-                } else {
-                    if (config.planeAngleVelocity > diff2) {
-                        angle = this.targetAngle;
-                    } else {
-                        angle += config.planeAngleVelocity;
-                    }
-                }
-            }
-            this.planeBody.setAngle(angle);
-        }
+        this.survivalTime++;
+        this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / config.fps)}s`;
 
-        let velocity = this.planeBody.getLinearVelocity();
-        let forceAngle = this.getAngle(config.planeVelocity * Math.cos(angle) - velocity.x,
-            config.planeVelocity * Math.sin(angle) - velocity.y);
-        let fx = config.planeEngineForce * Math.cos(forceAngle);
-        let fy = config.planeEngineForce * Math.sin(forceAngle);
-        this.planeBody.applyLinearImpulse(Vec2(fx, fy), this.planeBody.getPosition());
-
-        this.planeBody.setAngularVelocity(0);
-
-        this.world.step(1 / config.fps);
-
-        let pos = this.planeBody.getPosition();
-        this.planeSprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
-        this.planeSprite.rotation = angle;
-
-        this.meteorList.forEach(meteor => {
-            let pos = meteor.body.getPosition();
-            meteor.sprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
-            meteor.sprite.rotation = meteor.body.getAngle();
-        });
-
-        if (this.meteorList.length < config.meteorExistMaxCount && Math.random() < config.refreshMeteorProbability) {
-            let count = config.refreshMeteorMinCount + Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
+        if (this.meteorList.length < config.meteorExistMaxCount
+            && Math.random() < config.refreshMeteorProbability) {
+            let count = config.refreshMeteorMinCount +
+                Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
             for (let i = 0; i < count; i++) {
                 this.meteorList.push(this.createMeteor());
             }
         }
+
+        if (this.wormList.length < config.wormExistMaxCount
+            && Math.random() < config.refreshWormProbability) {
+            let count = 1;
+            for (let i = 0; i < count; i++) {
+                this.wormList.push(this.createWorm());
+            }
+        }
+
+        this.wormFollowPlane();
+
+        this.controlPlane();
+
+        this.world.step(1 / config.fps);
+
+        [this.wormList, this.meteorList].forEach(list => {
+            let index = 0;
+            let item = list[index];
+            while (item) {
+                let ud = item.body.getUserData();
+                if (ud && ud.destroied) {
+                    this.world.destroyBody(item.body);
+                    item.sprite.parent.removeChild(item.sprite);
+                    list.splice(index, 1);
+                } else {
+                    index++;
+                }
+                item = list[index];
+            }
+        });
+
+        [this.plane]
+            .concat(this.wormList)
+            .concat(this.meteorList)
+            .forEach(item => this.syncSpriteWithBody(item));
     }
 
     onPointerdown(event) {
@@ -175,39 +151,6 @@ export default class GameScene extends Scene {
         this.endPointCircle.drawCircle(0, 0, 5);
         this.endPointCircle.endFill();
         this.endPointCircle.position.set(this.startPoint.x, this.startPoint.y);
-    }
-
-    getAngle(x, y) {
-        let angle;
-        if (x === 0) {
-            if (y > 0) {
-                return Math.PI / 2;
-            } else if (y < 0) {
-                return Math.PI / 2 * 3;
-            } else {
-                return 0;
-            }
-        }
-        if (y === 0) {
-            if (x > 0) {
-                return 0;
-            } else {
-                return Math.PI;
-            }
-        }
-        if (x > 0 && y > 0) {
-            angle = Math.atan(y / x);
-        } else if (x < 0 && y > 0) {
-            angle = Math.PI + Math.atan(y / x);
-        } else if (x < 0 && y < 0) {
-            angle = Math.atan(y / x) - Math.PI;
-        } else if (x > 0 && y < 0) {
-            angle = Math.atan(y / x);
-        }
-        if (angle < 0) {
-            angle = 2 * Math.PI + angle;
-        }
-        return angle;
     }
 
     onPointermove(event) {
@@ -276,15 +219,17 @@ export default class GameScene extends Scene {
     }
 
     createPlane() {
-        this.planeSprite = new Sprite(resources[config.planeImagePath].texture);
-        this.gameContainer.addChild(this.planeSprite);
-        this.planeSprite.anchor.set(0.5, 0.5);
-        this.planeSprite.position.set(config.planeRadius * config.meter2pixel, config.planeRadius * config.meter2pixel);
+        let sprite = new Sprite(resources[config.planeImagePath].texture);
+        this.gameContainer.addChild(sprite);
+        sprite.anchor.set(0.5, 0.5);
+        sprite.position.set(config.designWidth / 2, config.designHeight / 2);
 
-        this.planeBody = this.world.createDynamicBody();
-        this.planeBody.createFixture(Circle(config.planeRadius), {friction: 0, density: 1});
-        this.planeBody.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
+        let body = this.world.createDynamicBody();
+        body.createFixture(Circle(config.planeRadius), {friction: 0, density: 1});
+        body.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
             config.designHeight * config.pixel2meter / 2));
+
+        return {sprite, body};
     }
 
     createMeteor() {
@@ -307,9 +252,46 @@ export default class GameScene extends Scene {
         body.setAngle(radian);
 
         body.setLinearVelocity(Vec2(velocity * Math.cos(radian), velocity * Math.sin(radian)));
-        body.setAngularVelocity(5);
+        body.setAngularVelocity(config.meteorAngularVelocity);
 
         return {sprite, body};
+    }
+
+    createMeteors() {
+        this.meteorList = [];
+        let count = config.meteorMinCount + Math.random() * (config.meteorMaxCount - config.meteorMinCount);
+        for (let i = 0; i < count; i++) {
+            this.meteorList.push(this.createMeteor());
+        }
+    }
+
+    createWorm() {
+        let texture = resources[config.wormImagePath].texture;
+        let sprite = new Sprite(texture);
+        this.gameContainer.addChild(sprite);
+        sprite.anchor.set(0.5, 0.5);
+
+        let body = this.world.createDynamicBody();
+        let width = texture.width * config.pixel2meter / 2,
+            height = texture.height * config.pixel2meter / 2;
+        body.createFixture(Box(width, height), {friction: 0, density: 1});
+
+        let {x, y, radian} = this.getRandomInitArgs(texture.width / 2);
+        sprite.position.set(x, y);
+        sprite.rotation = radian;
+        body.setPosition(Vec2(x * config.pixel2meter, y * config.pixel2meter));
+        body.setAngle(radian);
+        body.setUserData({type: "worm"});
+
+        return {sprite, body};
+    }
+
+    createWorms() {
+        this.wormList = [];
+        let count = config.wormMinCount + Math.random() * (config.wormMaxCount - config.wormMinCount);
+        for (let i = 0; i < count; i++) {
+            this.wormList.push(this.createWorm());
+        }
     }
 
     getRandomInitArgs(radius) {
@@ -330,5 +312,119 @@ export default class GameScene extends Scene {
         }
         args.velocity = config.meteorMinVelocity + Math.random() * (config.meteorMaxVelocity - config.meteorMinVelocity);
         return args;
+    }
+
+    syncSpriteWithBody(obj) {
+        let pos = obj.body.getPosition();
+        obj.sprite.position.set(pos.x * config.meter2pixel, pos.y * config.meter2pixel);
+        obj.sprite.rotation = obj.body.getAngle();
+    }
+
+    controlPlane() {
+        let angle = this.plane.body.getAngle();
+        if (this.targetAngle) {
+            angle = this.calcAngle(angle, this.targetAngle, config.planeAngularVelocity);
+        }
+        this.plane.body.setAngle(angle);
+
+        this.fireEngine(this.plane, config.planeVelocity, config.planeEngineForce);
+    }
+
+    wormFollowPlane() {
+        let pp = this.plane.body.getPosition();
+        this.wormList.forEach(worm => {
+            let wp = worm.body.getPosition();
+            let targetAngle = this.getAngle(pp.x - wp.x, pp.y - wp.y);
+            let angle = this.calcAngle(worm.body.getAngle(), targetAngle, config.wormAngularVelocity);
+            worm.body.setAngle(angle);
+
+            this.fireEngine(worm, config.wormVelocity, config.wormEngineForce);
+        });
+    }
+
+    fireEngine(obj, targetVelocity, engineForce) {
+        let velocity = obj.body.getLinearVelocity();
+        let angle = obj.body.getAngle();
+        let forceAngle = this.getAngle(targetVelocity * Math.cos(angle) - velocity.x,
+            config.planeVelocity * Math.sin(angle) - velocity.y);
+        let fx = engineForce * Math.cos(forceAngle);
+        let fy = engineForce * Math.sin(forceAngle);
+        obj.body.applyLinearImpulse(Vec2(fx, fy), obj.body.getPosition());
+        obj.body.setAngularVelocity(0);
+    }
+
+    calcAngle(curAngle, targetAngle, angularVelocity) {
+        if (curAngle < 0) {
+            curAngle += 2 * Math.PI;
+        }
+        if (curAngle !== targetAngle) {
+            if (targetAngle > curAngle) {
+                let diff = targetAngle - curAngle;
+                let diff2 = 2 * Math.PI - diff;
+                if (diff < diff2) {
+                    if (angularVelocity > diff) {
+                        curAngle = targetAngle;
+                    } else {
+                        curAngle += angularVelocity;
+                    }
+                } else {
+                    if (angularVelocity > diff2) {
+                        curAngle = targetAngle;
+                    } else {
+                        curAngle -= angularVelocity;
+                    }
+                }
+            } else if (targetAngle < curAngle) {
+                let diff = curAngle - targetAngle;
+                let diff2 = 2 * Math.PI - diff;
+                if (diff < diff2) {
+                    if (angularVelocity > diff) {
+                        curAngle = targetAngle;
+                    } else {
+                        curAngle -= angularVelocity;
+                    }
+                } else {
+                    if (angularVelocity > diff2) {
+                        curAngle = targetAngle;
+                    } else {
+                        curAngle += angularVelocity;
+                    }
+                }
+            }
+        }
+        return curAngle;
+    }
+
+    getAngle(x, y) {
+        let angle;
+        if (x === 0) {
+            if (y > 0) {
+                return Math.PI / 2;
+            } else if (y < 0) {
+                return Math.PI / 2 * 3;
+            } else {
+                return 0;
+            }
+        }
+        if (y === 0) {
+            if (x > 0) {
+                return 0;
+            } else {
+                return Math.PI;
+            }
+        }
+        if (x > 0 && y > 0) {
+            angle = Math.atan(y / x);
+        } else if (x < 0 && y > 0) {
+            angle = Math.PI + Math.atan(y / x);
+        } else if (x < 0 && y < 0) {
+            angle = Math.atan(y / x) - Math.PI;
+        } else if (x > 0 && y < 0) {
+            angle = Math.atan(y / x);
+        }
+        if (angle < 0) {
+            angle = 2 * Math.PI + angle;
+        }
+        return angle;
     }
 }
