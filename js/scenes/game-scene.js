@@ -2,7 +2,7 @@ import Scene from "../base/scene.js"
 import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js"
 import {app} from "../my-application.js"
 import config from "../../config.js"
-import {Circle, Edge, Vec2, World, Box} from "../libs/planck-wrapper.js"
+import {Box, Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -95,7 +95,7 @@ export default class GameScene extends Scene {
             let count = config.refreshMeteorMinCount +
                 Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
             for (let i = 0; i < count; i++) {
-                this.meteorList.push(this.createMeteor());
+                // this.meteorList.push(this.createMeteor());
             }
         }
 
@@ -103,7 +103,7 @@ export default class GameScene extends Scene {
             && Math.random() < config.refreshWormProbability) {
             let count = 1;
             for (let i = 0; i < count; i++) {
-                this.wormList.push(this.createWorm());
+                // this.wormList.push(this.createWorm());
             }
         }
 
@@ -261,7 +261,7 @@ export default class GameScene extends Scene {
         this.meteorList = [];
         let count = config.meteorMinCount + Math.random() * (config.meteorMaxCount - config.meteorMinCount);
         for (let i = 0; i < count; i++) {
-            this.meteorList.push(this.createMeteor());
+            // this.meteorList.push(this.createMeteor());
         }
     }
 
@@ -290,7 +290,7 @@ export default class GameScene extends Scene {
         this.wormList = [];
         let count = config.wormMinCount + Math.random() * (config.wormMaxCount - config.wormMinCount);
         for (let i = 0; i < count; i++) {
-            this.wormList.push(this.createWorm());
+            // this.wormList.push(this.createWorm());
         }
     }
 
@@ -349,7 +349,8 @@ export default class GameScene extends Scene {
             config.planeVelocity * Math.sin(angle) - velocity.y);
         let fx = engineForce * Math.cos(forceAngle);
         let fy = engineForce * Math.sin(forceAngle);
-        obj.body.applyLinearImpulse(Vec2(fx, fy), obj.body.getPosition());
+        console.log(fx, fy);
+        obj.body.applyForceToCenter(Vec2(fx * 1000, fy * 1000));
         obj.body.setAngularVelocity(0);
     }
 
