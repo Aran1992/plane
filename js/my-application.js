@@ -1,7 +1,6 @@
 import {Application, loader, resources} from "./libs/pixi-wrapper.js"
 import GameScene from "./scenes/game-scene.js"
 import GameOverScene from "./scenes/game-over-scene.js"
-import BgScene from "./scenes/bg-scene.js"
 
 export let app;
 
@@ -22,7 +21,6 @@ export default class MyApplication extends Application {
         this.sceneClassTable = {
             "GameScene": GameScene,
             "GameOverScene": GameOverScene,
-            "BgScene": BgScene,
         };
         this.sceneTable = {};
 
