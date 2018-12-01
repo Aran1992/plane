@@ -11,6 +11,12 @@ export default class GameScene extends Scene {
         this.gameContainer.interactive = true;
         this.gameContainer.buttonMode = true;
         this.gameContainer.hitArea = new Rectangle(0, 0, config.designWidth, config.designHeight);
+        this.gameContainerRect = {
+            x: 0,
+            y: 0,
+            w: config.designWidth,
+            h: config.designHeight
+        };
         this.gameContainer.on("pointerdown", this.onPointerdown.bind(this));
         this.gameContainer.on("pointermove", this.onPointermove.bind(this));
         this.gameContainer.on("pointerup", this.onPointerup.bind(this));
@@ -29,6 +35,8 @@ export default class GameScene extends Scene {
         this.survivalTimeText.anchor.set(1, 0);
         this.survivalTimeText.position.set(app.sceneWidth, 0);
         this.survivalTime = 0;
+
+        app.registerEvent("Restart", this.onRestart.bind(this));
     }
 
     onShow() {
@@ -40,16 +48,27 @@ export default class GameScene extends Scene {
         ], this.onLoaded.bind(this));
     }
 
+    onRestart() {
+        this.survivalTime = 0;
+        this.gameEnded = false;
+        this.contactFatalItem = false;
+        this.gameContainer.removeChildren();
+        this.onLoaded();
+    }
+
     onLoaded() {
         this.world = new World({gravity: Vec2(0, config.gravity)});
         this.world.on("pre-solve", this.onPreSolve.bind(this));
-        // this.world.on('begin-contact', this.onBeginContact.bind(this));
+        this.world.on('begin-contact', this.onBeginContact.bind(this));
         this.createBg();
         this.createWall();
         this.createWorms();
         this.createMeteors();
         this.plane = this.createPlane();
-        app.ticker.add(this.onUpdate.bind(this));
+        if (this.onUpdateHandler === undefined) {
+            this.onUpdateHandler = this.onUpdate.bind(this);
+            app.ticker.add(this.onUpdateHandler);
+        }
     }
 
     onPreSolve(contact) {
@@ -63,39 +82,57 @@ export default class GameScene extends Scene {
             bodyList.splice(index, 1);
             let wormBody = bodyList[0];
             let userData = wormBody.getUserData();
-            if (userData && userData.type === "worm") {
-                meteorBody.getUserData().destroied = true;
-                wormBody.getUserData().destroied = true;
+            if (userData) {
+                switch (userData.type) {
+                    case "worm": {
+                        meteorBody.getUserData().destroied = true;
+                        wormBody.getUserData().destroied = true;
+                        break;
+                    }
+                    case "meteor": {
+                        contact.setEnabled(false);
+                        break;
+                    }
+                }
             }
         }
     }
 
-    // onBeginContact(contact) {
-    //     let fixtureList = [
-    //         contact.getFixtureA(),
-    //         contact.getFixtureB(),
-    //     ];
-    //     let index = fixtureList.map(fixture => fixture.getBody()).indexOf(this.plane.body);
-    //     if (index !== -1) {
-    //         fixtureList.splice(index, 1);
-    //         let userData = fixtureList[0].getBody().getUserData();
-    //         if (userData && userData.type === "meteor") {
-    //         }
-    //     }
-    // }
+    onBeginContact(contact) {
+        let fixtureList = [
+            contact.getFixtureA(),
+            contact.getFixtureB(),
+        ];
+        let index = fixtureList.map(fixture => fixture.getBody()).indexOf(this.plane.body);
+        if (index !== -1) {
+            fixtureList.splice(index, 1);
+            let userData = fixtureList[0].getBody().getUserData();
+            if (userData) {
+                switch (userData.type) {
+                    case "meteor":
+                    case "worm": {
+                        if (!this.gameEnded) {
+                            this.contactFatalItem = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     onUpdate(delta) {
         this.fpsText.text = `FPS:${Math.floor(delta * config.fps)}`;
 
         this.survivalTime++;
-        this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / config.fps)}s`;
+        this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / config.fps * 100) / 100}s`;
 
         if (this.meteorList.length < config.meteorExistMaxCount
             && Math.random() < config.refreshMeteorProbability) {
             let count = config.refreshMeteorMinCount +
                 Math.random() * (config.refreshMeteorMaxCount - config.refreshMeteorMinCount);
             for (let i = 0; i < count; i++) {
-                // this.meteorList.push(this.createMeteor());
+                this.meteorList.push(this.createMeteor());
             }
         }
 
@@ -103,7 +140,7 @@ export default class GameScene extends Scene {
             && Math.random() < config.refreshWormProbability) {
             let count = 1;
             for (let i = 0; i < count; i++) {
-                // this.wormList.push(this.createWorm());
+                this.wormList.push(this.createWorm());
             }
         }
 
@@ -113,12 +150,18 @@ export default class GameScene extends Scene {
 
         this.world.step(1 / config.fps);
 
+        this.plane.pastPos.push(this.plane.body.getPosition());
+        if (this.plane.pastPos.length > config.planePastPosLength) {
+            this.plane.pastPos.shift();
+        }
+
         [this.wormList, this.meteorList].forEach(list => {
             let index = 0;
             let item = list[index];
             while (item) {
                 let ud = item.body.getUserData();
-                if (ud && ud.destroied) {
+                if (ud && ud.destroied
+                    || !this.isPointInRect(item.body.getPosition(), this.gameContainerRect)) {
                     this.world.destroyBody(item.body);
                     item.sprite.parent.removeChild(item.sprite);
                     list.splice(index, 1);
@@ -133,6 +176,11 @@ export default class GameScene extends Scene {
             .concat(this.wormList)
             .concat(this.meteorList)
             .forEach(item => this.syncSpriteWithBody(item));
+
+        if (!this.gameEnded && this.contactFatalItem) {
+            this.gameEnded = true;
+            app.showScene("GameOverScene", this.survivalTime);
+        }
     }
 
     onPointerdown(event) {
@@ -229,7 +277,7 @@ export default class GameScene extends Scene {
         body.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
             config.designHeight * config.pixel2meter / 2));
 
-        return {sprite, body};
+        return {sprite, body, pastPos: [body.getPosition()]};
     }
 
     createMeteor() {
@@ -261,7 +309,7 @@ export default class GameScene extends Scene {
         this.meteorList = [];
         let count = config.meteorMinCount + Math.random() * (config.meteorMaxCount - config.meteorMinCount);
         for (let i = 0; i < count; i++) {
-            // this.meteorList.push(this.createMeteor());
+            this.meteorList.push(this.createMeteor());
         }
     }
 
@@ -276,7 +324,7 @@ export default class GameScene extends Scene {
             height = texture.height * config.pixel2meter / 2;
         body.createFixture(Box(width, height), {friction: 0, density: 1});
 
-        let {x, y, radian} = this.getRandomInitArgs(texture.width / 2);
+        let {x, y, radian} = this.getRandomInitArgs(texture.width);
         sprite.position.set(x, y);
         sprite.rotation = radian;
         body.setPosition(Vec2(x * config.pixel2meter, y * config.pixel2meter));
@@ -290,7 +338,7 @@ export default class GameScene extends Scene {
         this.wormList = [];
         let count = config.wormMinCount + Math.random() * (config.wormMaxCount - config.wormMinCount);
         for (let i = 0; i < count; i++) {
-            // this.wormList.push(this.createWorm());
+            this.wormList.push(this.createWorm());
         }
     }
 
@@ -331,7 +379,7 @@ export default class GameScene extends Scene {
     }
 
     wormFollowPlane() {
-        let pp = this.plane.body.getPosition();
+        let pp = this.plane.pastPos[0];
         this.wormList.forEach(worm => {
             let wp = worm.body.getPosition();
             let targetAngle = this.getAngle(pp.x - wp.x, pp.y - wp.y);
@@ -349,7 +397,6 @@ export default class GameScene extends Scene {
             config.planeVelocity * Math.sin(angle) - velocity.y);
         let fx = engineForce * Math.cos(forceAngle);
         let fy = engineForce * Math.sin(forceAngle);
-        console.log(fx, fy);
         obj.body.applyForceToCenter(Vec2(fx * 1000, fy * 1000));
         obj.body.setAngularVelocity(0);
     }
@@ -427,5 +474,12 @@ export default class GameScene extends Scene {
             angle = 2 * Math.PI + angle;
         }
         return angle;
+    }
+
+    isPointInRect(point, rect) {
+        return point.x > rect.x
+            && point.x < rect.x + rect.w
+            && point.y > rect.y
+            && point.y < rect.y + rect.h;
     }
 }
