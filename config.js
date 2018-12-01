@@ -1,4 +1,4 @@
-export default {
+﻿export default {
     designWidth: 1920,
     designHeight: 1080,
     gameSceneWidth: 1920 * 2,
