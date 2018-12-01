@@ -6,21 +6,22 @@ import {Box, Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
 
 export default class GameScene extends Scene {
     onCreate() {
+        this.interactive = true;
+        this.buttonMode = true;
+        this.hitArea = new Rectangle(0, 0, config.designWidth, config.designHeight);
+        this.on("pointerdown", this.onPointerdown.bind(this));
+        this.on("pointermove", this.onPointermove.bind(this));
+        this.on("pointerup", this.onPointerup.bind(this));
+        this.on("pointerupoutside", this.onPointerup.bind(this));
+
         this.gameContainer = new Container();
         this.addChild(this.gameContainer);
-        this.gameContainer.interactive = true;
-        this.gameContainer.buttonMode = true;
-        this.gameContainer.hitArea = new Rectangle(0, 0, config.designWidth, config.designHeight);
         this.gameContainerRect = {
             x: 0,
             y: 0,
-            w: config.designWidth,
-            h: config.designHeight
+            width: config.gameSceneWidth,
+            height: config.gameSceneHeight
         };
-        this.gameContainer.on("pointerdown", this.onPointerdown.bind(this));
-        this.gameContainer.on("pointermove", this.onPointermove.bind(this));
-        this.gameContainer.on("pointerup", this.onPointerup.bind(this));
-        this.gameContainer.on("pointerupoutside", this.onPointerup.bind(this));
 
         let textStyle = new TextStyle({
             fontSize: 50,
@@ -40,12 +41,18 @@ export default class GameScene extends Scene {
     }
 
     onShow() {
+        let imagePathList = [];
+        for (let name in config.imagePath) {
+            if (config.imagePath.hasOwnProperty(name)) {
+                imagePathList.push(config.imagePath[name]);
+            }
+        }
         app.loadResources([
             config.planeImagePath,
             config.bgImagePath,
             config.meteorImagePath,
             config.wormImagePath,
-        ], this.onLoaded.bind(this));
+        ].concat(imagePathList), this.onLoaded.bind(this));
     }
 
     onRestart() {
@@ -53,6 +60,7 @@ export default class GameScene extends Scene {
         this.gameEnded = false;
         this.contactFatalItem = false;
         this.gameContainer.removeChildren();
+        this.gameContainer.position.set(0, 0);
         this.onLoaded();
     }
 
@@ -178,6 +186,10 @@ export default class GameScene extends Scene {
             .concat(this.meteorList)
             .forEach(item => this.syncSpriteWithBody(item));
 
+        let x = config.designWidth / 2 - this.plane.sprite.x,
+            y = config.designHeight / 2 - this.plane.sprite.y;
+        this.gameContainer.position.set(x, y);
+
         if (!this.gameEnded && this.contactFatalItem) {
             this.gameEnded = true;
             app.showScene("GameOverScene", this.survivalTime);
@@ -240,43 +252,42 @@ export default class GameScene extends Scene {
     }
 
     createBg() {
-        let sprite = new Sprite(resources[config.bgImagePath].texture);
+        let texture = resources[config.bgImagePath].texture;
+        let sprite = new Sprite(texture);
         this.gameContainer.addChild(sprite);
+        sprite.scale.set(config.gameSceneWidth / texture.width,
+            config.gameSceneHeight / texture.height);
+        config.bgJson.forEach(item => this.createImage(this.gameContainer, item.texture, item.x, item.y));
+    }
+
+    createImage(parent, path, x, y) {
+        let sprite = new Sprite(resources[path].texture);
+        parent.addChild(sprite);
+        sprite.position.set(x, y);
     }
 
     createWall() {
         let wall = this.world.createBody();
-
         wall.setUserData({type: "wall"});
-
+        let width = config.gameSceneWidth * config.pixel2meter,
+            height = config.gameSceneHeight * config.pixel2meter;
         let opt = {density: 0, friction: 0};
-        wall.createFixture(Edge(Vec2(0, 0),
-            Vec2(config.designWidth * config.pixel2meter, 0)),
-            opt);
-
-        wall.createFixture(Edge(Vec2(config.designWidth * config.pixel2meter, 0),
-            Vec2(config.designWidth * config.pixel2meter, config.designHeight * config.pixel2meter)),
-            opt);
-
-        wall.createFixture(Edge(Vec2(config.designWidth * config.pixel2meter, config.designHeight * config.pixel2meter),
-            Vec2(0, config.designHeight * config.pixel2meter)),
-            opt);
-
-        wall.createFixture(Edge(Vec2(0, config.designHeight * config.pixel2meter),
-            Vec2(0, 0)),
-            opt);
+        wall.createFixture(Edge(Vec2(0, 0), Vec2(width, 0)), opt);
+        wall.createFixture(Edge(Vec2(width, 0), Vec2(width, height)), opt);
+        wall.createFixture(Edge(Vec2(width, height), Vec2(0, height)), opt);
+        wall.createFixture(Edge(Vec2(0, height), Vec2(0, 0)), opt);
     }
 
     createPlane() {
         let sprite = new Sprite(resources[config.planeImagePath].texture);
         this.gameContainer.addChild(sprite);
         sprite.anchor.set(0.5, 0.5);
-        sprite.position.set(config.designWidth / 2, config.designHeight / 2);
+        sprite.position.set(config.gameSceneWidth / 2, config.gameSceneHeight / 2);
 
         let body = this.world.createDynamicBody();
         body.createFixture(Circle(config.planeRadius), {friction: 0, density: 1});
-        body.setPosition(Vec2(config.designWidth * config.pixel2meter / 2,
-            config.designHeight * config.pixel2meter / 2));
+        body.setPosition(Vec2(config.gameSceneWidth * config.pixel2meter / 2,
+            config.gameSceneHeight * config.pixel2meter / 2));
 
         return {sprite, body, pastPos: [body.getPosition()]};
     }
@@ -345,7 +356,7 @@ export default class GameScene extends Scene {
 
     getRandomInitArgs(radius) {
         radius = -radius;
-        let w = config.designWidth, h = config.designHeight;
+        let w = config.gameSceneWidth, h = config.gameSceneHeight;
         let length = (w + h) * 2;
         let pos = Math.random() * length;
         let radian = Math.random() * Math.PI;
@@ -479,8 +490,8 @@ export default class GameScene extends Scene {
 
     isPointInRect(point, rect) {
         return point.x > rect.x
-            && point.x < rect.x + rect.w
+            && point.x < rect.x + rect.width
             && point.y > rect.y
-            && point.y < rect.y + rect.h;
+            && point.y < rect.y + rect.height;
     }
 }
