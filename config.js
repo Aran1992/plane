@@ -12,13 +12,13 @@ export default {
     planeImagePath: "images/rocket.png",
     planeRadius: 2.65625,
     // 飞机的速度
-    planeVelocity: 30,
+    planeVelocity: 33,
     // 飞机的推进力
-    planeEngineForce: 15,
+    planeEngineForce: 16,
     // 飞机旋转的速度
     planeAngularVelocity: Math.PI / 180 * 5,
     // 虫子跟随飞机的位置是飞机几帧前的
-    planePastPosLength: 10,
+    planePastPosLength: 20,
     meteorImagePath: "images/meteorite.png",
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
@@ -45,7 +45,7 @@ export default {
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 5,
     // 虫子的速度
-    wormVelocity: 8,
+    wormVelocity: 6,
     // 虫子的推进力
     wormEngineForce: 10,
     // 初始化时生成虫子的最小数量
