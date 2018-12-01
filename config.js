@@ -12,7 +12,7 @@
     planeImagePath: "images/rocket.png",
     planeRadius: 2.65625,
     // 飞机的速度
-    planeVelocity: 50,
+    planeVelocity: 30,
     // 飞机的推进力
     planeEngineForce: 15,
     // 飞机旋转的速度
