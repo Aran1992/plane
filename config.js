@@ -12,50 +12,50 @@
     planeImagePath: "images/rocket.png",
     planeRadius: 2.65625,
     // 飞机的速度
-    planeVelocity: 33,
+    planeVelocity: 30,
     // 飞机的推进力
-    planeEngineForce: 16,
+    planeEngineForce: 19,
     // 飞机旋转的速度
-    planeAngularVelocity: Math.PI / 180 * 5,
+    planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
-    planePastPosLength: 20,
+    planePastPosLength: 15,
     meteorImagePath: "images/meteorite.png",
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
-    meteorMinVelocity: 10,
+    meteorMinVelocity: 6,
     // 陨石生成时的最大速度
-    meteorMaxVelocity: 20,
+    meteorMaxVelocity: 15,
     // 初始化时生成陨石的最小数量
     meteorMinCount: 1,
     // 初始化时生成陨石的最大数量
-    meteorMaxCount: 2,
+    meteorMaxCount: 1,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
     meteorRestitution: 1,
     // 陨石的旋转速度
-    meteorAngularVelocity: Math.PI / 180 * 5,
+    meteorAngularVelocity: Math.PI / 180 *65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshMeteorProbability: 0.2,
+    refreshMeteorProbability: 0.05,
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount: 2,
+    refreshMeteorMinCount: 1,
     // 每帧刷新陨石的最大数量
-    refreshMeteorMaxCount: 4,
+    refreshMeteorMaxCount: 2,
     // 陨石同时能存在的最大数量
-    meteorExistMaxCount: 30,
+    meteorExistMaxCount: 60,
     wormImagePath: "images/worm.png",
     // 虫子的旋转速度
-    wormAngularVelocity: Math.PI / 180 * 5,
+    wormAngularVelocity: Math.PI / 180 * 6,
     // 虫子的速度
-    wormVelocity: 6,
+    wormVelocity: 17,
     // 虫子的推进力
-    wormEngineForce: 10,
+    wormEngineForce: 9,
     // 初始化时生成虫子的最小数量
-    wormMinCount: 2,
+    wormMinCount: 1,
     // 初始化时生成虫子的最大数量
-    wormMaxCount: 4,
+    wormMaxCount: 2,
     // 虫子同时能存在的最大数量
-    wormExistMaxCount: 8,
+    wormExistMaxCount: 5,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshWormProbability: 0.2,
+    refreshWormProbability: 0.15,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
