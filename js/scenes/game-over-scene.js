@@ -1,6 +1,5 @@
 import Scene from "../base/scene.js"
 import {Graphics, Text, TextStyle} from "../libs/pixi-wrapper.js"
-import {app} from "../my-application.js"
 import config from "../../config.js"
 
 export default class GameOverScene extends Scene {

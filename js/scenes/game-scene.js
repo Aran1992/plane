@@ -1,6 +1,5 @@
 import Scene from "../base/scene.js"
 import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js"
-import {app} from "../my-application.js"
 import config from "../../config.js"
 import {Box, Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
 

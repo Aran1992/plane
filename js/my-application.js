@@ -2,17 +2,11 @@ import {Application, loader, resources} from "./libs/pixi-wrapper.js"
 import GameScene from "./scenes/game-scene.js"
 import GameOverScene from "./scenes/game-over-scene.js"
 
-export let app;
-
 export default class MyApplication extends Application {
     constructor(args) {
-        if (app) {
-            return app;
-        }
-
         super(args);
 
-        app = this;
+        window.app = this;
 
         this.scenesContainer = this.stage;
         this.sceneWidth = args.width;
