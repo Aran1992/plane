@@ -150,7 +150,8 @@ export default class GameScene extends Scene {
 
         this.world.step(1 / config.fps);
 
-        this.plane.pastPos.push(this.plane.body.getPosition());
+        let pos = this.plane.body.getPosition();
+        this.plane.pastPos.push(Vec2(pos.x, pos.y));
         if (this.plane.pastPos.length > config.planePastPosLength) {
             this.plane.pastPos.shift();
         }
@@ -397,7 +398,7 @@ export default class GameScene extends Scene {
             config.planeVelocity * Math.sin(angle) - velocity.y);
         let fx = engineForce * Math.cos(forceAngle);
         let fy = engineForce * Math.sin(forceAngle);
-        obj.body.applyForceToCenter(Vec2(fx * 1000, fy * 1000));
+        obj.body.applyLinearImpulse(Vec2(fx, fy), obj.body.getPosition());
         obj.body.setAngularVelocity(0);
     }
 
