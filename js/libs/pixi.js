@@ -184,13 +184,13 @@
         y  = (y | (y<<4))  & 3272356035;
         y  = (y | (y<<2))  & 1227133513;
         x |= (y << 1);
-  
+
         z &= 0x3FF;
         z  = (z | (z<<16)) & 4278190335;
         z  = (z | (z<<8))  & 251719695;
         z  = (z | (z<<4))  & 3272356035;
         z  = (z | (z<<2))  & 1227133513;
-  
+
         return x | (z << 2);
     };
 
@@ -2254,7 +2254,7 @@ object-assign
     };
     /**
  * Uses this shader
- * 
+ *
  * @return {PIXI.glCore.GLShader} Returns itself.
  */
     Shader.prototype.bind = function()
@@ -2897,7 +2897,7 @@ object-assign
  */
     var createContext = function(canvas, options)
     {
-        var gl = canvas.getContext("webgl", options) || 
+        var gl = canvas.getContext("webgl", options) ||
          canvas.getContext("experimental-webgl", options);
 
         if (!gl)
@@ -3084,36 +3084,36 @@ object-assign
  * @param type {String} Type of value
  * @param size {Number}
  */
-    var defaultValue = function(type, size) 
+    var defaultValue = function(type, size)
     {
         switch (type)
         {
         case "float":
             return 0;
 
-        case "vec2": 
+        case "vec2":
             return new Float32Array(2 * size);
 
         case "vec3":
             return new Float32Array(3 * size);
 
-        case "vec4":     
+        case "vec4":
             return new Float32Array(4 * size);
-            
+
         case "int":
         case "sampler2D":
             return 0;
 
-        case "ivec2":   
+        case "ivec2":
             return new Int32Array(2 * size);
 
         case "ivec3":
             return new Int32Array(3 * size);
 
-        case "ivec4": 
+        case "ivec4":
             return new Int32Array(4 * size);
 
-        case "bool":     
+        case "bool":
             return false;
 
         case "bvec2":
@@ -3130,7 +3130,7 @@ object-assign
             return new Float32Array([1, 0,
                 0, 1]);
 
-        case "mat3": 
+        case "mat3":
             return new Float32Array([1, 0, 0,
                 0, 1, 0,
                 0, 0, 1]);
@@ -3147,7 +3147,7 @@ object-assign
     {
         var array = new Array(size);
 
-        for (var i = 0; i < array.length; i++) 
+        for (var i = 0; i < array.length; i++)
         {
             array[i] = false;
         }
@@ -3378,8 +3378,8 @@ object-assign
  * @param type {String}
  * @return {Number}
  */
-    var mapSize = function(type) 
-    { 
+    var mapSize = function(type)
+    {
         return GLSL_TO_SIZE[type];
     };
 
@@ -3412,15 +3412,15 @@ object-assign
 },{}],24:[function(require,module,exports){
 
 
-    var mapType = function(gl, type) 
+    var mapType = function(gl, type)
     {
-        if(!GL_TABLE) 
+        if(!GL_TABLE)
         {
             var typeNames = Object.keys(GL_TO_GLSL_TYPES);
 
             GL_TABLE = {};
 
-            for(var i = 0; i < typeNames.length; ++i) 
+            for(var i = 0; i < typeNames.length; ++i)
             {
                 var tn = typeNames[i];
                 GL_TABLE[ gl[tn] ] = GL_TO_GLSL_TYPES[tn];
@@ -3442,17 +3442,17 @@ object-assign
         "INT_VEC2":    "ivec2",
         "INT_VEC3":    "ivec3",
         "INT_VEC4":    "ivec4",
-  
+
         "BOOL":        "bool",
         "BOOL_VEC2":   "bvec2",
         "BOOL_VEC3":   "bvec3",
         "BOOL_VEC4":   "bvec4",
-  
+
         "FLOAT_MAT2":  "mat2",
         "FLOAT_MAT3":  "mat3",
         "FLOAT_MAT4":  "mat4",
-  
-        "SAMPLER_2D":  "sampler2D"  
+
+        "SAMPLER_2D":  "sampler2D"
     };
 
     module.exports = mapType;
@@ -9033,7 +9033,7 @@ object-assign
 
     var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    var _utils = require("../utils");
+    var _utils = require("../utils/Utils");
 
     var _DisplayObject2 = require("./DisplayObject");
 
@@ -10843,7 +10843,7 @@ object-assign
 
     var _math = require("../math");
 
-    var _utils = require("../utils");
+    var _utils = require("../utils/Utils");
 
     var _const = require("../const");
 
@@ -15994,7 +15994,7 @@ object-assign
 
     var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    var _utils = require("../utils");
+    var _utils = require("../utils/Utils");
 
     var _math = require("../math");
 
@@ -21107,7 +21107,7 @@ object-assign
 
     var _math = require("../math");
 
-    var _utils = require("../utils");
+    var _utils = require("../utils/Utils");
 
     var _const = require("../const");
 
@@ -22829,7 +22829,7 @@ object-assign
 
     var _math = require("../math");
 
-    var _utils = require("../utils");
+    var _utils = require("../utils/Utils");
 
     var _const = require("../const");
 
@@ -24180,7 +24180,7 @@ object-assign
 
 var _const = require('../const');
 
-var _utils = require('../utils');
+var _utils = require('../utils/Utils');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25171,7 +25171,7 @@ exports.default = BaseRenderTexture;
 
 exports.__esModule = true;
 
-var _utils = require('../utils');
+var _utils = require('../utils/Utils');
 
 var _settings = require('../settings');
 
@@ -26173,7 +26173,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _ = require('../');
 
-var _utils = require('../utils');
+var _utils = require('../utils/Utils');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26518,7 +26518,7 @@ var _eventemitter2 = _interopRequireDefault(_eventemitter);
 
 var _math = require('../math');
 
-var _utils = require('../utils');
+var _utils = require('../utils/Utils');
 
 var _settings = require('../settings');
 
@@ -27472,7 +27472,7 @@ var _BaseTexture2 = require('./BaseTexture');
 
 var _BaseTexture3 = _interopRequireDefault(_BaseTexture2);
 
-var _utils = require('../utils');
+var _utils = require('../utils/Utils');
 
 var _ticker = require('../ticker');
 

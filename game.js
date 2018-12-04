@@ -1,5 +1,5 @@
 import "./js/libs/weapp-adapter.js";
-import MyApplication from "./js/my-application.js";
+import MyApplication from "./js/MyApplication.js";
 import config from "./config.js";
 
 document.body.style.margin = "0";
