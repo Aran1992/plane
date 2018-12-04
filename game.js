@@ -1,6 +1,6 @@
-import "./js/libs/weapp-adapter.js"
-import MyApplication from "./js/my-application.js"
-import config from "./config.js"
+import "./js/libs/weapp-adapter.js";
+import MyApplication from "./js/my-application.js";
+import config from "./config.js";
 
 document.body.style.margin = "0";
 
@@ -10,7 +10,7 @@ let dwhRatio = config.designWidth / config.designHeight;
 if (wwhRatio < dwhRatio) {
     resolution = window.innerWidth / config.designWidth;
 } else {
-    resolution = window.innerHeight / config.designHeight
+    resolution = window.innerHeight / config.designHeight;
 }
 
 let app = new MyApplication({

@@ -1,7 +1,7 @@
-import Scene from "../base/scene.js"
-import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js"
-import config from "../../config.js"
-import {Box, Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js"
+import Scene from "../base/scene.js";
+import {Container, Graphics, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js";
+import config from "../../config.js";
+import {Box, Circle, Edge, Vec2, World} from "../libs/planck-wrapper.js";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -66,7 +66,7 @@ export default class GameScene extends Scene {
     onLoaded() {
         this.world = new World({gravity: Vec2(0, config.gravity)});
         this.world.on("pre-solve", this.onPreSolve.bind(this));
-        this.world.on('begin-contact', this.onBeginContact.bind(this));
+        this.world.on("begin-contact", this.onBeginContact.bind(this));
         this.createBg();
         this.createWall();
         this.createWorms();
@@ -91,15 +91,15 @@ export default class GameScene extends Scene {
             let userData = wormBody.getUserData();
             if (userData) {
                 switch (userData.type) {
-                    case "worm": {
-                        meteorBody.getUserData().destroied = true;
-                        wormBody.getUserData().destroied = true;
-                        break;
-                    }
-                    case "meteor": {
-                        contact.setEnabled(false);
-                        break;
-                    }
+                case "worm": {
+                    meteorBody.getUserData().destroied = true;
+                    wormBody.getUserData().destroied = true;
+                    break;
+                }
+                case "meteor": {
+                    contact.setEnabled(false);
+                    break;
+                }
                 }
             }
         }
@@ -116,13 +116,13 @@ export default class GameScene extends Scene {
             let userData = fixtureList[0].getBody().getUserData();
             if (userData) {
                 switch (userData.type) {
-                    case "meteor":
-                    case "worm": {
-                        if (!this.gameEnded) {
-                            this.contactFatalItem = true;
-                        }
-                        break;
+                case "meteor":
+                case "worm": {
+                    if (!this.gameEnded) {
+                        this.contactFatalItem = true;
                     }
+                    break;
+                }
                 }
             }
         }

@@ -1,19 +1,19 @@
 module.exports = {
-    entry: './js/main.js',
+    entry: "./js/main.js",
     module: {
         rules: [{
             test: /\.js$/,
             exclude: /node_modules/,
-            use: ['babel-loader']
+            use: ["babel-loader"]
         }]
     },
     resolve: {
-        extensions: ['*', '.js']
+        extensions: ["*", ".js"]
     },
     output: {
-        path: __dirname + '/dist',
-        publicPath: '/',
-        filename: 'bundle.js'
+        path: __dirname + "/dist",
+        publicPath: "/",
+        filename: "bundle.js"
     },
-    mode: 'development'
+    mode: "development"
 };
