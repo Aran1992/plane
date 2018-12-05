@@ -1,12 +1,16 @@
-import {Application, loader, resources} from "./libs/pixi-wrapper.js"
-import GameScene from "./scenes/game-scene.js"
-import GameOverScene from "./scenes/game-over-scene.js"
+import {Application, loader, resources} from "./libs/pixi-wrapper.js";
+import GameScene from "./scenes/GameScene.js";
+import GameOverScene from "./scenes/GameOverScene.js";
 
 export default class MyApplication extends Application {
     constructor(args) {
+        if (window.App) {
+            return window.App;
+        }
+
         super(args);
 
-        window.app = this;
+        window.App = this;
 
         this.scenesContainer = this.stage;
         this.sceneWidth = args.width;
@@ -19,6 +23,10 @@ export default class MyApplication extends Application {
         this.sceneTable = {};
 
         this.eventTable = {};
+    }
+
+    getScene(sceneName) {
+        return this.sceneTable[sceneName];
     }
 
     showScene(sceneName, ...args) {

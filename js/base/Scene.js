@@ -1,4 +1,4 @@
-import {Container} from "../libs/pixi-wrapper.js"
+import {Container} from "../libs/pixi-wrapper.js";
 
 export default class Scene extends Container {
     constructor() {

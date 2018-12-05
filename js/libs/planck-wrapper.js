@@ -1,4 +1,4 @@
-import * as planck from "planck-js"
+import * as planck from "planck-js";
 
 export const World = planck.World;
 export const Vec2 = planck.Vec2;

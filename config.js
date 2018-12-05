@@ -6,10 +6,8 @@
     backgroundColor: 0x888888,
     fps: 60,
     gravity: 0,
-    bgImagePath: "images/bg.png",
     pixel2meter: 0.0625,
     meter2pixel: 16,
-    planeImagePath: "images/rocket.png",
     planeRadius: 2.65625,
     // 飞机的速度
     planeVelocity: 30,
@@ -19,7 +17,6 @@
     planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
-    meteorImagePath: "images/meteorite.png",
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
     meteorMinVelocity: 6,
@@ -28,11 +25,11 @@
     // 初始化时生成陨石的最小数量
     meteorMinCount: 1,
     // 初始化时生成陨石的最大数量
-    meteorMaxCount: 1,
+    meteorMaxCount: 10,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
     meteorRestitution: 1,
     // 陨石的旋转速度
-    meteorAngularVelocity: Math.PI / 180 *65,
+    meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshMeteorProbability: 0.05,
     // 每帧刷新陨石的最小数量
@@ -41,7 +38,6 @@
     refreshMeteorMaxCount: 2,
     // 陨石同时能存在的最大数量
     meteorExistMaxCount: 60,
-    wormImagePath: "images/worm.png",
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 6,
     // 虫子的速度
@@ -56,6 +52,8 @@
     wormExistMaxCount: 5,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshWormProbability: 0.15,
+    // 世界边缘
+    worldViewRectMargin: 200,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -64,6 +62,10 @@
         terrain2: "images/terrain-2.png",
         terrain3: "images/terrain-3.png",
         star: "images/star.png",
+        bg: "images/bg.png",
+        plane: "images/rocket.png",
+        meteor: "images/meteorite.png",
+        worm: "images/worm.png",
     },
     bgJson: [
         {
