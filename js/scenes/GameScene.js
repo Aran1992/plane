@@ -35,7 +35,9 @@ export default class GameScene extends Scene {
             this.addChild(this.gameContainer);
         }
 
-        this.createFPSText();
+        if (RunOption.showDebugInfo) {
+            this.createDebugText();
+        }
 
         this.createSurvivalTimeText();
 
@@ -68,12 +70,16 @@ export default class GameScene extends Scene {
     }
 
     onTick(delta) {
-        this.fpsText.text = `FPS:${Math.floor(delta * Config.fps)}`;
-
         this.survivalTime++;
         this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
 
         this.world.step(1 / Config.fps);
+
+        if (RunOption.showDebugInfo) {
+            this.debugText.text = `FPS:${Math.floor(delta * Config.fps)}
+虫子数量：${this.wormMgr.getWormCount()}
+陨石数量：${this.meteorMgr.getMeteorCount()}`;
+        }
 
         let x = Config.designWidth / 2 - this.plane.sprite.x,
             y = Config.designHeight / 2 - this.plane.sprite.y;
@@ -143,17 +149,6 @@ export default class GameScene extends Scene {
         }
     }
 
-    createFPSText() {
-        let textStyle = new TextStyle({
-            fontSize: 50,
-            fill: "white"
-        });
-        this.fpsText = new Text("FPS:0", textStyle);
-        this.addChild(this.fpsText);
-        this.fpsText.anchor.set(1, 0);
-        this.fpsText.position.set(App.sceneWidth, 0);
-    }
-
     createSurvivalTimeText() {
         let textStyle = new TextStyle({
             fontSize: 50,
@@ -162,5 +157,15 @@ export default class GameScene extends Scene {
         this.survivalTimeText = new Text("Survival Time:0", textStyle);
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
+    }
+
+    createDebugText() {
+        let textStyle = new TextStyle({
+            fontSize: 40,
+            fill: "white"
+        });
+        this.debugText = new Text("", textStyle);
+        this.addChild(this.debugText);
+        this.debugText.position.set(0, 50);
     }
 }

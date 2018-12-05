@@ -39,4 +39,8 @@ export default class MeteorMgr {
             }
         });
     }
+
+    getMeteorCount() {
+        return this.meteorList.length;
+    }
 }

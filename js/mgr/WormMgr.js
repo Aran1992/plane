@@ -24,4 +24,8 @@ export default class WormMgr {
             }
         }
     }
+
+    getWormCount() {
+        return this.wormList.length;
+    }
 }
