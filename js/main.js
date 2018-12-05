@@ -1,5 +1,5 @@
 import MyApplication from "./MyApplication.js";
-import Config from "../Config.js";
+import Config from "../config.js";
 
 document.body.style.margin = "0";
 

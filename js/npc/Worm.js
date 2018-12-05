@@ -1,4 +1,4 @@
-import Config from "../../Config";
+import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
@@ -21,7 +21,7 @@ export default class Worm {
             height = texture.height * Config.pixel2meter / 2;
         body.createFixture(Box(width, height), {friction: 0, density: 1});
 
-        let {x, y, radian} = GameUtils.getNpcRandomInitArgs(texture.width);
+        let {x, y, radian} = GameUtils.getNpcRandomInitArgs();
         sprite.position.set(x, y);
         sprite.rotation = radian;
         body.setPosition(Vec2(x * Config.pixel2meter, y * Config.pixel2meter));

@@ -1,6 +1,6 @@
 import Scene from "../base/Scene.js";
 import {Graphics, Text, TextStyle} from "../libs/pixi-wrapper.js";
-import Config from "../../Config.js";
+import Config from "../../config.js";
 
 export default class GameOverScene extends Scene {
     onCreate() {

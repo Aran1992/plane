@@ -15,4 +15,15 @@ export default class Utils {
         }
         return arr;
     }
+
+    static radian2angle(radian) {
+        return radian / Math.PI * 180;
+    }
+
+    static isPointInRect(point, rect) {
+        return point.x >= rect.x
+            && point.x <= rect.x + rect.width
+            && point.y >= rect.y
+            && point.y <= rect.y + rect.height;
+    }
 }

@@ -1,4 +1,4 @@
-import Config from "../../Config";
+import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";

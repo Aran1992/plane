@@ -25,7 +25,7 @@
     // 初始化时生成陨石的最小数量
     meteorMinCount: 1,
     // 初始化时生成陨石的最大数量
-    meteorMaxCount: 1,
+    meteorMaxCount: 10,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
     meteorRestitution: 1,
     // 陨石的旋转速度
@@ -52,6 +52,8 @@
     wormExistMaxCount: 5,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshWormProbability: 0.15,
+    // 世界边缘
+    worldViewRectMargin: 200,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",

@@ -1,4 +1,4 @@
-import Config from "../../Config";
+import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
@@ -6,7 +6,7 @@ import Worm from "./Worm";
 import Player from "./Player";
 
 export default class Meteor {
-    constructor(world, container) {
+    constructor(world, container, init) {
         this.world = world;
 
         let sprite = new Sprite(resources[Config.imagePath.meteor].texture);
@@ -23,7 +23,9 @@ export default class Meteor {
         });
         body.setUserData(this);
 
-        let {x, y, radian, velocity} = GameUtils.getNpcRandomInitArgs(Config.meteorRadius * Config.meter2pixel);
+        let {x, y, radian} = GameUtils.getNpcRandomInitArgs(init);
+        let velocity = Config.meteorMinVelocity + Math.random() * (Config.meteorMaxVelocity - Config.meteorMinVelocity);
+
         sprite.position.set(x, y);
         sprite.rotation = radian;
         body.setPosition(Vec2(x * Config.pixel2meter, y * Config.pixel2meter));

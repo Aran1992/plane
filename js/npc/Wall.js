@@ -1,4 +1,4 @@
-import Config from "../../Config";
+import Config from "../../config";
 import {Edge, Vec2} from "../libs/planck-wrapper";
 
 export default class Wall {

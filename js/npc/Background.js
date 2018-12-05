@@ -1,12 +1,12 @@
 import {resources, Sprite} from "../libs/pixi-wrapper";
-import Config from "../../Config";
+import Config from "../../config";
 
 export default class Background {
     constructor(container) {
         let texture = resources[Config.imagePath.bg].texture;
-        let sprite = new Sprite(texture);
-        container.addChild(sprite);
-        sprite.scale.set(Config.gameSceneWidth / texture.width,
+        let bgSprite = new Sprite(texture);
+        container.addChild(bgSprite);
+        bgSprite.scale.set(Config.gameSceneWidth / texture.width,
             Config.gameSceneHeight / texture.height);
         Config.bgJson.forEach(item => this.createImage(container, item.texture, item.x, item.y));
     }

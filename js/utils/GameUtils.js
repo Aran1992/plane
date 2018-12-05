@@ -21,23 +21,50 @@ export default class GameUtils {
         obj.destroyed = true;
     }
 
-    static getNpcRandomInitArgs(radius) {
-        let w = Config.gameSceneWidth, h = Config.gameSceneHeight;
+    static getNpcRandomInitArgs(init) {
+        let w = Config.gameSceneWidth,
+            h = Config.gameSceneHeight;
         let length = (w + h) * 2;
         let pos = Math.random() * length;
-        let radian = Math.random() * Math.PI;
-        let args;
         if (pos < w) {
-            args = {x: pos, y: -radius, radian: radian};
+            let offset = init ? Config.worldViewRectMargin : Config.designHeight / 2;
+            return {
+                x: pos,
+                y: -offset,
+                radian: GameUtils.randomInRange(GameUtils.calcRandomAngleRange(w, pos, offset))
+            };
         } else if (pos < w + h) {
-            args = {x: w + radius, y: pos - w, radian: Math.PI / 2 + radian};
+            let offset = init ? Config.worldViewRectMargin : Config.designWidth / 2;
+            return {
+                x: w + offset,
+                y: pos - w,
+                radian: Math.PI / 2 + GameUtils.randomInRange(GameUtils.calcRandomAngleRange(h, pos - w, offset))
+            };
         } else if (pos < w * 2 + h) {
-            args = {x: pos - w - h, y: h + radius, radian: Math.PI + radian};
+            let offset = init ? Config.worldViewRectMargin : Config.designHeight / 2;
+            return {
+                x: pos - w - h,
+                y: h + offset,
+                radian: Math.PI + GameUtils.randomInRange(GameUtils.calcRandomAngleRange(w, pos - w - h, offset))
+            };
         } else {
-            args = {x: -radius, y: pos - w * w - h, radian: Math.PI / 2 * 3 + radian};
+            let offset = init ? Config.worldViewRectMargin : Config.designWidth / 2;
+            return {
+                x: -offset,
+                y: pos - w - w - h,
+                radian: Math.PI / 2 * 3 + GameUtils.randomInRange(GameUtils.calcRandomAngleRange(h, pos - w - w - h, offset))
+            };
         }
-        args.velocity = Config.meteorMinVelocity + Math.random() * (Config.meteorMaxVelocity - Config.meteorMinVelocity);
-        return args;
+    }
+
+    static calcRandomAngleRange(length, pos, offset) {
+        let min = Math.atan(offset / (length - pos));
+        let max = Math.PI - Math.atan(offset / pos);
+        return [min, max];
+    }
+
+    static randomInRange([min, max]) {
+        return min + Math.random() * (max - min);
     }
 
     static calcStepAngle(curAngle, targetAngle, angularVelocity) {
