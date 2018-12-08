@@ -165,4 +165,11 @@ export default class GameUtils {
             item = list[index];
         }
     }
+
+    static physicalPos2renderPos(pp) {
+        return {
+            x: pp.x * Config.meter2pixel,
+            y: pp.y * Config.meter2pixel
+        };
+    }
 }

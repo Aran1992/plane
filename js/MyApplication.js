@@ -1,6 +1,7 @@
 import {Application, loader, resources} from "./libs/pixi-wrapper.js";
 import GameScene from "./scenes/GameScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
+import Utils from "./utils/Utils";
 
 export default class MyApplication extends Application {
     constructor(args) {

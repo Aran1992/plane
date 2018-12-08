@@ -50,7 +50,8 @@ export default class Worm {
     }
 
     onExplode() {
-        // todo 创建一个爱心
+        let pos = this.body.getPosition();
+        App.dispatchEvent("WormExploded", Vec2(pos.x, pos.y));
         this.destroy();
     }
 

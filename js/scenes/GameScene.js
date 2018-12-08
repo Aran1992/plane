@@ -11,6 +11,7 @@ import Wall from "../npc/Wall";
 import Player from "../npc/Player";
 import MeteorMgr from "../mgr/MeteorMgr";
 import WormMgr from "../mgr/WormMgr";
+import HeartMgr from "../mgr/HeartMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -53,6 +54,9 @@ export default class GameScene extends Scene {
     }
 
     onRestart() {
+        this.heartMgr.destroy();
+        this.heartMgr = undefined;
+        App.ticker.remove(this.onTickHandler);
         this.onShow();
     }
 
@@ -63,10 +67,9 @@ export default class GameScene extends Scene {
         this.plane = new Player(this.world, this.gameContainer);
         this.meteorMgr = new MeteorMgr(this.world, this.gameContainer);
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
-        if (this.onTickHandler === undefined) {
-            this.onTickHandler = this.onTick.bind(this);
-            App.ticker.add(this.onTickHandler);
-        }
+        this.heartMgr = new HeartMgr(this.world, this.gameContainer);
+        this.onTickHandler = this.onTick.bind(this);
+        App.ticker.add(this.onTickHandler);
     }
 
     onTick(delta) {
@@ -78,7 +81,8 @@ export default class GameScene extends Scene {
         if (RunOption.showDebugInfo) {
             this.debugText.text = `FPS:${Math.floor(delta * Config.fps)}
 虫子数量：${this.wormMgr.getWormCount()}
-陨石数量：${this.meteorMgr.getMeteorCount()}`;
+陨石数量：${this.meteorMgr.getMeteorCount()}
+红心数量：${this.heartMgr.getHeartCount()}`;
         }
 
         let x = Config.designWidth / 2 - this.plane.sprite.x,

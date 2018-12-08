@@ -4,9 +4,17 @@ import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
 import Meteor from "./Meteor";
 import Worm from "./Worm";
+import Component from "../base/Component";
+import EventMgr from "../base/EventMgr";
+import Wall from "./Wall";
 
-export default class Player {
+export default class Player extends Component {
     constructor(world, container) {
+        super();
+
+        this.eventMgr = this.createComponent(EventMgr);
+        this.eventMgr.registerEvent("AteHeart", this.onAteHeart.bind(this));
+
         this.world = world;
 
         let sprite = new Sprite(resources[Config.imagePath.plane].texture);
@@ -17,28 +25,47 @@ export default class Player {
 
         let body = this.world.createDynamicBody();
         this.body = body;
-        body.createFixture(Circle(Config.planeRadius), {friction: 0, density: 1});
+        this.fixture = body.createFixture(Circle(Config.planeRadius), {friction: 0, density: 1});
         body.setPosition(Vec2(Config.gameSceneWidth * Config.pixel2meter / 2,
             Config.gameSceneHeight * Config.pixel2meter / 2));
         body.setUserData(this);
 
         this.pastPos = [body.getPosition()];
 
+        this.ateHeartCount = 0;
+
+        this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
     }
 
-    onBeginContact(contact, anotherFixture,) {
+    onPreSolve(contact, anotherFixture) {
+        if (this._invincible
+            && !(anotherFixture.getBody().getUserData() instanceof Wall)) {
+            contact.setEnabled(false);
+        }
+    }
+
+    onBeginContact(contact, anotherFixture) {
         let item = anotherFixture.getBody().getUserData();
         if (item instanceof Meteor || item instanceof Worm) {
-            this.exploded = true;
+            this._contacted = true;
         }
     }
 
     onStep() {
-        if (this.exploded) {
+        if (this._contacted && !this._isBig && !this._invincible) {
             this.explode();
         } else {
+            if (this._contacted && this._isBig) {
+                this._isBig = false;
+                this._invincible = true;
+                this._invincibleCount = 0;
+                this.sprite.texture = resources[Config.imagePath.plane].texture;
+                this.body.destroyFixture(this.fixture);
+                this.fixture = this.body.createFixture(Circle(Config.planeRadius), {friction: 0, density: 1});
+            }
+
             GameUtils.syncSpriteWithBody(this);
 
             let pos = this.body.getPosition();
@@ -48,23 +75,54 @@ export default class Player {
             }
 
             this.movePlayer();
+
+            if (this._invincible) {
+                if (this._invincibleCount >= Config.planeInvincibleFrame) {
+                    this._invincible = false;
+                    this.sprite.alpha = 1;
+                } else {
+                    if (this._invincibleCount % Config.planeInvincibleTwinkleInterval === 0) {
+                        if (this.sprite.alpha === 1) {
+                            this.sprite.alpha = Config.planeInvincibleAlpha;
+                        } else {
+                            this.sprite.alpha = 1;
+                        }
+                    }
+                    this._invincibleCount++;
+                }
+            }
         }
+        this._contacted = false;
     }
 
     onExplode() {
         this.destroy();
     }
 
-    onDestroy() {
+    destroy() {
         GameUtils.destroyPhysicalSprite(this);
+        super.destroy();
+    }
+
+    onAteHeart() {
+        if (this._isBig) {
+            return;
+        }
+        this.ateHeartCount++;
+        if (this.ateHeartCount >= 1) {
+            this.ateHeartCount = 0;
+            this._isBig = true;
+            this.sprite.texture = resources[Config.imagePath.bigPlane].texture;
+            this.body.destroyFixture(this.fixture);
+            this.fixture = this.body.createFixture(Circle(Config.planeRadius * Config.bigPlaneMultiples), {
+                friction: 0,
+                density: 0.5 / Config.bigPlaneMultiples
+            });
+        }
     }
 
     explode() {
         this.onExplode();
-    }
-
-    destroy() {
-        this.onDestroy();
     }
 
     setTargetAngle(angle) {

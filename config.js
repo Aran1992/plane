@@ -9,6 +9,8 @@
     pixel2meter: 0.0625,
     meter2pixel: 16,
     planeRadius: 2.65625,
+    // 大飞机是普通飞机的几倍大
+    bigPlaneMultiples: 2,
     // 飞机的速度
     planeVelocity: 30,
     // 飞机的推进力
@@ -54,6 +56,12 @@
     refreshWormProbability: 0.15,
     // 世界边缘
     worldViewRectMargin: 200,
+    // 飞机无敌闪烁间隔帧数
+    planeInvincibleTwinkleInterval: 8,
+    // 飞机无敌闪烁透明度（0-1）
+    planeInvincibleAlpha: 0.5,
+    // 飞机无敌帧数
+    planeInvincibleFrame: 60,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -64,8 +72,10 @@
         star: "images/star.png",
         bg: "images/bg.png",
         plane: "images/rocket.png",
+        bigPlane: "images/big-rocket.png",
         meteor: "images/meteorite.png",
         worm: "images/worm.png",
+        heart: "images/red-heart.png",
     },
     bgJson: [
         {

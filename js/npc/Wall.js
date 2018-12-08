@@ -4,7 +4,6 @@ import {Edge, Vec2} from "../libs/planck-wrapper";
 export default class Wall {
     constructor(world) {
         let body = world.createBody();
-        body.setUserData({type: "wall"});
         let width = Config.gameSceneWidth * Config.pixel2meter,
             height = Config.gameSceneHeight * Config.pixel2meter;
         let opt = {density: 0, friction: 0};
@@ -12,6 +11,7 @@ export default class Wall {
         body.createFixture(Edge(Vec2(width, 0), Vec2(width, height)), opt).setUserData({type: "right"});
         body.createFixture(Edge(Vec2(width, height), Vec2(0, height)), opt).setUserData({type: "bottom"});
         body.createFixture(Edge(Vec2(0, height), Vec2(0, 0)), opt).setUserData({type: "left"});
+        body.setUserData(this);
         this.body = body;
         world.registerEvent("pre-solve", this);
     }

@@ -35,7 +35,7 @@ export default class MeteorMgr {
 
         this.meteorList.forEach(meteor => {
             if (!Utils.isPointInRect(meteor.sprite.position, this.worldViewRect)) {
-                meteor.exploded = true;
+                meteor._contacted = true;
             }
         });
     }
