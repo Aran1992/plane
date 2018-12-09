@@ -93,6 +93,8 @@
         distance: 200,
         // 距离飞船的距离
         angularVelocity: Math.PI / 180 * 10,
+        // 同时能存在的最大数量
+        maxCount: 5,
     },
     // 刷新道具的时间间隔
     refreshItemInterval: 5,

@@ -156,6 +156,8 @@ export default class Player extends Component {
     }
 
     _createElectricSaw() {
-        this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
+        if (this._electricSawList.length < Config.electricSaw.maxCount) {
+            this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
+        }
     }
 }
