@@ -2,8 +2,10 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
+import Wall from "./Wall";
 import Worm from "./Worm";
 import Player from "./Player";
+import ElectricSaw from "./ElectricSaw";
 
 export default class Meteor {
     constructor(world, container, init) {
@@ -48,7 +50,7 @@ export default class Meteor {
 
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Worm || item instanceof Player) {
+        if (item instanceof Worm || item instanceof Player || item instanceof ElectricSaw) {
             this.exploded = true;
         }
     }

@@ -167,11 +167,32 @@ export default class GameUtils {
         }
     }
 
+    static destroyWillDestroyedNpc(list) {
+        let index = 0;
+        let item = list[index];
+        while (item) {
+            if (item.willDestroyed) {
+                item.destroy();
+                list.splice(index, 1);
+            } else {
+                index++;
+            }
+            item = list[index];
+        }
+    }
+
     static physicalPos2renderPos(pp) {
         return {
             x: pp.x * Config.meter2pixel,
             y: pp.y * Config.meter2pixel
         };
+    }
+
+    static renderPos2PhysicsPos(rp) {
+        return Vec2(
+            rp.x * Config.pixel2meter,
+            rp.y * Config.pixel2meter
+        );
     }
 
     static scaleTexture(texture, scale) {

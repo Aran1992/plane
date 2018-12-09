@@ -16,6 +16,20 @@ export default class Utils {
         return arr;
     }
 
+    static recursiveValues(json) {
+        let arr = [];
+        for (let name in json) {
+            if (json.hasOwnProperty(name)) {
+                if (json[name].length !== undefined) {
+                    arr = arr.concat(json[name]);
+                } else {
+                    arr.push(json[name]);
+                }
+            }
+        }
+        return arr;
+    }
+
     static radian2angle(radian) {
         return radian / Math.PI * 180;
     }

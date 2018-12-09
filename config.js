@@ -74,9 +74,30 @@
         bg: "images/bg.png",
         originPlane: "images/origin-rocket.png",
         meteor: "images/meteorite.png",
-        worm: "images/worm.png",
+        worm: [
+            "images/worm-1.png",
+            "images/worm-2.png",
+            "images/worm-3.png",
+        ],
         heart: "images/red-heart.png",
+        item: "images/electric-saw.png",
+        electricSaw: "images/electric-saw.png",
     },
+    // 电锯相关配置
+    electricSaw: {
+        // 电锯密度（越大越重）
+        density: 1,
+        // 可以进行几次碰撞
+        collideTimes: 6,
+        // 距离飞船的距离
+        distance: 200,
+        // 距离飞船的距离
+        angularVelocity: Math.PI / 180 * 10,
+    },
+    // 刷新道具的时间间隔
+    refreshItemInterval: 5,
+    // 每动画帧占用多少游戏帧
+    frameInterval: 5,
     bgJson: [
         {
             "x": 977,

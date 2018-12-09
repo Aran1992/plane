@@ -65,6 +65,14 @@ export default class MyWorld {
     }
 
     destroyBody(body) {
-        this.world.destroyBody(body);
+        return this.world.destroyBody(body);
+    }
+
+    createJoint(...args) {
+        return this.world.createJoint(...args);
+    }
+
+    destroyJoint(...args) {
+        return this.world.destroyJoint(...args);
     }
 }

@@ -2,14 +2,17 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Player from "./Player";
+import ElectricSaw from "./ElectricSaw";
 import Meteor from "./Meteor";
+import Player from "./Player";
 
 export default class Worm {
     constructor(world, container) {
         this.world = world;
 
-        let texture = resources[Config.imagePath.worm].texture;
+        this.frames = Config.imagePath.worm.map(path => resources[path].texture);
+        this.frameIndex = 0;
+        let texture = this.frames[0];
         let sprite = new Sprite(texture);
         this.sprite = sprite;
         container.addChild(sprite);
@@ -34,7 +37,7 @@ export default class Worm {
 
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Meteor || item instanceof Player) {
+        if (item instanceof Meteor || item instanceof Player || item instanceof ElectricSaw) {
             this.exploded = true;
         }
     }
@@ -44,6 +47,13 @@ export default class Worm {
             this.explode();
         } else {
             GameUtils.syncSpriteWithBody(this);
+            this.frameIndex++;
+            let frame = Math.floor(this.frameIndex / Config.frameInterval);
+            if (this.frames[frame] === undefined) {
+                this.frameIndex = 0;
+                frame = 0;
+            }
+            this.sprite.texture = this.frames[frame];
 
             this.followPlayer();
         }

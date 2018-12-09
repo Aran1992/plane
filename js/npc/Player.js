@@ -7,6 +7,7 @@ import Worm from "./Worm";
 import Component from "../base/Component";
 import EventMgr from "../base/EventMgr";
 import Wall from "./Wall";
+import ElectricSaw from "./ElectricSaw";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -14,12 +15,14 @@ export default class Player extends Component {
 
         this.eventMgr = this.createComponent(EventMgr);
         this.eventMgr.registerEvent("AteHeart", this.onAteHeart.bind(this));
+        this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
 
         this.world = world;
+        this.container = container;
 
         let sprite = new Sprite();
         this.sprite = sprite;
-        container.addChild(sprite);
+        this.container.addChild(sprite);
         sprite.anchor.set(0.5, 0.5);
         sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
 
@@ -33,6 +36,9 @@ export default class Player extends Component {
         this.pastPos = [body.getPosition()];
 
         this._scale = 0;
+
+        this._electricSawList = [];
+        this._createElectricSaw();
 
         this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
@@ -87,6 +93,8 @@ export default class Player extends Component {
                     this._invincibleCount++;
                 }
             }
+
+            GameUtils.destroyWillDestroyedNpc(this._electricSawList);
         }
         this._contacted = false;
     }
@@ -96,6 +104,8 @@ export default class Player extends Component {
     }
 
     destroy() {
+        this._electricSawList.forEach(es => es.destroy());
+        this._electricSawList = undefined;
         GameUtils.destroyPhysicalSprite(this);
         super.destroy();
     }
@@ -106,6 +116,10 @@ export default class Player extends Component {
         }
         this._scale++;
         this._setScale(this._scale);
+    }
+
+    onAteItem() {
+        this._createElectricSaw();
     }
 
     explode() {
@@ -139,5 +153,9 @@ export default class Player extends Component {
         let radius = texture.width * Config.pixel2meter * Config.planeScaleList[scale] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
+    }
+
+    _createElectricSaw() {
+        this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
     }
 }
