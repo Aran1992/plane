@@ -8,6 +8,8 @@
     gravity: 0,
     pixel2meter: 0.0625,
     meter2pixel: 16,
+    // 飞机船体的像素长度
+    planePixelLength: 17,
     // 飞机的速度
     planeVelocity: 30,
     // 飞机的推进力
@@ -16,6 +18,7 @@
     planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
+    // 陨石物理半径
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
     meteorMinVelocity: 6,
@@ -72,7 +75,12 @@
         terrain3: "images/terrain-3.png",
         star: "images/star.png",
         bg: "images/bg.png",
-        originPlane: "images/origin-rocket.png",
+        originPlane: [
+            "images/rocket-1.png",
+            "images/rocket-2.png",
+            "images/rocket-3.png",
+            "images/rocket-4.png",
+        ],
         meteor: "images/meteorite.png",
         worm: [
             "images/worm-1.png",
