@@ -2,7 +2,6 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Player from "./Player";
 
 export default class Item {
     constructor(world, container, physicalPos) {
@@ -29,7 +28,7 @@ export default class Item {
     }
 
     onBeginContact(contact, anotherFixture) {
-        if (anotherFixture.getBody().getUserData() instanceof Player) {
+        if (anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
     }
@@ -45,3 +44,5 @@ export default class Item {
         GameUtils.destroyPhysicalSprite(this);
     }
 }
+
+window.Item = Item;

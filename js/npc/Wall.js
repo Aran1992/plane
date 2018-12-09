@@ -27,3 +27,5 @@ export default class Wall {
         }
     }
 }
+
+window.Wall = Wall;

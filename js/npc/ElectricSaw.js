@@ -2,8 +2,6 @@ import {resources, Sprite} from "../libs/pixi-wrapper";
 import Config from "../../config";
 import {Circle, RevoluteJoint} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Worm from "./Worm";
-import Meteor from "./Meteor";
 
 export default class ElectricSaw {
     constructor(world, container, player) {
@@ -33,7 +31,7 @@ export default class ElectricSaw {
 
     onBeginContact(contact, anotherFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if ((item instanceof Worm) || (item instanceof Meteor)) {
+        if ((item instanceof window.Worm) || (item instanceof window.Meteor)) {
             this.remainCollideTimes--;
             if (this.remainCollideTimes <= 0) {
                 this.willDestroyed = true;
@@ -51,3 +49,5 @@ export default class ElectricSaw {
         GameUtils.destroyPhysicalSprite(this);
     }
 }
+
+window.ElectricSaw = ElectricSaw;

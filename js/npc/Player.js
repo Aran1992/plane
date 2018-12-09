@@ -2,11 +2,8 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Meteor from "./Meteor";
-import Worm from "./Worm";
 import Component from "../base/Component";
 import EventMgr from "../base/EventMgr";
-import Wall from "./Wall";
 import ElectricSaw from "./ElectricSaw";
 
 export default class Player extends Component {
@@ -49,14 +46,14 @@ export default class Player extends Component {
 
     onPreSolve(contact, anotherFixture) {
         if (this._invincible
-            && !(anotherFixture.getBody().getUserData() instanceof Wall)) {
+            && !(anotherFixture.getBody().getUserData() instanceof window.Wall)) {
             contact.setEnabled(false);
         }
     }
 
     onBeginContact(contact, anotherFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Meteor || item instanceof Worm) {
+        if (item instanceof window.Meteor || item instanceof window.Worm) {
             this._contacted = true;
         }
     }
@@ -155,7 +152,6 @@ export default class Player extends Component {
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
         }
-        let texture = this.frames[Math.floor(this.frameIndex / Config.frameInterval)];
         let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scale] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
@@ -176,3 +172,5 @@ export default class Player extends Component {
         this.sprite.texture = this.frames[frame];
     }
 }
+
+window.Player = Player;

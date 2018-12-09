@@ -35,3 +35,4 @@ function copyDir(dirPath, targetPath) {
 copyDir("C:\\Projects\\plane\\images", "C:\\Projects\\plane\\wx\\");
 copyDir("C:\\Projects\\plane\\js", "C:\\Projects\\plane\\wx\\");
 copyFile("C:\\Projects\\plane\\config.js", "C:\\Projects\\plane\\wx\\");
+copyFile("C:\\Projects\\plane\\run-option.js", "C:\\Projects\\plane\\wx\\");

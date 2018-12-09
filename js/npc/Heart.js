@@ -2,7 +2,6 @@ import {resources, Sprite} from "../libs/pixi-wrapper";
 import Config from "../../config";
 import {Box} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Player from "./Player";
 
 export default class Heart {
     constructor(world, container, wormPos) {
@@ -27,7 +26,7 @@ export default class Heart {
     }
 
     onBeginContact(contact, anotherFixture) {
-        if (anotherFixture.getBody().getUserData() instanceof Player) {
+        if (anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
     }
@@ -43,3 +42,5 @@ export default class Heart {
         return this.destroyed;
     }
 }
+
+window.Heart = Heart;
