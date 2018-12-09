@@ -23,8 +23,11 @@ export default class Player extends Component {
         let sprite = new Sprite();
         this.sprite = sprite;
         this.container.addChild(sprite);
-        sprite.anchor.set(0.5, 0.5);
+        sprite.anchor.set(0.6, 0.5);
         sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
+
+        this.frames = resources.planeScaleTexture[0];
+        this.frameIndex = 0;
 
         let body = this.world.createDynamicBody();
         this.body = body;
@@ -38,7 +41,6 @@ export default class Player extends Component {
         this._scale = 0;
 
         this._electricSawList = [];
-        this._createElectricSaw();
 
         this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
@@ -95,6 +97,9 @@ export default class Player extends Component {
             }
 
             GameUtils.destroyWillDestroyedNpc(this._electricSawList);
+
+            this.frameIndex++;
+            this._updateFrame();
         }
         this._contacted = false;
     }
@@ -145,12 +150,13 @@ export default class Player extends Component {
     }
 
     _setScale(scale) {
-        this.sprite.texture = resources.planeScaleTexture[scale];
+        this.frames = resources.planeScaleTexture[scale];
+        this._updateFrame();
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
         }
-        let texture = resources[Config.imagePath.originPlane].texture;
-        let radius = texture.width * Config.pixel2meter * Config.planeScaleList[scale] / 2;
+        let texture = this.frames[Math.floor(this.frameIndex / Config.frameInterval)];
+        let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scale] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
     }
@@ -159,5 +165,14 @@ export default class Player extends Component {
         if (this._electricSawList.length < Config.electricSaw.maxCount) {
             this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
         }
+    }
+
+    _updateFrame() {
+        let frame = Math.floor(this.frameIndex / Config.frameInterval);
+        if (this.frames[frame] === undefined) {
+            this.frameIndex = 0;
+            frame = 0;
+        }
+        this.sprite.texture = this.frames[frame];
     }
 }
