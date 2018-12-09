@@ -13,14 +13,14 @@
     // 飞机的推进力
     planeEngineForce: 19,
     // 飞机旋转的速度
-    planeAngularVelocity: Math.PI / 180 * 4,
+    planeAngularVelocity: Math.PI / 180 * 5,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
-    meteorMinVelocity: 6,
+    meteorMinVelocity: 8,
     // 陨石生成时的最大速度
-    meteorMaxVelocity: 15,
+    meteorMaxVelocity: 23,
     // 初始化时生成陨石的最小数量
     meteorMinCount: 1,
     // 初始化时生成陨石的最大数量
@@ -38,11 +38,11 @@
     // 陨石同时能存在的最大数量
     meteorExistMaxCount: 60,
     // 虫子的旋转速度
-    wormAngularVelocity: Math.PI / 180 * 6,
+    wormAngularVelocity: Math.PI / 180 * 5,
     // 虫子的速度
-    wormVelocity: 17,
+    wormVelocity: 18,
     // 虫子的推进力
-    wormEngineForce: 9,
+    wormEngineForce: 10,
     // 初始化时生成虫子的最小数量
     wormMinCount: 1,
     // 初始化时生成虫子的最大数量
@@ -62,7 +62,7 @@
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 1,
+    wormDropHeartProbability: 0.5,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -86,20 +86,20 @@
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 1,
+        density: 0.01,
         // 可以进行几次碰撞
         collideTimes: 6,
         // 距离飞船的距离
-        distance: 200,
+        distance: 150,
         // 距离飞船的距离
         angularVelocity: Math.PI / 180 * 10,
         // 同时能存在的最大数量
         maxCount: 5,
     },
     // 刷新道具的时间间隔
-    refreshItemInterval: 5,
+    refreshItemInterval: 10,
     // 每动画帧占用多少游戏帧
-    frameInterval: 5,
+    frameInterval: 10,
     bgJson: [
         {
             "x": 977,
