@@ -9,3 +9,4 @@ export const TextStyle = PIXI.TextStyle;
 export const loader = PIXI.loader;
 export const Graphics = PIXI.Graphics;
 export const resources = loader.resources;
+export const Texture = PIXI.Texture;

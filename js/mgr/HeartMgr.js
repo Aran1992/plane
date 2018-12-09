@@ -7,7 +7,7 @@ export default class HeartMgr extends Component {
     constructor(world, container) {
         super();
         this.eventMgr = this.createComponent(EventMgr);
-        this.eventMgr.registerEvent("WormExploded", this.onWormExploded.bind(this));
+        this.eventMgr.registerEvent("WormDropHeart", this.onWormExploded.bind(this));
         this.world = world;
         this.container = container;
         this.heartList = [];

@@ -12,6 +12,7 @@ import Player from "../npc/Player";
 import MeteorMgr from "../mgr/MeteorMgr";
 import WormMgr from "../mgr/WormMgr";
 import HeartMgr from "../mgr/HeartMgr";
+import {resources} from "../libs/pixi-wrapper";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -61,6 +62,10 @@ export default class GameScene extends Scene {
     }
 
     onLoaded() {
+        if (resources.planeScaleTexture === undefined) {
+            let texture = resources[Config.imagePath.originPlane].texture;
+            resources.planeScaleTexture = Config.planeScaleList.map(scale => GameUtils.scaleTexture(texture, scale));
+        }
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.gameContainer);
         this.wall = new Wall(this.world);

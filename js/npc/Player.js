@@ -17,7 +17,7 @@ export default class Player extends Component {
 
         this.world = world;
 
-        let sprite = new Sprite(resources[Config.imagePath.plane].texture);
+        let sprite = new Sprite();
         this.sprite = sprite;
         container.addChild(sprite);
         sprite.anchor.set(0.5, 0.5);
@@ -25,14 +25,14 @@ export default class Player extends Component {
 
         let body = this.world.createDynamicBody();
         this.body = body;
-        this.fixture = body.createFixture(Circle(Config.planeRadius), {friction: 0, density: 1});
-        body.setPosition(Vec2(Config.gameSceneWidth * Config.pixel2meter / 2,
-            Config.gameSceneHeight * Config.pixel2meter / 2));
+        body.setPosition(Vec2(Config.gameSceneWidth * Config.pixel2meter / 2, Config.gameSceneHeight * Config.pixel2meter / 2));
         body.setUserData(this);
+
+        this._setScale(0);
 
         this.pastPos = [body.getPosition()];
 
-        this.ateHeartCount = 0;
+        this._scale = 0;
 
         this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
@@ -54,16 +54,12 @@ export default class Player extends Component {
     }
 
     onStep() {
-        if (this._contacted && !this._isBig && !this._invincible) {
+        if (this._contacted && this._scale === 0 && !this._invincible) {
             this.explode();
         } else {
-            if (this._contacted && this._isBig) {
-                this._isBig = false;
-                this._invincible = true;
-                this._invincibleCount = 0;
-                this.sprite.texture = resources[Config.imagePath.plane].texture;
-                this.body.destroyFixture(this.fixture);
-                this.fixture = this.body.createFixture(Circle(Config.planeRadius), {friction: 0, density: 1});
+            if (this._contacted && this._scale > 0) {
+                this._scale--;
+                this._setScale(this._scale);
             }
 
             GameUtils.syncSpriteWithBody(this);
@@ -105,20 +101,11 @@ export default class Player extends Component {
     }
 
     onAteHeart() {
-        if (this._isBig) {
+        if (Config.planeScaleList[this._scale + 1] === undefined) {
             return;
         }
-        this.ateHeartCount++;
-        if (this.ateHeartCount >= 1) {
-            this.ateHeartCount = 0;
-            this._isBig = true;
-            this.sprite.texture = resources[Config.imagePath.bigPlane].texture;
-            this.body.destroyFixture(this.fixture);
-            this.fixture = this.body.createFixture(Circle(Config.planeRadius * Config.bigPlaneMultiples), {
-                friction: 0,
-                density: 0.5 / Config.bigPlaneMultiples
-            });
-        }
+        this._scale++;
+        this._setScale(this._scale);
     }
 
     explode() {
@@ -141,5 +128,16 @@ export default class Player extends Component {
 
     isDestroyed() {
         return this.destroyed;
+    }
+
+    _setScale(scale) {
+        this.sprite.texture = resources.planeScaleTexture[scale];
+        if (this.fixture) {
+            this.body.destroyFixture(this.fixture);
+        }
+        let texture = resources[Config.imagePath.originPlane].texture;
+        let radius = texture.width * Config.pixel2meter * Config.planeScaleList[scale] / 2;
+        this.fixture = this.body.createFixture(Circle(radius),
+            {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
     }
 }

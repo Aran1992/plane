@@ -50,8 +50,10 @@ export default class Worm {
     }
 
     onExplode() {
-        let pos = this.body.getPosition();
-        App.dispatchEvent("WormExploded", Vec2(pos.x, pos.y));
+        if (Math.random() < Config.wormDropHeartProbability) {
+            let pos = this.body.getPosition();
+            App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
+        }
         this.destroy();
     }
 
