@@ -15,35 +15,35 @@
     // 飞机的推进力
     planeEngineForce: 19,
     // 飞机旋转的速度
-    planeAngularVelocity: Math.PI / 180 * 5,
+    planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
     // 陨石物理半径
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
-    meteorMinVelocity: 8,
+    meteorMinVelocity: 10,
     // 陨石生成时的最大速度
-    meteorMaxVelocity: 23,
+    meteorMaxVelocity: 16,
     // 初始化时生成陨石的最小数量
-    meteorMinCount: 1,
+    meteorMinCount: 10,
     // 初始化时生成陨石的最大数量
-    meteorMaxCount: 10,
+    meteorMaxCount: 20,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
-    meteorRestitution: 1,
+    meteorRestitution: 1.06,
     // 陨石的旋转速度
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshMeteorProbability: 0.05,
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount: 1,
+    refreshMeteorMinCount: 0.5,
     // 每帧刷新陨石的最大数量
-    refreshMeteorMaxCount: 2,
+    refreshMeteorMaxCount: 1,
     // 陨石同时能存在的最大数量
-    meteorExistMaxCount: 60,
+    meteorExistMaxCount: 80,
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 5,
     // 虫子的速度
-    wormVelocity: 18,
+    wormVelocity: 21,
     // 虫子的推进力
     wormEngineForce: 10,
     // 初始化时生成虫子的最小数量
@@ -65,7 +65,7 @@
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.5,
+    wormDropHeartProbability: 0.23,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -107,7 +107,7 @@
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
     // 每动画帧占用多少游戏帧
-    frameInterval: 10,
+    frameInterval: 6,
     bgJson: [
         {
             "x": 977,
