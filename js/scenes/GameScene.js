@@ -70,7 +70,6 @@ export default class GameScene extends Scene {
             resources.planeScaleTexture = Config.planeScaleList.map(scale => {
                 return Config.imagePath.originPlane.map(path => GameUtils.scaleTexture(resources[path].texture, scale));
             });
-            console.log(resources.planeScaleTexture);
         }
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.gameContainer);
@@ -85,8 +84,10 @@ export default class GameScene extends Scene {
     }
 
     onTick(delta) {
-        this.survivalTime++;
-        this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
+        if (!this.gameEnded) {
+            this.survivalTime++;
+            this.survivalTimeText.text = `生存时间：${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
+        }
 
         this.world.step(1 / Config.fps);
 
@@ -170,7 +171,7 @@ export default class GameScene extends Scene {
             fontSize: 50,
             fill: "white"
         });
-        this.survivalTimeText = new Text("Survival Time:0", textStyle);
+        this.survivalTimeText = new Text("生存时间:0", textStyle);
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
     }
