@@ -67,9 +67,9 @@ export default class GameScene extends Scene {
 
     onLoaded() {
         if (resources.planeScaleTexture === undefined) {
-            resources.planeScaleTexture = Config.planeScaleList.map(scale => {
-                return Config.imagePath.originPlane.map(path => GameUtils.scaleTexture(resources[path].texture, scale));
-            });
+            resources.planeScaleTexture = Config.planeScaleList.map(scale =>
+                Config.imagePath.originPlane.map(path =>
+                    GameUtils.scaleTexture(resources[path].texture, scale)));
         }
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.gameContainer);

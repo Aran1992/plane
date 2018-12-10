@@ -1,6 +1,6 @@
 import Config from "../../config";
 import {Vec2} from "../libs/planck-wrapper";
-import {Texture} from "../libs/pixi-wrapper";
+import {Rectangle, Texture} from "../libs/pixi-wrapper";
 
 const worldEventList = [
     "pre-solve",
@@ -198,21 +198,20 @@ export default class GameUtils {
     static scaleTexture(texture, scale) {
         let data = GameUtils.getTextureData(texture);
         let canvas = document.createElement("canvas");
-        canvas.width = `${texture.width * scale}`;
-        canvas.height = `${texture.height * scale}`;
         let ctx = canvas.getContext("2d");
         for (let i = 0; i < data.length; i += 4) {
-            ctx.fillStyle = `rgba(${data[i]},${data[i + 1]},${data[i + 2]},${data[i + 3]})`;
+            ctx.fillStyle = `rgba(${data[i]},${data[i + 1]},${data[i + 2]},${data[i + 3] / 255})`;
             let column = i / 4 % texture.width, row = Math.floor(i / 4 / texture.width);
             ctx.fillRect(column * scale, row * scale, scale, scale);
         }
-        return Texture.fromCanvas(canvas);
+        let newTexture = Texture.fromCanvas(canvas);
+        newTexture.frame = new Rectangle(0, 0, texture.width * scale, texture.height * scale);
+        newTexture._updateUvs();
+        return newTexture;
     }
 
     static getTextureData(texture) {
         let canvas = document.createElement("canvas");
-        canvas.width = `${texture.width}`;
-        canvas.height = `${texture.height}`;
         let ctx = canvas.getContext("2d");
         ctx.drawImage(texture.baseTexture.source, 0, 0, texture.width, texture.height);
         return ctx.getImageData(0, 0, texture.width, texture.height).data;
