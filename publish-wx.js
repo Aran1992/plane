@@ -32,6 +32,24 @@ function copyDir(dirPath, targetPath) {
     });
 }
 
+
+function deleteAll(path) {
+    let files = [];
+    if (fs.existsSync(path)) {
+        files = fs.readdirSync(path);
+        files.forEach(file => {
+            let curPath = path + "/" + file;
+            if (fs.statSync(curPath).isDirectory()) { // recurse
+                deleteAll(curPath);
+            } else { // delete file
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(path);
+    }
+}
+
+deleteAll("wx");
 copyDir("images", "wx\\");
 copyDir("js", "wx\\");
 copyFile("config.js", "wx\\");
