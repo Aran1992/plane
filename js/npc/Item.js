@@ -42,8 +42,7 @@ export default class Item {
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
-            //"ElectricSaw",
-            App.dispatchEvent("AteItem", Utils.randomChoose(["Bomb"]));
+            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Confused"]));
         }
     }
 

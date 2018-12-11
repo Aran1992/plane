@@ -114,6 +114,11 @@
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [47.5, 102.5, 202.5, 277.5, 277.5,],
+    // 混乱相关配置
+    confused: {
+        // 持续帧数
+        countdown: 300,
+    },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
     // 刷新道具中心最少距离墙壁多少像素

@@ -74,7 +74,6 @@ export default class Player extends Component {
                 }
             }
 
-
             GameUtils.syncSpriteWithBody(this);
 
             let pos = this.body.getPosition();
@@ -107,6 +106,13 @@ export default class Player extends Component {
             this._updateFrame();
         }
         this._contacted = false;
+        if (this._confused) {
+            this._confusedCountdown--;
+            if (this._confusedCountdown === 0) {
+                this._confused = false;
+                this.sprite.tint = 0xFFFFFF;
+            }
+        }
     }
 
     onExplode() {
@@ -140,6 +146,12 @@ export default class Player extends Component {
             }
             case "Bomb": {
                 this._takenBomb = true;
+                break;
+            }
+            case "Confused": {
+                this._confused = true;
+                this._confusedCountdown = Config.confused.countdown;
+                break;
             }
         }
     }
@@ -155,7 +167,12 @@ export default class Player extends Component {
     movePlayer() {
         let angle = this.body.getAngle();
         if (this.targetAngle) {
-            angle = GameUtils.calcStepAngle(angle, this.targetAngle, Config.planeAngularVelocity);
+            let targetAngle = this._confused ?
+                (this.targetAngle >= Math.PI ?
+                    this.targetAngle - Math.PI :
+                    this.targetAngle + Math.PI) :
+                this.targetAngle;
+            angle = GameUtils.calcStepAngle(angle, targetAngle, Config.planeAngularVelocity);
         }
         this.body.setAngle(angle);
 
@@ -184,12 +201,18 @@ export default class Player extends Component {
     }
 
     _updateFrame() {
+        let originFrame = Math.floor((this.frameIndex - 1) / Config.frameInterval);
         let frame = Math.floor(this.frameIndex / Config.frameInterval);
-        if (this.frames[frame] === undefined) {
-            this.frameIndex = 0;
-            frame = 0;
+        if (originFrame !== frame) {
+            if (this.frames[frame] === undefined) {
+                this.frameIndex = 0;
+                frame = 0;
+            }
+            this.sprite.texture = this.frames[frame];
+            if (this._confused) {
+                this.sprite.tint = Math.random() * 0xFFFFFF;
+            }
         }
-        this.sprite.texture = this.frames[frame];
     }
 }
 
