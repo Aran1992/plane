@@ -34,7 +34,10 @@ export default class Worm {
 
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof window.Meteor || item instanceof window.Player || item instanceof window.ElectricSaw) {
+        if (item instanceof window.Meteor
+            || item instanceof window.Player
+            || item instanceof window.BombExplode
+            || item instanceof window.ElectricSaw) {
             this.exploded = true;
         }
     }

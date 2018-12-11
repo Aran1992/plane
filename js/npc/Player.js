@@ -5,6 +5,7 @@ import GameUtils from "../utils/GameUtils";
 import Component from "../base/Component";
 import EventMgr from "../base/EventMgr";
 import ElectricSaw from "./ElectricSaw";
+import BombExplode from "./BombExplode";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -59,13 +60,20 @@ export default class Player extends Component {
     }
 
     onStep() {
-        if (this._contacted && this._scale === 0 && !this._invincible) {
+        if (this._contacted && this._scale === 0 && !this._invincible && !this._takenBomb) {
             this.explode();
         } else {
-            if (this._contacted && this._scale > 0) {
-                this._scale--;
-                this._setScale(this._scale);
+            if (this._contacted) {
+                if (this._scale > 0) {
+                    this._scale--;
+                    this._setScale(this._scale);
+                }
+                if (this._takenBomb) {
+                    this._takenBomb = false;
+                    this._bombExplode = new BombExplode(this.world, this.container, this.sprite.position);
+                }
             }
+
 
             GameUtils.syncSpriteWithBody(this);
 
@@ -108,6 +116,10 @@ export default class Player extends Component {
     destroy() {
         this._electricSawList.forEach(es => es.destroy());
         this._electricSawList = undefined;
+        if (this._bombExplode && !this._bombExplode.destroyed) {
+            this._bombExplode.destroy();
+        }
+        this._bombExplode = undefined;
         GameUtils.destroyPhysicalSprite(this);
         super.destroy();
     }
@@ -120,8 +132,16 @@ export default class Player extends Component {
         this._setScale(this._scale);
     }
 
-    onAteItem() {
-        this._createElectricSaw();
+    onAteItem(type) {
+        switch (type) {
+            case "ElectricSaw": {
+                this._createElectricSaw();
+                break;
+            }
+            case "Bomb": {
+                this._takenBomb = true;
+            }
+        }
     }
 
     explode() {

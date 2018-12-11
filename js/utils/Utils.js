@@ -40,4 +40,12 @@ export default class Utils {
             && point.y >= rect.y
             && point.y <= rect.y + rect.height;
     }
+
+    static randomInRange(min, max) {
+        return min + Math.random() * (max - min);
+    }
+
+    static randomChoose(list) {
+        return list[Math.floor(Math.random() * list.length)];
+    }
 }

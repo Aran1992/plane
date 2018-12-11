@@ -1,23 +1,34 @@
 import Config from "../../config";
 import Item from "../npc/Item";
-import GameUtils from "../utils/GameUtils";
+import EventMgr from "../base/EventMgr";
+import Component from "../base/Component";
 
-export default class ItemMgr {
+export default class ItemMgr extends Component {
     constructor(world, container) {
+        super();
+        this.eventMgr = this.createComponent(EventMgr);
+        this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
         this.world = world;
         this.container = container;
-        this.refreshItemTimer = setInterval(this.refreshItem.bind(this), Config.refreshItemInterval * 1000);
+        this.refreshItem();
     }
 
-    refreshItem() {
+    onAteItem() {
         if (this.item && !this.item.destroyed) {
             this.item.destroy();
         }
-        this.item = new Item(this.world, this.container,
-            GameUtils.renderPos2PhysicsPos({x: Config.gameSceneWidth / 2, y: Config.gameSceneHeight / 2}));
+        this.refreshItemTimer = setTimeout(this.refreshItem.bind(this), Config.refreshItemInterval * 1000);
+    }
+
+    refreshItem() {
+        this.item = new Item(this.world, this.container);
     }
 
     destroy() {
-        clearInterval(this.refreshItemTimer);
+        if (this.item && !this.item.destroyed) {
+            this.item.destroy();
+        }
+        clearTimeout(this.refreshItemTimer);
+        super.destroy();
     }
 }

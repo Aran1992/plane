@@ -90,6 +90,14 @@
         heart: "images/red-heart.png",
         item: "images/electric-saw.png",
         electricSaw: "images/electric-saw.png",
+        bomb: "images/bomb.png",
+        bombExplode: [
+            "images/bomb-explode-1.png",
+            "images/bomb-explode-2.png",
+            "images/bomb-explode-3.png",
+            "images/bomb-explode-4.png",
+            "images/bomb-explode-5.png",
+        ]
     },
     // 电锯相关配置
     electricSaw: {
@@ -104,8 +112,12 @@
         // 同时能存在的最大数量
         maxCount: 5,
     },
+    // 炸弹爆炸半径列表
+    bombExplodeRadiusList: [47.5, 102.5, 202.5, 277.5, 277.5,],
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
+    // 刷新道具中心最少距离墙壁多少像素
+    refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
     frameInterval: 6,
     bgJson: [
