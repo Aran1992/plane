@@ -26,7 +26,8 @@ export default class Heart {
     }
 
     onBeginContact(contact, anotherFixture) {
-        if (anotherFixture.getBody().getUserData() instanceof window.Player) {
+        if (!(anotherFixture.getUserData() instanceof window.Shield)
+            && anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
     }

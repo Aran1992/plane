@@ -6,6 +6,7 @@ import Component from "../base/Component";
 import EventMgr from "../base/EventMgr";
 import ElectricSaw from "./ElectricSaw";
 import BombExplode from "./BombExplode";
+import Shield from "./Shield";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -52,10 +53,14 @@ export default class Player extends Component {
         }
     }
 
-    onBeginContact(contact, anotherFixture) {
+    onBeginContact(contact, anotherFixture, selfFixture) {
         let item = anotherFixture.getBody().getUserData();
         if (item instanceof window.Meteor || item instanceof window.Worm) {
-            this._contacted = true;
+            if (selfFixture.getUserData() instanceof Shield) {
+                this._shield.onBeginContact(contact, anotherFixture, selfFixture);
+            } else {
+                this._contacted = true;
+            }
         }
     }
 
@@ -104,8 +109,14 @@ export default class Player extends Component {
 
             this.frameIndex++;
             this._updateFrame();
+
+            if (this._shield && !this._shield.destroyed) {
+                this._shield.onStep();
+            }
         }
+
         this._contacted = false;
+
         if (this._confused) {
             this._confusedCountdown--;
             if (this._confusedCountdown === 0) {
@@ -122,11 +133,19 @@ export default class Player extends Component {
     destroy() {
         this._electricSawList.forEach(es => es.destroy());
         this._electricSawList = undefined;
+
         if (this._bombExplode && !this._bombExplode.destroyed) {
             this._bombExplode.destroy();
         }
         this._bombExplode = undefined;
+
+        if (this._shield && !this._shield.destroyed) {
+            this._shield.destroy();
+        }
+        this._shield = undefined;
+
         GameUtils.destroyPhysicalSprite(this);
+
         super.destroy();
     }
 
@@ -151,6 +170,10 @@ export default class Player extends Component {
             case "Confused": {
                 this._confused = true;
                 this._confusedCountdown = Config.confused.countdown;
+                break;
+            }
+            case "Shield": {
+                this._createShield();
                 break;
             }
         }
@@ -197,6 +220,12 @@ export default class Player extends Component {
     _createElectricSaw() {
         if (this._electricSawList.length < Config.electricSaw.maxCount) {
             this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
+        }
+    }
+
+    _createShield() {
+        if (this._shield === undefined) {
+            this._shield = new Shield(this);
         }
     }
 

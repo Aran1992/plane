@@ -88,7 +88,7 @@
             "images/worm-3.png",
         ],
         heart: "images/red-heart.png",
-        item: "images/electric-saw.png",
+        item: "images/random-item.png",
         electricSaw: "images/electric-saw.png",
         bomb: "images/bomb.png",
         bombExplode: [
@@ -97,7 +97,8 @@
             "images/bomb-explode-3.png",
             "images/bomb-explode-4.png",
             "images/bomb-explode-5.png",
-        ]
+        ],
+        shield: "images/shield.png",
     },
     // 电锯相关配置
     electricSaw: {
@@ -113,11 +114,24 @@
         maxCount: 5,
     },
     // 炸弹爆炸半径列表
-    bombExplodeRadiusList: [47.5, 102.5, 202.5, 277.5, 277.5,],
+    bombExplodeRadiusList: [
+        47.5,
+        102.5,
+        202.5,
+        277.5,
+        277.5,
+    ],
     // 混乱相关配置
     confused: {
         // 持续帧数
         countdown: 300,
+    },
+    // 盾牌相关配置
+    shield: {
+        // 可以进行几次碰撞
+        collideTimes: 3,
+        // 距离飞船的距离
+        distance: 100,
     },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,

@@ -34,7 +34,8 @@ export default class Item {
     }
 
     onBeginContact(contact, anotherFixture) {
-        if (anotherFixture.getBody().getUserData() instanceof window.Player) {
+        if (!(anotherFixture.getUserData() instanceof window.Shield)
+            && anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
     }
@@ -42,7 +43,7 @@ export default class Item {
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
-            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Confused"]));
+            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Confused", "Shield",]));
         }
     }
 
