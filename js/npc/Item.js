@@ -5,14 +5,9 @@ import GameUtils from "../utils/GameUtils";
 import Utils from "../utils/Utils";
 
 export default class Item {
-    constructor(world, container) {
+    constructor(world, container, renderPos) {
         this.world = world;
         this.container = container;
-
-        let renderPos = {
-            x: Utils.randomInRange(Config.refreshItemOffset, Config.gameSceneWidth - Config.refreshItemOffset),
-            y: Utils.randomInRange(Config.refreshItemOffset, Config.gameSceneHeight - Config.refreshItemOffset)
-        };
 
         let texture = resources[Config.imagePath.item].texture;
         this.sprite = new Sprite(texture);
@@ -43,7 +38,7 @@ export default class Item {
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
-            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Confused", "Shield",]));
+            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Shield", "Confused",]));
         }
     }
 

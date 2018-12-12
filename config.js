@@ -60,8 +60,6 @@
     planeInvincibleTwinkleInterval: 8,
     // 飞机无敌闪烁透明度（0-1）
     planeInvincibleAlpha: 0.5,
-    // 飞机无敌帧数
-    planeInvincibleFrame: 60,
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
@@ -103,7 +101,7 @@
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 0.01,
+        density: 0.1,
         // 可以进行几次碰撞
         collideTimes: 6,
         // 距离飞船的距离
@@ -125,6 +123,10 @@
     confused: {
         // 持续帧数
         countdown: 300,
+        // 开始混乱无敌帧数
+        startInvincibleFrames: 60,
+        // 结束混乱无敌帧数
+        endInvincibleFrames: 60,
     },
     // 盾牌相关配置
     shield: {
@@ -137,6 +139,8 @@
     refreshItemInterval: 10,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
+    // 初始道具刷新位置
+    refreshItemInitPos: {x: 1920, y: 800},
     // 每动画帧占用多少游戏帧
     frameInterval: 6,
     bgJson: [

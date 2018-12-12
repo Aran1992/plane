@@ -90,7 +90,7 @@ export default class Player extends Component {
             this.movePlayer();
 
             if (this._invincible) {
-                if (this._invincibleCount >= Config.planeInvincibleFrame) {
+                if (this._invincibleCount <= 0) {
                     this._invincible = false;
                     this.sprite.alpha = 1;
                 } else {
@@ -101,7 +101,7 @@ export default class Player extends Component {
                             this.sprite.alpha = 1;
                         }
                     }
-                    this._invincibleCount++;
+                    this._invincibleCount--;
                 }
             }
 
@@ -122,6 +122,7 @@ export default class Player extends Component {
             if (this._confusedCountdown === 0) {
                 this._confused = false;
                 this.sprite.tint = 0xFFFFFF;
+                this._startInvincible(Config.confused.endInvincibleFrames);
             }
         }
     }
@@ -170,6 +171,7 @@ export default class Player extends Component {
             case "Confused": {
                 this._confused = true;
                 this._confusedCountdown = Config.confused.countdown;
+                this._startInvincible(Config.confused.startInvincibleFrames);
                 break;
             }
             case "Shield": {
@@ -242,6 +244,11 @@ export default class Player extends Component {
                 this.sprite.tint = Math.random() * 0xFFFFFF;
             }
         }
+    }
+
+    _startInvincible(invincibleFrame) {
+        this._invincible = true;
+        this._invincibleCount = invincibleFrame;
     }
 }
 
