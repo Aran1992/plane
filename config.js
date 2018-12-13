@@ -8,6 +8,15 @@
     gravity: 0,
     pixel2meter: 0.0625,
     meter2pixel: 16,
+    // 控制区域的大小
+    controlRect: {
+        // 宽度
+        width: 960,
+        // 高度
+        height: 540,
+    },
+    // 摇杆半径
+    rockerRadius: 90,
     // 飞机船体的像素长度
     planePixelLength: 17,
     // 飞机的速度
@@ -114,6 +123,8 @@
             "images/meteor-explode-3.png",
         ],
         shield: "images/shield.png",
+        rocker: "images/rocker.png",
+        rockerBottom: "images/rocker-bottom.png",
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
