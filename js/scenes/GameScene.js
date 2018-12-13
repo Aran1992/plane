@@ -189,4 +189,14 @@ export default class GameScene extends Scene {
         this.addChild(this.debugText);
         this.debugText.position.set(0, 50);
     }
+
+    isPointInView(pos) {
+        let rect = {
+            x: -this.gameContainer.x,
+            y: -this.gameContainer.y,
+            width: Config.designWidth,
+            height: Config.designHeight
+        };
+        return Utils.isPointInRect(pos, rect);
+    }
 }

@@ -2,6 +2,7 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Worm {
     constructor(world, container) {
@@ -64,8 +65,11 @@ export default class Worm {
             let pos = this.body.getPosition();
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
         }
-        let animationMgr = App.getScene("GameScene").animationMgr;
-        animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
+        let gameScene = App.getScene("GameScene");
+        gameScene.animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
+        if (gameScene.isPointInView(this.sprite.position)) {
+            MusicMgr.playSound(Config.soundPath.planeExplode);
+        }
         this.destroy();
     }
 

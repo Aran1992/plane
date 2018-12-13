@@ -2,6 +2,7 @@ import {resources, Sprite} from "../libs/pixi-wrapper";
 import Config from "../../config";
 import {Circle, RevoluteJoint} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class ElectricSaw {
     constructor(world, container, player) {
@@ -27,6 +28,8 @@ export default class ElectricSaw {
         this.world.registerEvent("step", this);
 
         this.remainCollideTimes = Config.electricSaw.collideTimes;
+
+        this.audio = MusicMgr.playSound(Config.soundPath.esRotate, true);
     }
 
     onBeginContact(contact, anotherFixture) {
@@ -46,6 +49,7 @@ export default class ElectricSaw {
     }
 
     destroy() {
+        this.audio.pause();
         GameUtils.destroyPhysicalSprite(this);
     }
 }

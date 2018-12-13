@@ -2,6 +2,7 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Meteor {
     constructor(world, container, init) {
@@ -71,6 +72,10 @@ export default class Meteor {
     }
 
     explode() {
+        let gameScene = App.getScene("GameScene");
+        if (gameScene.isPointInView(this.sprite.position)) {
+            MusicMgr.playSound(Config.soundPath.meteorExplode);
+        }
         this.onExplode();
     }
 

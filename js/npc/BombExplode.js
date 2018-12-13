@@ -2,6 +2,7 @@ import {Circle} from "../libs/planck-wrapper";
 import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import GameUtils from "../utils/GameUtils";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class BombExplode {
     constructor(world, container, pos) {
@@ -23,6 +24,8 @@ export default class BombExplode {
         this._updateFrame();
 
         this.world.registerEvent("step", this);
+
+        this.audio = MusicMgr.playSound(Config.soundPath.bombExplode);
     }
 
     onStep() {
@@ -49,6 +52,9 @@ export default class BombExplode {
                 this.fixture = this.body.createFixture(sd);
             }
         } else {
+            this.audio.pause();
+            this.audio = undefined;
+
             GameUtils.destroyPhysicalSprite(this);
         }
     }

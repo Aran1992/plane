@@ -110,6 +110,17 @@
         ],
         shield: "images/shield.png",
     },
+    soundPath: {
+        bombExplode: "sounds/bomb-explode.mp3",
+        planeExplode: "sounds/plane-explode.mp3",
+        wormExplode: "sounds/worm-explode.mp3",
+        meteorExplode: "sounds/meteor-explode.mp3",
+        pickItem: "sounds/pick-item.mp3",
+        confused: "sounds/confused.mp3",
+        shoot: "sounds/shoot.mp3",
+        trail: "sounds/trail.mp3",
+        esRotate: "sounds/electric-saw-rotate.mp3",
+    },
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）

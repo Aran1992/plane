@@ -51,6 +51,7 @@ function deleteAll(path) {
 
 deleteAll("wx");
 copyDir("images", "wx\\");
+copyDir("sounds", "wx\\");
 copyDir("js", "wx\\");
 copyFile("config.js", "wx\\");
 copyFile("run-option.js", "wx\\");

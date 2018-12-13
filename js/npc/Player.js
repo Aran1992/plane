@@ -7,6 +7,7 @@ import EventMgr from "../base/EventMgr";
 import ElectricSaw from "./ElectricSaw";
 import BombExplode from "./BombExplode";
 import Shield from "./Shield";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -122,6 +123,8 @@ export default class Player extends Component {
             if (this._confusedCountdown === 0) {
                 this._confused = false;
                 this.sprite.tint = 0xFFFFFF;
+                this._confusedAudio.pause();
+                this._confusedAudio = undefined;
                 this._startInvincible(Config.confused.endInvincibleFrames);
             }
         }
@@ -130,6 +133,7 @@ export default class Player extends Component {
     onExplode() {
         let animationMgr = App.getScene("GameScene").animationMgr;
         animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
+        MusicMgr.playSound(Config.soundPath.planeExplode);
         this.destroy();
     }
 
@@ -146,6 +150,11 @@ export default class Player extends Component {
             this._shield.destroy();
         }
         this._shield = undefined;
+
+        if (this._confusedAudio) {
+            this._confusedAudio.pause();
+            this._confusedAudio = undefined;
+        }
 
         GameUtils.destroyPhysicalSprite(this);
 
@@ -174,6 +183,7 @@ export default class Player extends Component {
                 this._confused = true;
                 this._confusedCountdown = Config.confused.countdown;
                 this._startInvincible(Config.confused.startInvincibleFrames);
+                this._confusedAudio = MusicMgr.playSound(Config.soundPath.confused, true);
                 break;
             }
             case "Shield": {
@@ -181,6 +191,7 @@ export default class Player extends Component {
                 break;
             }
         }
+        MusicMgr.playSound(Config.soundPath.pickItem);
     }
 
     explode() {
