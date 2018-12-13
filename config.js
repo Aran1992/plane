@@ -60,8 +60,6 @@
     planeInvincibleTwinkleInterval: 8,
     // 飞机无敌闪烁透明度（0-1）
     planeInvincibleAlpha: 0.5,
-    // 飞机无敌帧数
-    planeInvincibleFrame: 60,
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
@@ -88,13 +86,45 @@
             "images/worm-3.png",
         ],
         heart: "images/red-heart.png",
-        item: "images/electric-saw.png",
+        item: "images/random-item.png",
         electricSaw: "images/electric-saw.png",
+        bomb: "images/bomb.png",
+        bombExplode: [
+            "images/bomb-explode-1.png",
+            "images/bomb-explode-2.png",
+            "images/bomb-explode-3.png",
+            "images/bomb-explode-4.png",
+            "images/bomb-explode-5.png",
+        ],
+        planeExplode: [
+            "images/plane-explode-1.png",
+            "images/plane-explode-2.png",
+            "images/plane-explode-3.png",
+            "images/plane-explode-4.png",
+            "images/plane-explode-5.png",
+        ],
+        wormExplode: [
+            "images/worm-explode-1.png",
+            "images/worm-explode-2.png",
+            "images/worm-explode-3.png",
+        ],
+        shield: "images/shield.png",
+    },
+    soundPath: {
+        bombExplode: "sounds/bomb-explode.mp3",
+        planeExplode: "sounds/plane-explode.mp3",
+        wormExplode: "sounds/worm-explode.mp3",
+        meteorExplode: "sounds/meteor-explode.mp3",
+        pickItem: "sounds/pick-item.mp3",
+        confused: "sounds/confused.mp3",
+        shoot: "sounds/shoot.mp3",
+        trail: "sounds/trail.mp3",
+        esRotate: "sounds/electric-saw-rotate.mp3",
     },
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 0.01,
+        density: 0.1,
         // 可以进行几次碰撞
         collideTimes: 6,
         // 距离飞船的距离
@@ -104,8 +134,36 @@
         // 同时能存在的最大数量
         maxCount: 5,
     },
+    // 炸弹爆炸半径列表
+    bombExplodeRadiusList: [
+        47.5,
+        102.5,
+        202.5,
+        277.5,
+        277.5,
+    ],
+    // 混乱相关配置
+    confused: {
+        // 持续帧数
+        countdown: 300,
+        // 开始混乱无敌帧数
+        startInvincibleFrames: 60,
+        // 结束混乱无敌帧数
+        endInvincibleFrames: 60,
+    },
+    // 盾牌相关配置
+    shield: {
+        // 可以进行几次碰撞
+        collideTimes: 3,
+        // 距离飞船的距离
+        distance: 100,
+    },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
+    // 刷新道具中心最少距离墙壁多少像素
+    refreshItemOffset: 100,
+    // 初始道具刷新位置
+    refreshItemInitPos: {x: 1920, y: 800},
     // 每动画帧占用多少游戏帧
     frameInterval: 6,
     bgJson: [

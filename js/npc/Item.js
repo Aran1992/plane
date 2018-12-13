@@ -2,10 +2,10 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Player from "./Player";
+import Utils from "../utils/Utils";
 
 export default class Item {
-    constructor(world, container, physicalPos) {
+    constructor(world, container, renderPos) {
         this.world = world;
         this.container = container;
 
@@ -13,7 +13,6 @@ export default class Item {
         this.sprite = new Sprite(texture);
         this.container.addChild(this.sprite);
         this.sprite.anchor.set(0.5, 0.5);
-        let renderPos = GameUtils.physicalPos2renderPos(physicalPos);
         this.sprite.position.set(renderPos.x, renderPos.y);
 
         this.body = this.world.createBody(texture);
@@ -21,6 +20,7 @@ export default class Item {
         sd.shape = Box(texture.width * Config.pixel2meter / 2, texture.height * Config.pixel2meter / 2);
         sd.isSensor = true;
         this.body.createFixture(sd);
+        let physicalPos = GameUtils.renderPos2PhysicsPos(renderPos);
         this.body.setPosition(physicalPos);
         this.body.setUserData(this);
 
@@ -29,7 +29,8 @@ export default class Item {
     }
 
     onBeginContact(contact, anotherFixture) {
-        if (anotherFixture.getBody().getUserData() instanceof Player) {
+        if (!(anotherFixture.getUserData() instanceof window.Shield)
+            && anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
     }
@@ -37,7 +38,7 @@ export default class Item {
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
-            App.dispatchEvent("AteItem");
+            App.dispatchEvent("AteItem", Utils.randomChoose(["ElectricSaw", "Bomb", "Shield", "Confused",]));
         }
     }
 
@@ -45,3 +46,5 @@ export default class Item {
         GameUtils.destroyPhysicalSprite(this);
     }
 }
+
+window.Item = Item;

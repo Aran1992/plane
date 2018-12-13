@@ -14,6 +14,7 @@ import WormMgr from "../mgr/WormMgr";
 import HeartMgr from "../mgr/HeartMgr";
 import {resources} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
+import AnimationMgr from "../mgr/AnimationMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -61,16 +62,17 @@ export default class GameScene extends Scene {
         this.heartMgr = undefined;
         this.itemMgr.destroy();
         this.itemMgr = undefined;
+        this.animationMgr.destroy();
+        this.animationMgr = undefined;
         App.ticker.remove(this.onTickHandler);
         this.onShow();
     }
 
     onLoaded() {
         if (resources.planeScaleTexture === undefined) {
-            resources.planeScaleTexture = Config.planeScaleList.map(scale => {
-                return Config.imagePath.originPlane.map(path => GameUtils.scaleTexture(resources[path].texture, scale));
-            });
-            console.log(resources.planeScaleTexture);
+            resources.planeScaleTexture = Config.planeScaleList.map(scale =>
+                Config.imagePath.originPlane.map(path =>
+                    GameUtils.scaleTexture(resources[path].texture, scale)));
         }
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.gameContainer);
@@ -80,13 +82,16 @@ export default class GameScene extends Scene {
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);
         this.itemMgr = new ItemMgr(this.world, this.gameContainer);
+        this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
     }
 
     onTick(delta) {
-        this.survivalTime++;
-        this.survivalTimeText.text = `Survival Time:${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
+        if (!this.gameEnded) {
+            this.survivalTime++;
+            this.survivalTimeText.text = `生存时间：${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
+        }
 
         this.world.step(1 / Config.fps);
 
@@ -170,7 +175,7 @@ export default class GameScene extends Scene {
             fontSize: 50,
             fill: "white"
         });
-        this.survivalTimeText = new Text("Survival Time:0", textStyle);
+        this.survivalTimeText = new Text("生存时间:0", textStyle);
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
     }
@@ -183,5 +188,15 @@ export default class GameScene extends Scene {
         this.debugText = new Text("", textStyle);
         this.addChild(this.debugText);
         this.debugText.position.set(0, 50);
+    }
+
+    isPointInView(pos) {
+        let rect = {
+            x: -this.gameContainer.x,
+            y: -this.gameContainer.y,
+            width: Config.designWidth,
+            height: Config.designHeight
+        };
+        return Utils.isPointInRect(pos, rect);
     }
 }

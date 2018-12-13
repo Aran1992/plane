@@ -2,9 +2,7 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Box, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import ElectricSaw from "./ElectricSaw";
-import Meteor from "./Meteor";
-import Player from "./Player";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Worm {
     constructor(world, container) {
@@ -37,7 +35,10 @@ export default class Worm {
 
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Meteor || item instanceof Player || item instanceof ElectricSaw) {
+        if (item instanceof window.Meteor
+            || item instanceof window.Player
+            || item instanceof window.BombExplode
+            || item instanceof window.ElectricSaw) {
             this.exploded = true;
         }
     }
@@ -63,6 +64,11 @@ export default class Worm {
         if (Math.random() < Config.wormDropHeartProbability) {
             let pos = this.body.getPosition();
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
+        }
+        let gameScene = App.getScene("GameScene");
+        gameScene.animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
+        if (gameScene.isPointInView(this.sprite.position)) {
+            MusicMgr.playSound(Config.soundPath.planeExplode);
         }
         this.destroy();
     }
@@ -96,3 +102,5 @@ export default class Worm {
         return this.destroyed;
     }
 }
+
+window.Worm = Worm;

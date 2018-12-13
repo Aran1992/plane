@@ -2,10 +2,7 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Wall from "./Wall";
-import Worm from "./Worm";
-import Player from "./Player";
-import ElectricSaw from "./ElectricSaw";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Meteor {
     constructor(world, container, init) {
@@ -43,14 +40,17 @@ export default class Meteor {
 
     onPreSolve(contact, anotherFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Meteor) {
+        if (item instanceof window.Meteor) {
             contact.setEnabled(false);
         }
     }
 
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Worm || item instanceof Player || item instanceof ElectricSaw) {
+        if (item instanceof window.Worm
+            || item instanceof window.Player
+            || item instanceof window.ElectricSaw
+            || item instanceof window.BombExplode) {
             this.exploded = true;
         }
     }
@@ -72,6 +72,10 @@ export default class Meteor {
     }
 
     explode() {
+        let gameScene = App.getScene("GameScene");
+        if (gameScene.isPointInView(this.sprite.position)) {
+            MusicMgr.playSound(Config.soundPath.meteorExplode);
+        }
         this.onExplode();
     }
 
@@ -83,3 +87,5 @@ export default class Meteor {
         return this.destroyed;
     }
 }
+
+window.Meteor = Meteor;

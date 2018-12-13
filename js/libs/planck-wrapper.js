@@ -7,3 +7,4 @@ export const Circle = planck.Circle;
 export const Box = planck.Box;
 export const RevoluteJoint = planck.RevoluteJoint;
 export const RopeJoint = planck.RopeJoint;
+export const WeldJoint = planck.WeldJoint;

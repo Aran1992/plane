@@ -2,12 +2,12 @@ import Config from "../../config";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
-import Meteor from "./Meteor";
-import Worm from "./Worm";
 import Component from "../base/Component";
 import EventMgr from "../base/EventMgr";
-import Wall from "./Wall";
 import ElectricSaw from "./ElectricSaw";
+import BombExplode from "./BombExplode";
+import Shield from "./Shield";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -49,25 +49,35 @@ export default class Player extends Component {
 
     onPreSolve(contact, anotherFixture) {
         if (this._invincible
-            && !(anotherFixture.getBody().getUserData() instanceof Wall)) {
+            && !(anotherFixture.getBody().getUserData() instanceof window.Wall)) {
             contact.setEnabled(false);
         }
     }
 
-    onBeginContact(contact, anotherFixture) {
+    onBeginContact(contact, anotherFixture, selfFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof Meteor || item instanceof Worm) {
-            this._contacted = true;
+        if (item instanceof window.Meteor || item instanceof window.Worm) {
+            if (selfFixture.getUserData() instanceof Shield) {
+                this._shield.onBeginContact(contact, anotherFixture, selfFixture);
+            } else {
+                this._contacted = true;
+            }
         }
     }
 
     onStep() {
-        if (this._contacted && this._scale === 0 && !this._invincible) {
+        if (this._contacted && this._scale === 0 && !this._invincible && !this._takenBomb) {
             this.explode();
         } else {
-            if (this._contacted && this._scale > 0) {
-                this._scale--;
-                this._setScale(this._scale);
+            if (this._contacted) {
+                if (this._scale > 0) {
+                    this._scale--;
+                    this._setScale(this._scale);
+                }
+                if (this._takenBomb) {
+                    this._takenBomb = false;
+                    this._bombExplode = new BombExplode(this.world, this.container, this.sprite.position);
+                }
             }
 
             GameUtils.syncSpriteWithBody(this);
@@ -81,7 +91,7 @@ export default class Player extends Component {
             this.movePlayer();
 
             if (this._invincible) {
-                if (this._invincibleCount >= Config.planeInvincibleFrame) {
+                if (this._invincibleCount <= 0) {
                     this._invincible = false;
                     this.sprite.alpha = 1;
                 } else {
@@ -92,7 +102,7 @@ export default class Player extends Component {
                             this.sprite.alpha = 1;
                         }
                     }
-                    this._invincibleCount++;
+                    this._invincibleCount--;
                 }
             }
 
@@ -100,18 +110,54 @@ export default class Player extends Component {
 
             this.frameIndex++;
             this._updateFrame();
+
+            if (this._shield && !this._shield.destroyed) {
+                this._shield.onStep();
+            }
         }
+
         this._contacted = false;
+
+        if (this._confused) {
+            this._confusedCountdown--;
+            if (this._confusedCountdown === 0) {
+                this._confused = false;
+                this.sprite.tint = 0xFFFFFF;
+                this._confusedAudio.pause();
+                this._confusedAudio = undefined;
+                this._startInvincible(Config.confused.endInvincibleFrames);
+            }
+        }
     }
 
     onExplode() {
+        let animationMgr = App.getScene("GameScene").animationMgr;
+        animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
+        MusicMgr.playSound(Config.soundPath.planeExplode);
         this.destroy();
     }
 
     destroy() {
         this._electricSawList.forEach(es => es.destroy());
         this._electricSawList = undefined;
+
+        if (this._bombExplode && !this._bombExplode.destroyed) {
+            this._bombExplode.destroy();
+        }
+        this._bombExplode = undefined;
+
+        if (this._shield && !this._shield.destroyed) {
+            this._shield.destroy();
+        }
+        this._shield = undefined;
+
+        if (this._confusedAudio) {
+            this._confusedAudio.pause();
+            this._confusedAudio = undefined;
+        }
+
         GameUtils.destroyPhysicalSprite(this);
+
         super.destroy();
     }
 
@@ -123,8 +169,29 @@ export default class Player extends Component {
         this._setScale(this._scale);
     }
 
-    onAteItem() {
-        this._createElectricSaw();
+    onAteItem(type) {
+        switch (type) {
+            case "ElectricSaw": {
+                this._createElectricSaw();
+                break;
+            }
+            case "Bomb": {
+                this._takenBomb = true;
+                break;
+            }
+            case "Confused": {
+                this._confused = true;
+                this._confusedCountdown = Config.confused.countdown;
+                this._startInvincible(Config.confused.startInvincibleFrames);
+                this._confusedAudio = MusicMgr.playSound(Config.soundPath.confused, true);
+                break;
+            }
+            case "Shield": {
+                this._createShield();
+                break;
+            }
+        }
+        MusicMgr.playSound(Config.soundPath.pickItem);
     }
 
     explode() {
@@ -138,7 +205,12 @@ export default class Player extends Component {
     movePlayer() {
         let angle = this.body.getAngle();
         if (this.targetAngle) {
-            angle = GameUtils.calcStepAngle(angle, this.targetAngle, Config.planeAngularVelocity);
+            let targetAngle = this._confused ?
+                (this.targetAngle >= Math.PI ?
+                    this.targetAngle - Math.PI :
+                    this.targetAngle + Math.PI) :
+                this.targetAngle;
+            angle = GameUtils.calcStepAngle(angle, targetAngle, Config.planeAngularVelocity);
         }
         this.body.setAngle(angle);
 
@@ -155,7 +227,6 @@ export default class Player extends Component {
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
         }
-        let texture = this.frames[Math.floor(this.frameIndex / Config.frameInterval)];
         let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scale] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
@@ -167,12 +238,31 @@ export default class Player extends Component {
         }
     }
 
-    _updateFrame() {
-        let frame = Math.floor(this.frameIndex / Config.frameInterval);
-        if (this.frames[frame] === undefined) {
-            this.frameIndex = 0;
-            frame = 0;
+    _createShield() {
+        if (this._shield === undefined) {
+            this._shield = new Shield(this);
         }
-        this.sprite.texture = this.frames[frame];
+    }
+
+    _updateFrame() {
+        let originFrame = Math.floor((this.frameIndex - 1) / Config.frameInterval);
+        let frame = Math.floor(this.frameIndex / Config.frameInterval);
+        if (originFrame !== frame) {
+            if (this.frames[frame] === undefined) {
+                this.frameIndex = 0;
+                frame = 0;
+            }
+            this.sprite.texture = this.frames[frame];
+            if (this._confused) {
+                this.sprite.tint = Math.random() * 0xFFFFFF;
+            }
+        }
+    }
+
+    _startInvincible(invincibleFrame) {
+        this._invincible = true;
+        this._invincibleCount = invincibleFrame;
     }
 }
+
+window.Player = Player;
