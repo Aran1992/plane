@@ -167,6 +167,7 @@ export default class Player extends Component {
         }
         this._scale++;
         this._setScale(this._scale);
+        MusicMgr.playSound(Config.soundPath.pickItem);
     }
 
     onAteItem(type) {

@@ -76,6 +76,7 @@ export default class Meteor {
         if (gameScene.isPointInView(this.sprite.position)) {
             MusicMgr.playSound(Config.soundPath.meteorExplode);
         }
+        gameScene.animationMgr.createAnimation(Config.imagePath.meteorExplode, this.sprite.position, this.sprite.rotation);
         this.onExplode();
     }
 

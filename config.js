@@ -108,6 +108,11 @@
             "images/worm-explode-2.png",
             "images/worm-explode-3.png",
         ],
+        meteorExplode: [
+            "images/meteor-explode-1.png",
+            "images/meteor-explode-2.png",
+            "images/meteor-explode-3.png",
+        ],
         shield: "images/shield.png",
     },
     soundPath: {
@@ -162,8 +167,6 @@
     refreshItemInterval: 10,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
-    // 初始道具刷新位置
-    refreshItemInitPos: {x: 1920, y: 800},
     // 每动画帧占用多少游戏帧
     frameInterval: 6,
     bgJson: [
