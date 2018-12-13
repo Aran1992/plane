@@ -96,6 +96,18 @@
             "images/bomb-explode-4.png",
             "images/bomb-explode-5.png",
         ],
+        planeExplode: [
+            "images/plane-explode-1.png",
+            "images/plane-explode-2.png",
+            "images/plane-explode-3.png",
+            "images/plane-explode-4.png",
+            "images/plane-explode-5.png",
+        ],
+        wormExplode: [
+            "images/worm-explode-1.png",
+            "images/worm-explode-2.png",
+            "images/worm-explode-3.png",
+        ],
         shield: "images/shield.png",
     },
     // 电锯相关配置

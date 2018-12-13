@@ -64,6 +64,8 @@ export default class Worm {
             let pos = this.body.getPosition();
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
         }
+        let animationMgr = App.getScene("GameScene").animationMgr;
+        animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
         this.destroy();
     }
 

@@ -14,6 +14,7 @@ import WormMgr from "../mgr/WormMgr";
 import HeartMgr from "../mgr/HeartMgr";
 import {resources} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
+import AnimationMgr from "../mgr/AnimationMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -61,6 +62,8 @@ export default class GameScene extends Scene {
         this.heartMgr = undefined;
         this.itemMgr.destroy();
         this.itemMgr = undefined;
+        this.animationMgr.destroy();
+        this.animationMgr = undefined;
         App.ticker.remove(this.onTickHandler);
         this.onShow();
     }
@@ -79,6 +82,7 @@ export default class GameScene extends Scene {
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);
         this.itemMgr = new ItemMgr(this.world, this.gameContainer);
+        this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
     }

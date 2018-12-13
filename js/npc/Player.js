@@ -128,6 +128,8 @@ export default class Player extends Component {
     }
 
     onExplode() {
+        let animationMgr = App.getScene("GameScene").animationMgr;
+        animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
         this.destroy();
     }
 
