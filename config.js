@@ -184,6 +184,11 @@
         x: 10,
         y: 10
     },
+    // 背景星星相关配置
+    star: {
+        // 数量
+        count: 50,
+    },
     // 随即出来的道具类型
     randomItemList: [
         "ElectricSaw",

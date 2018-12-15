@@ -1,5 +1,6 @@
 import {World} from "./libs/planck-wrapper";
 import Utils from "./utils/Utils";
+import Config from "../config";
 
 export default class MyWorld {
     constructor(...args) {
@@ -9,7 +10,10 @@ export default class MyWorld {
             "pre-solve": [],
             "begin-contact": [],
             "step": [],
+            "animation-frame": [],
         };
+
+        this.frameIndex = 0;
 
         this.world.on("pre-solve", this.onPreSolve.bind(this));
         this.world.on("begin-contact", this.onBeginContact.bind(this));
@@ -54,6 +58,12 @@ export default class MyWorld {
     step(time) {
         this.world.step(time);
         this.eventTable["step"].forEach(item => item.onStep());
+        let oldFrame = Math.floor(this.frameIndex / Config.frameInterval);
+        this.frameIndex++;
+        let newFrame = Math.floor(this.frameIndex / Config.frameInterval);
+        if (oldFrame !== newFrame) {
+            this.eventTable["animation-frame"].forEach(item => item.onAnimationFrame());
+        }
     }
 
     createBody(...args) {
