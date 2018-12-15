@@ -75,6 +75,7 @@ export default class GameScene extends Scene {
     }
 
     onLoaded() {
+        this.createTakenBombIcon();
         if (resources.planeScaleTexture === undefined) {
             resources.planeScaleTexture = Config.planeScaleList.map(scale =>
                 Config.imagePath.originPlane.map(path =>
@@ -194,5 +195,19 @@ export default class GameScene extends Scene {
             height: Config.designHeight
         };
         return Utils.isPointInRect(pos, rect);
+    }
+
+    createTakenBombIcon() {
+        if (this._takenBombIcon === undefined) {
+            this._takenBombIcon = Sprite.fromImage("images/bomb.png");
+            this._takenBombIcon.anchor.set(1, 0);
+            this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x, Config.bombIconPos.y);
+            this._takenBombIcon.visible = false;
+            this.addChild(this._takenBombIcon);
+        }
+    }
+
+    showTakenBombIcon(visible) {
+        this._takenBombIcon.visible = visible;
     }
 }

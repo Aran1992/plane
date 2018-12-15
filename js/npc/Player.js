@@ -46,7 +46,9 @@ export default class Player extends Component {
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
 
-        this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
+        setTimeout(() => {
+            this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
+        }, 0);
     }
 
     onPreSolve(contact, anotherFixture) {
@@ -78,6 +80,7 @@ export default class Player extends Component {
                 }
                 if (this._takenBomb) {
                     this._takenBomb = false;
+                    App.getScene("GameScene").showTakenBombIcon(false);
                     this._bombExplode = new BombExplode(this.world, this.container, this.sprite.position);
                 }
             }
@@ -161,6 +164,8 @@ export default class Player extends Component {
         this._trailAudio.pause();
         this._trailAudio = undefined;
 
+        App.getScene("GameScene").showTakenBombIcon(false);
+
         GameUtils.destroyPhysicalSprite(this);
 
         super.destroy();
@@ -183,6 +188,7 @@ export default class Player extends Component {
             }
             case "Bomb": {
                 this._takenBomb = true;
+                App.getScene("GameScene").showTakenBombIcon(true);
                 break;
             }
             case "Confused": {

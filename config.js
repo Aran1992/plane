@@ -179,6 +179,18 @@
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
     frameInterval: 10,
+    // 炸弹图标显示位置
+    bombIconPos: {
+        x: 10,
+        y: 10
+    },
+    // 随即出来的道具类型
+    randomItemList: [
+        "ElectricSaw",
+        "Bomb",
+        "Shield",
+        "Confused",
+    ],
     bgJson: [
         {
             "x": 977,
