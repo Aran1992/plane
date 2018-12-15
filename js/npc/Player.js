@@ -45,6 +45,8 @@ export default class Player extends Component {
         this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
+
+        this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
     }
 
     onPreSolve(contact, anotherFixture) {
@@ -156,6 +158,9 @@ export default class Player extends Component {
             this._confusedAudio = undefined;
         }
 
+        this._trailAudio.pause();
+        this._trailAudio = undefined;
+
         GameUtils.destroyPhysicalSprite(this);
 
         super.destroy();
@@ -184,7 +189,7 @@ export default class Player extends Component {
                 this._confused = true;
                 this._confusedCountdown = Config.confused.countdown;
                 this._startInvincible(Config.confused.startInvincibleFrames);
-                this._confusedAudio = MusicMgr.playSound(Config.soundPath.confused, true);
+                this._confusedAudio = MusicMgr.playSound(Config.soundPath.confused);
                 break;
             }
             case "Shield": {

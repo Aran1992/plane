@@ -129,8 +129,7 @@
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
         planeExplode: "sounds/plane-explode.mp3",
-        wormExplode: "sounds/worm-explode.mp3",
-        meteorExplode: "sounds/meteor-explode.mp3",
+        enemyExplode: "sounds/enemy-explode.mp3",
         pickItem: "sounds/pick-item.mp3",
         confused: "sounds/confused.mp3",
         shoot: "sounds/shoot.mp3",
@@ -140,7 +139,7 @@
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 0.1,
+        density: 0.5,
         // 可以进行几次碰撞
         collideTimes: 6,
         // 距离飞船的距离
@@ -179,7 +178,7 @@
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
-    frameInterval: 6,
+    frameInterval: 10,
     bgJson: [
         {
             "x": 977,

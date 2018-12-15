@@ -68,7 +68,7 @@ export default class Worm {
         let gameScene = App.getScene("GameScene");
         gameScene.animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
         if (gameScene.isPointInView(this.sprite.position)) {
-            MusicMgr.playSound(Config.soundPath.planeExplode);
+            MusicMgr.playSound(Config.soundPath.enemyExplode);
         }
         this.destroy();
     }

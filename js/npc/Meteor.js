@@ -74,7 +74,7 @@ export default class Meteor {
     explode() {
         let gameScene = App.getScene("GameScene");
         if (gameScene.isPointInView(this.sprite.position)) {
-            MusicMgr.playSound(Config.soundPath.meteorExplode);
+            MusicMgr.playSound(Config.soundPath.enemyExplode);
         }
         gameScene.animationMgr.createAnimation(Config.imagePath.meteorExplode, this.sprite.position, this.sprite.rotation);
         this.onExplode();
