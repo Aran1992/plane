@@ -40,6 +40,9 @@ export default class Worm {
             || item instanceof window.BombExplode
             || item instanceof window.ElectricSaw) {
             this.exploded = true;
+            if(item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)){
+                this._contactedPlayerSelf = true;
+            }
         }
     }
 
@@ -61,7 +64,7 @@ export default class Worm {
     }
 
     onExplode() {
-        if (Math.random() < Config.wormDropHeartProbability) {
+        if (Math.random() < Config.wormDropHeartProbability && !this._contactedPlayerSelf) {
             let pos = this.body.getPosition();
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
         }
