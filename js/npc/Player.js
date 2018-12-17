@@ -46,9 +46,9 @@ export default class Player extends Component {
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
 
-        setTimeout(() => {
-            this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
-        }, 0);
+        // setTimeout(() => {
+        //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
+        // }, 0);
     }
 
     onPreSolve(contact, anotherFixture) {
@@ -161,8 +161,8 @@ export default class Player extends Component {
             this._confusedAudio = undefined;
         }
 
-        this._trailAudio.pause();
-        this._trailAudio = undefined;
+        // this._trailAudio.pause();
+        // this._trailAudio = undefined;
 
         App.getScene("GameScene").showTakenBombIcon(false);
 

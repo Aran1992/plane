@@ -189,6 +189,13 @@
         // 数量
         count: 50,
     },
+    // 背景云相关配置
+    cloud: {
+        // 云每帧的最小速度
+        minSpeed: 1,
+        // 云每帧的最大速度
+        maxSpeed: 2
+    },
     // 随即出来的道具类型
     randomItemList: [
         "ElectricSaw",
@@ -211,11 +218,6 @@
             "x": 533,
             "y": 160,
             "texture": "images/cloud-3.png"
-        },
-        {
-            "x": 1624,
-            "y": 1087,
-            "texture": "images/star.png"
         },
         {
             "x": 2206,
@@ -371,11 +373,6 @@
             "x": 1505.5,
             "y": 2071,
             "texture": "images/cloud-2.png"
-        },
-        {
-            "x": 1354,
-            "y": 1232,
-            "texture": "images/star.png"
         }
     ]
 };

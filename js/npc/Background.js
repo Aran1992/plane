@@ -7,12 +7,12 @@ export default class Background {
         this.world = world;
         this.container = container;
 
+
         let texture = resources[Config.imagePath.bg].texture;
         let bgSprite = new Sprite(texture);
         this.container.addChild(bgSprite);
         bgSprite.scale.set(Config.gameSceneWidth / texture.width,
             Config.gameSceneHeight / texture.height);
-        Config.bgJson.forEach(item => this.createImage(item.texture, item.x, item.y));
 
         let starList = [];
         for (let i = 0; i < Config.star.count; i++) {
@@ -28,7 +28,18 @@ export default class Background {
         }
         this.starList = starList;
 
+        this.cloudList = [];
+
+        Config.bgJson.forEach(item => {
+            let sprite = this.createImage(item.texture, item.x, item.y);
+            if (item.texture.indexOf("cloud") !== -1) {
+                sprite.velocity = Utils.randomInRange(Config.cloud.minSpeed, Config.cloud.maxSpeed);
+                this.cloudList.push(sprite);
+            }
+        });
+
         this.world.registerEvent("animation-frame", this);
+        this.world.registerEvent("step", this);
     }
 
     createImage(path, x, y, anchorX, anchorY) {
@@ -50,7 +61,18 @@ export default class Background {
         });
     }
 
+    onStep() {
+        this.cloudList.forEach(cloud => {
+            cloud.x += cloud.velocity;
+            if (cloud.x > Config.gameSceneWidth) {
+                cloud.velocity = Utils.randomInRange(Config.cloud.minSpeed, Config.cloud.maxSpeed);
+                cloud.x = -cloud.width / 2;
+            }
+        });
+    }
+
     destroy() {
         this.world.unregisterEvent("animation-frame", this);
+        this.world.unregisterEvent("step", this);
     }
 }
