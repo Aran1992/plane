@@ -51,6 +51,8 @@ export default class GameScene extends Scene {
 
         this.createSurvivalTimeText();
 
+        this.createLifeText();
+
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
 
@@ -72,6 +74,7 @@ export default class GameScene extends Scene {
         this.animationMgr = undefined;
         this.background.destroy();
         this.background = undefined;
+        this.lifeCount = 1;
         App.ticker.remove(this.onTickHandler);
         this.onShow();
     }
@@ -169,6 +172,11 @@ export default class GameScene extends Scene {
         }
     }
 
+    setLifeCount(count) {
+        this.lifeCount = count;
+        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
+    }
+
     createSurvivalTimeText() {
         let textStyle = new TextStyle({
             fontSize: 50,
@@ -177,6 +185,19 @@ export default class GameScene extends Scene {
         this.survivalTimeText = new Text("生存时间:0", textStyle);
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
+    }
+
+    createLifeText() {
+        let textStyle = new TextStyle({
+            fontSize: 50,
+            fill: "white"
+        });
+        this.lifeCount = 1;
+        this.lifeText = new Text("", textStyle);
+        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
+        this.lifeText.anchor.set(1, 0);
+        this.lifeText.position.set(Config.designWidth, 0);
+        this.addChild(this.lifeText);
     }
 
     createDebugText() {
@@ -203,7 +224,7 @@ export default class GameScene extends Scene {
         if (this._takenBombIcon === undefined) {
             this._takenBombIcon = Sprite.fromImage("images/bomb.png");
             this._takenBombIcon.anchor.set(1, 0);
-            this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x, Config.bombIconPos.y);
+            this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5, Config.bombIconPos.y);
             this._takenBombIcon.visible = false;
             this.addChild(this._takenBombIcon);
         }

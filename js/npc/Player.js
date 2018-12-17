@@ -13,6 +13,8 @@ export default class Player extends Component {
     constructor(world, container) {
         super();
 
+        this.gameScene = App.getScene("GameScene");
+
         this.eventMgr = this.createComponent(EventMgr);
         this.eventMgr.registerEvent("AteHeart", this.onAteHeart.bind(this));
         this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
@@ -80,7 +82,7 @@ export default class Player extends Component {
                 }
                 if (this._takenBomb) {
                     this._takenBomb = false;
-                    App.getScene("GameScene").showTakenBombIcon(false);
+                    this.gameScene.showTakenBombIcon(false);
                     this._bombExplode = new BombExplode(this.world, this.container, this.sprite.position);
                 }
             }
@@ -136,7 +138,7 @@ export default class Player extends Component {
     }
 
     onExplode() {
-        let animationMgr = App.getScene("GameScene").animationMgr;
+        let animationMgr = this.gameScene.animationMgr;
         animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
         MusicMgr.playSound(Config.soundPath.planeExplode);
         this.destroy();
@@ -164,7 +166,7 @@ export default class Player extends Component {
         // this._trailAudio.pause();
         // this._trailAudio = undefined;
 
-        App.getScene("GameScene").showTakenBombIcon(false);
+        this.gameScene.showTakenBombIcon(false);
 
         GameUtils.destroyPhysicalSprite(this);
 
@@ -188,7 +190,7 @@ export default class Player extends Component {
             }
             case "Bomb": {
                 this._takenBomb = true;
-                App.getScene("GameScene").showTakenBombIcon(true);
+                this.gameScene.showTakenBombIcon(true);
                 break;
             }
             case "Confused": {
@@ -242,6 +244,7 @@ export default class Player extends Component {
         let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scale] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
+        this.gameScene.setLifeCount(scale + 1);
     }
 
     _createElectricSaw() {

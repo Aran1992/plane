@@ -11,9 +11,9 @@
     // 控制区域的大小
     controlRect: {
         // 宽度
-        width: 960,
+        width: 1920,
         // 高度
-        height: 540,
+        height: 1080,
     },
     // 摇杆半径
     rockerRadius: 90,
