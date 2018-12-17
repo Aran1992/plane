@@ -43,12 +43,19 @@
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshMeteorProbability: 0.05,
+    // 陨石相关配置
+    meteor: {
+        // 陨石数量随着时间的裱花
+        countBySeconds: {
+            "15": 50,
+            "30": 60,
+            "60": 80,
+        }
+    },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 0.5,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
-    // 陨石同时能存在的最大数量
-    meteorExistMaxCount: 80,
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 5,
     // 虫子的速度
