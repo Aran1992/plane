@@ -40,6 +40,9 @@ export default class Worm {
             || item instanceof window.BombExplode
             || item instanceof window.ElectricSaw) {
             this.exploded = true;
+            if(item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)){
+                this._contactedPlayerSelf = true;
+            }
         }
     }
 
@@ -61,14 +64,14 @@ export default class Worm {
     }
 
     onExplode() {
-        if (Math.random() < Config.wormDropHeartProbability) {
+        if (Math.random() < Config.wormDropHeartProbability && !this._contactedPlayerSelf) {
             let pos = this.body.getPosition();
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
         }
         let gameScene = App.getScene("GameScene");
         gameScene.animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
         if (gameScene.isPointInView(this.sprite.position)) {
-            MusicMgr.playSound(Config.soundPath.planeExplode);
+            MusicMgr.playSound(Config.soundPath.enemyExplode);
         }
         this.destroy();
     }

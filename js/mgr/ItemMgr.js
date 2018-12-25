@@ -11,7 +11,12 @@ export default class ItemMgr extends Component {
         this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
         this.world = world;
         this.container = container;
-        this.refreshItem(Config.refreshItemInitPos);
+        let angle = Math.random() * Math.PI * 2;
+        let distance = Utils.randomInRange(300, 500);
+        this.refreshItem({
+            x: Config.gameSceneWidth / 2 + Math.cos(angle) * distance,
+            y: Config.gameSceneHeight / 2 + Math.sin(angle) * distance
+        });
     }
 
     onAteItem() {

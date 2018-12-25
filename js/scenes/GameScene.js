@@ -1,7 +1,7 @@
 import Scene from "../base/Scene.js";
 import Config from "../../config.js";
 import RunOption from "../../run-option.js";
-import {Container, Graphics, Rectangle, Text, TextStyle} from "../libs/pixi-wrapper.js";
+import {Container, Rectangle, Text, TextStyle} from "../libs/pixi-wrapper.js";
 import {Vec2} from "../libs/planck-wrapper.js";
 import Utils from "../utils/Utils";
 import GameUtils from "../utils/GameUtils";
@@ -12,12 +12,18 @@ import Player from "../npc/Player";
 import MeteorMgr from "../mgr/MeteorMgr";
 import WormMgr from "../mgr/WormMgr";
 import HeartMgr from "../mgr/HeartMgr";
-import {resources} from "../libs/pixi-wrapper";
+import {resources, Sprite} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
+        this.controlRect = {
+            x: 0,
+            y: Config.designHeight - Config.controlRect.height,
+            width: Config.controlRect.width,
+            height: Config.controlRect.height
+        };
         this.interactive = true;
         this.buttonMode = true;
         this.hitArea = new Rectangle(0, 0, Config.designWidth, Config.designHeight);
@@ -45,6 +51,8 @@ export default class GameScene extends Scene {
 
         this.createSurvivalTimeText();
 
+        this.createLifeText();
+
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
 
@@ -64,18 +72,22 @@ export default class GameScene extends Scene {
         this.itemMgr = undefined;
         this.animationMgr.destroy();
         this.animationMgr = undefined;
+        this.background.destroy();
+        this.background = undefined;
+        this.lifeCount = 1;
         App.ticker.remove(this.onTickHandler);
         this.onShow();
     }
 
     onLoaded() {
+        this.createTakenBombIcon();
         if (resources.planeScaleTexture === undefined) {
             resources.planeScaleTexture = Config.planeScaleList.map(scale =>
                 Config.imagePath.originPlane.map(path =>
                     GameUtils.scaleTexture(resources[path].texture, scale)));
         }
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
-        this.background = new Background(this.gameContainer);
+        this.background = new Background(this.world, this.gameContainer);
         this.wall = new Wall(this.world);
         this.plane = new Player(this.world, this.gameContainer);
         this.meteorMgr = new MeteorMgr(this.world, this.gameContainer);
@@ -113,43 +125,37 @@ export default class GameScene extends Scene {
     }
 
     onPointerdown(event) {
-        if (this.startPoint) {
+        if (this.startPoint
+            || !Utils.isPointInRect(event.data.global, this.controlRect)) {
             return;
         }
-        this.startPoint = {x: event.data.global.x, y: event.data.global.y};
 
-        this.startPointCircle = new Graphics();
+        let targetAngle = this.plane.sprite.rotation;
+        let x = event.data.global.x - Math.cos(targetAngle) * Config.rockerRadius;
+        let y = event.data.global.y - Math.sin(targetAngle) * Config.rockerRadius;
+        this.startPoint = {x: x, y: y};
+
+        this.startPointCircle = new Sprite(resources[Config.imagePath.rockerBottom].texture);
         this.addChild(this.startPointCircle);
-        this.startPointCircle.beginFill(0xff0000);
-        this.startPointCircle.drawCircle(0, 0, 5);
-        this.startPointCircle.endFill();
+        this.startPointCircle.anchor.set(0.5, 0.5);
         this.startPointCircle.position.set(this.startPoint.x, this.startPoint.y);
 
-        this.endPointCircle = new Graphics();
+        this.endPointCircle = new Sprite(resources[Config.imagePath.rocker].texture);
         this.addChild(this.endPointCircle);
-        this.endPointCircle.beginFill(0x00ff00);
-        this.endPointCircle.drawCircle(0, 0, 5);
-        this.endPointCircle.endFill();
-        this.endPointCircle.position.set(this.startPoint.x, this.startPoint.y);
+        this.endPointCircle.anchor.set(0.5, 0.5);
+        this.endPointCircle.position.set(event.data.global.x, event.data.global.y);
     }
 
     onPointermove(event) {
         if (this.startPoint) {
             let y = event.data.global.y - this.startPoint.y;
             let x = event.data.global.x - this.startPoint.x;
-            this.plane.setTargetAngle(GameUtils.calcVectorAngle(x, y));
+            let targetAngle = GameUtils.calcVectorAngle(x, y);
+            this.plane.setTargetAngle(targetAngle);
 
-            this.endPointCircle.position.set(event.data.global.x, event.data.global.y);
-            if (this.directionLine) {
-                this.directionLine.parent.removeChild(this.directionLine);
-            }
-            this.directionLine = new Graphics();
-            this.addChild(this.directionLine);
-            this.directionLine.beginFill(0x0000ff);
-            this.directionLine.lineStyle(5, 0x0000ff, 0.5, 0.5);
-            this.directionLine.moveTo(this.startPoint.x, this.startPoint.y);
-            this.directionLine.lineTo(event.data.global.x, event.data.global.y);
-            this.directionLine.endFill();
+            let ex = this.startPoint.x + Math.cos(targetAngle) * Config.rockerRadius,
+                ey = this.startPoint.y + Math.sin(targetAngle) * Config.rockerRadius;
+            this.endPointCircle.position.set(ex, ey);
         }
     }
 
@@ -164,10 +170,11 @@ export default class GameScene extends Scene {
             this.endPointCircle.parent.removeChild(this.endPointCircle);
             this.endPointCircle = undefined;
         }
-        if (this.directionLine) {
-            this.directionLine.parent.removeChild(this.directionLine);
-            this.directionLine = undefined;
-        }
+    }
+
+    setLifeCount(count) {
+        this.lifeCount = count;
+        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
     }
 
     createSurvivalTimeText() {
@@ -178,6 +185,19 @@ export default class GameScene extends Scene {
         this.survivalTimeText = new Text("生存时间:0", textStyle);
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
+    }
+
+    createLifeText() {
+        let textStyle = new TextStyle({
+            fontSize: 50,
+            fill: "white"
+        });
+        this.lifeCount = 1;
+        this.lifeText = new Text("", textStyle);
+        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
+        this.lifeText.anchor.set(1, 0);
+        this.lifeText.position.set(Config.designWidth, 0);
+        this.addChild(this.lifeText);
     }
 
     createDebugText() {
@@ -198,5 +218,19 @@ export default class GameScene extends Scene {
             height: Config.designHeight
         };
         return Utils.isPointInRect(pos, rect);
+    }
+
+    createTakenBombIcon() {
+        if (this._takenBombIcon === undefined) {
+            this._takenBombIcon = Sprite.fromImage("images/bomb.png");
+            this._takenBombIcon.anchor.set(1, 0);
+            this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5, Config.bombIconPos.y);
+            this._takenBombIcon.visible = false;
+            this.addChild(this._takenBombIcon);
+        }
+    }
+
+    showTakenBombIcon(visible) {
+        this._takenBombIcon.visible = visible;
     }
 }

@@ -48,4 +48,8 @@ export default class Utils {
     static randomChoose(list) {
         return list[Math.floor(Math.random() * list.length)];
     }
+
+    static getLast(arr) {
+        return arr[arr.length - 1];
+    }
 }

@@ -8,6 +8,15 @@
     gravity: 0,
     pixel2meter: 0.0625,
     meter2pixel: 16,
+    // 控制区域的大小
+    controlRect: {
+        // 宽度
+        width: 1920,
+        // 高度
+        height: 1080,
+    },
+    // 摇杆半径
+    rockerRadius: 90,
     // 飞机船体的像素长度
     planePixelLength: 17,
     // 飞机的速度
@@ -34,12 +43,19 @@
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshMeteorProbability: 0.05,
+    // 陨石相关配置
+    meteor: {
+        // 陨石数量随着时间的裱花
+        countBySeconds: {
+            "15": 50,
+            "30": 60,
+            "60": 80,
+        }
+    },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 0.5,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
-    // 陨石同时能存在的最大数量
-    meteorExistMaxCount: 80,
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 5,
     // 虫子的速度
@@ -108,13 +124,19 @@
             "images/worm-explode-2.png",
             "images/worm-explode-3.png",
         ],
+        meteorExplode: [
+            "images/meteor-explode-1.png",
+            "images/meteor-explode-2.png",
+            "images/meteor-explode-3.png",
+        ],
         shield: "images/shield.png",
+        rocker: "images/rocker.png",
+        rockerBottom: "images/rocker-bottom.png",
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
         planeExplode: "sounds/plane-explode.mp3",
-        wormExplode: "sounds/worm-explode.mp3",
-        meteorExplode: "sounds/meteor-explode.mp3",
+        enemyExplode: "sounds/enemy-explode.mp3",
         pickItem: "sounds/pick-item.mp3",
         confused: "sounds/confused.mp3",
         shoot: "sounds/shoot.mp3",
@@ -124,7 +146,7 @@
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 0.1,
+        density: 0.5,
         // 可以进行几次碰撞
         collideTimes: 6,
         // 距离飞船的距离
@@ -162,10 +184,32 @@
     refreshItemInterval: 10,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
-    // 初始道具刷新位置
-    refreshItemInitPos: {x: 1920, y: 800},
     // 每动画帧占用多少游戏帧
-    frameInterval: 6,
+    frameInterval: 10,
+    // 炸弹图标显示位置
+    bombIconPos: {
+        x: 10,
+        y: 10
+    },
+    // 背景星星相关配置
+    star: {
+        // 数量
+        count: 50,
+    },
+    // 背景云相关配置
+    cloud: {
+        // 云每帧的最小速度
+        minSpeed: 1,
+        // 云每帧的最大速度
+        maxSpeed: 2
+    },
+    // 随即出来的道具类型
+    randomItemList: [
+        "ElectricSaw",
+        "Bomb",
+        "Shield",
+        "Confused",
+    ],
     bgJson: [
         {
             "x": 977,
@@ -181,11 +225,6 @@
             "x": 533,
             "y": 160,
             "texture": "images/cloud-3.png"
-        },
-        {
-            "x": 1624,
-            "y": 1087,
-            "texture": "images/star.png"
         },
         {
             "x": 2206,
@@ -341,11 +380,6 @@
             "x": 1505.5,
             "y": 2071,
             "texture": "images/cloud-2.png"
-        },
-        {
-            "x": 1354,
-            "y": 1232,
-            "texture": "images/star.png"
         }
     ]
 };

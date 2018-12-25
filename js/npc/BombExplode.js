@@ -37,10 +37,6 @@ export default class BombExplode {
         this.frameIndex++;
         let frame = Math.floor(this.frameIndex / Config.frameInterval);
         if (this.frames[frame]) {
-            if (this.frames[frame] === undefined) {
-                this.frameIndex = 0;
-                frame = 0;
-            }
             if (frame !== originFrame) {
                 this.sprite.texture = this.frames[frame];
                 if (this.fixture) {
@@ -55,8 +51,12 @@ export default class BombExplode {
             this.audio.pause();
             this.audio = undefined;
 
-            GameUtils.destroyPhysicalSprite(this);
+            this.destroy();
         }
+    }
+
+    destroy() {
+        GameUtils.destroyPhysicalSprite(this);
     }
 }
 
