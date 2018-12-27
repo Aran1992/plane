@@ -27,7 +27,7 @@
     planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
-    // 陨石物理半径
+    // 陨石物理半径（米）
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
     meteorMinVelocity: 10,
@@ -143,6 +143,27 @@
         trail: "sounds/trail.mp3",
         esRotate: "sounds/electric-saw-rotate.mp3",
     },
+    // 红心相关配置
+    worm: {
+        // 宽度(像素)
+        width: 110,
+        // 高度(像素)
+        height: 35,
+    },
+    // 红心相关配置
+    heart: {
+        // 宽度(像素)
+        width: 35,
+        // 高度(像素)
+        height: 25,
+    },
+    // 物品相关配置
+    item: {
+        // 宽度(像素)
+        width: 55,
+        // 高度(像素)
+        height: 55,
+    },
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
@@ -155,6 +176,8 @@
         angularVelocity: Math.PI / 180 * 10,
         // 同时能存在的最大数量
         maxCount: 5,
+        // 半径(像素)
+        radius: 35,
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
@@ -179,6 +202,10 @@
         collideTimes: 3,
         // 距离飞船的距离
         distance: 100,
+        // 宽度(像素)
+        width: 25,
+        // 高度(像素)
+        height: 50,
     },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,

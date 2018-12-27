@@ -17,7 +17,7 @@ export default class Item {
 
         this.body = this.world.createBody(texture);
         let sd = {};
-        sd.shape = Box(texture.width * Config.pixel2meter / 2, texture.height * Config.pixel2meter / 2);
+        sd.shape = Box(Config.item.width * Config.pixel2meter / 2, Config.item.height * Config.pixel2meter / 2);
         sd.isSensor = true;
         this.body.createFixture(sd);
         let physicalPos = GameUtils.renderPos2PhysicsPos(renderPos);

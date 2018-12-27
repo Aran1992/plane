@@ -18,8 +18,8 @@ export default class Worm {
 
         let body = this.world.createDynamicBody();
         this.body = body;
-        let width = texture.width * Config.pixel2meter / 2,
-            height = texture.height * Config.pixel2meter / 2;
+        let width = Config.worm.width * Config.pixel2meter / 2,
+            height = Config.worm.height * Config.pixel2meter / 2;
         body.createFixture(Box(width, height), {friction: 0, density: 1});
 
         let {x, y, radian} = GameUtils.getNpcRandomInitArgs();

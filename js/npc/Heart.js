@@ -15,7 +15,7 @@ export default class Heart {
 
         this.body = world.createBody();
         let sd = {};
-        sd.shape = Box(texture.width * Config.pixel2meter / 2, texture.height * Config.pixel2meter / 2);
+        sd.shape = Box(Config.heart.width * Config.pixel2meter / 2, Config.heart.height * Config.pixel2meter / 2);
         sd.isSensor = true;
         this.body.createFixture(sd);
         this.body.setPosition(wormPos);
