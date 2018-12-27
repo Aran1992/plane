@@ -10,6 +10,7 @@ export default class Heart {
         let texture = resources[Config.imagePath.heart].texture;
         this.sprite = new Sprite(texture);
         container.addChild(this.sprite);
+        this.sprite.anchor.set(0.5, 0.5);
         let rp = GameUtils.physicalPos2renderPos(wormPos);
         this.sprite.position.set(rp.x, rp.y);
 

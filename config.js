@@ -100,9 +100,15 @@
             "images/worm-1.png",
             "images/worm-2.png",
             "images/worm-3.png",
+            "images/worm-2.png",
         ],
         heart: "images/red-heart.png",
-        item: "images/random-item.png",
+        item: [
+            "images/random-item-1.png",
+            "images/random-item-2.png",
+            "images/random-item-3.png",
+            "images/random-item-4.png",
+        ],
         electricSaw: "images/electric-saw.png",
         bomb: "images/bomb.png",
         bombExplode: [
@@ -118,11 +124,6 @@
             "images/plane-explode-3.png",
             "images/plane-explode-4.png",
             "images/plane-explode-5.png",
-        ],
-        wormExplode: [
-            "images/worm-explode-1.png",
-            "images/worm-explode-2.png",
-            "images/worm-explode-3.png",
         ],
         meteorExplode: [
             "images/meteor-explode-1.png",
@@ -153,16 +154,16 @@
     // 红心相关配置
     heart: {
         // 宽度(像素)
-        width: 35,
+        width: 45,
         // 高度(像素)
-        height: 25,
+        height: 35,
     },
     // 物品相关配置
     item: {
         // 宽度(像素)
-        width: 55,
+        width: 75,
         // 高度(像素)
-        height: 55,
+        height: 100,
     },
     // 电锯相关配置
     electricSaw: {
@@ -226,9 +227,9 @@
     // 背景云相关配置
     cloud: {
         // 云每帧的最小速度
-        minSpeed: 1,
+        minSpeed: 0.2,
         // 云每帧的最大速度
-        maxSpeed: 2
+        maxSpeed: 0.4
     },
     // 随即出来的道具类型
     randomItemList: [
