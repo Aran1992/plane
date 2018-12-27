@@ -12,8 +12,8 @@ export default class Shield {
         player.sprite.parent.addChild(this.sprite);
 
         let shape = Box(
-            texture.width / 2 * Config.pixel2meter,
-            texture.height / 2 * Config.pixel2meter,
+            Config.shield.width / 2 * Config.pixel2meter,
+            Config.shield.height / 2 * Config.pixel2meter,
             Vec2(Config.shield.distance * Config.pixel2meter, 0)
         );
         this.fixture = player.body.createFixture(shape, {density: 0, friction: 0});

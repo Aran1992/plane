@@ -18,8 +18,8 @@ export default class Worm {
 
         let body = this.world.createDynamicBody();
         this.body = body;
-        let width = texture.width * Config.pixel2meter / 2,
-            height = texture.height * Config.pixel2meter / 2;
+        let width = Config.worm.width * Config.pixel2meter / 2,
+            height = Config.worm.height * Config.pixel2meter / 2;
         body.createFixture(Box(width, height), {friction: 0, density: 1});
 
         let {x, y, radian} = GameUtils.getNpcRandomInitArgs();
@@ -40,7 +40,7 @@ export default class Worm {
             || item instanceof window.BombExplode
             || item instanceof window.ElectricSaw) {
             this.exploded = true;
-            if(item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)){
+            if (item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)) {
                 this._contactedPlayerSelf = true;
             }
         }
@@ -69,7 +69,7 @@ export default class Worm {
             App.dispatchEvent("WormDropHeart", Vec2(pos.x, pos.y));
         }
         let gameScene = App.getScene("GameScene");
-        gameScene.animationMgr.createAnimation(Config.imagePath.wormExplode, this.sprite.position, this.sprite.rotation + Math.PI);
+        gameScene.animationMgr.createAnimation(Config.imagePath.meteorExplode, this.sprite.position, this.sprite.rotation + Math.PI);
         if (gameScene.isPointInView(this.sprite.position)) {
             MusicMgr.playSound(Config.soundPath.enemyExplode);
         }

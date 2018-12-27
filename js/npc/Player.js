@@ -48,7 +48,7 @@ export default class Player extends Component {
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
 
-        this._invincible = true;
+        this._invincible = false;
 
         // setTimeout(() => {
         //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);

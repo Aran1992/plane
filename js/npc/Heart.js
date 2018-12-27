@@ -10,12 +10,13 @@ export default class Heart {
         let texture = resources[Config.imagePath.heart].texture;
         this.sprite = new Sprite(texture);
         container.addChild(this.sprite);
+        this.sprite.anchor.set(0.5, 0.5);
         let rp = GameUtils.physicalPos2renderPos(wormPos);
         this.sprite.position.set(rp.x, rp.y);
 
         this.body = world.createBody();
         let sd = {};
-        sd.shape = Box(texture.width * Config.pixel2meter / 2, texture.height * Config.pixel2meter / 2);
+        sd.shape = Box(Config.heart.width * Config.pixel2meter / 2, Config.heart.height * Config.pixel2meter / 2);
         sd.isSensor = true;
         this.body.createFixture(sd);
         this.body.setPosition(wormPos);

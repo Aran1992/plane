@@ -9,15 +9,16 @@ export default class Item {
         this.world = world;
         this.container = container;
 
-        let texture = resources[Config.imagePath.item].texture;
-        this.sprite = new Sprite(texture);
+        this.frames = Config.imagePath.item.map(path => resources[path].texture);
+        this.frameIndex = 0;
+        this.sprite = new Sprite(this.frames[0]);
         this.container.addChild(this.sprite);
         this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position.set(renderPos.x, renderPos.y);
 
-        this.body = this.world.createBody(texture);
+        this.body = this.world.createBody();
         let sd = {};
-        sd.shape = Box(texture.width * Config.pixel2meter / 2, texture.height * Config.pixel2meter / 2);
+        sd.shape = Box(Config.item.width * Config.pixel2meter / 2, Config.item.height * Config.pixel2meter / 2);
         sd.isSensor = true;
         this.body.createFixture(sd);
         let physicalPos = GameUtils.renderPos2PhysicsPos(renderPos);
@@ -26,6 +27,7 @@ export default class Item {
 
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
+        this.world.registerEvent("animation-frame", this);
     }
 
     onBeginContact(contact, anotherFixture) {
@@ -40,6 +42,14 @@ export default class Item {
             GameUtils.destroyPhysicalSprite(this);
             App.dispatchEvent("AteItem", Utils.randomChoose(Config.randomItemList));
         }
+    }
+
+    onAnimationFrame() {
+        this.frameIndex++;
+        if (this.frames[this.frameIndex] === undefined) {
+            this.frameIndex = 0;
+        }
+        this.sprite.texture = this.frames[this.frameIndex];
     }
 
     destroy() {

@@ -27,7 +27,7 @@
     planeAngularVelocity: Math.PI / 180 * 4,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
-    // 陨石物理半径
+    // 陨石物理半径（米）
     meteorRadius: 1.71875,
     // 陨石生成时的最小速度
     meteorMinVelocity: 10,
@@ -100,9 +100,15 @@
             "images/worm-1.png",
             "images/worm-2.png",
             "images/worm-3.png",
+            "images/worm-2.png",
         ],
         heart: "images/red-heart.png",
-        item: "images/random-item.png",
+        item: [
+            "images/random-item-1.png",
+            "images/random-item-2.png",
+            "images/random-item-3.png",
+            "images/random-item-4.png",
+        ],
         electricSaw: "images/electric-saw.png",
         bomb: "images/bomb.png",
         bombExplode: [
@@ -118,11 +124,6 @@
             "images/plane-explode-3.png",
             "images/plane-explode-4.png",
             "images/plane-explode-5.png",
-        ],
-        wormExplode: [
-            "images/worm-explode-1.png",
-            "images/worm-explode-2.png",
-            "images/worm-explode-3.png",
         ],
         meteorExplode: [
             "images/meteor-explode-1.png",
@@ -143,6 +144,27 @@
         trail: "sounds/trail.mp3",
         esRotate: "sounds/electric-saw-rotate.mp3",
     },
+    // 红心相关配置
+    worm: {
+        // 宽度(像素)
+        width: 110,
+        // 高度(像素)
+        height: 35,
+    },
+    // 红心相关配置
+    heart: {
+        // 宽度(像素)
+        width: 45,
+        // 高度(像素)
+        height: 35,
+    },
+    // 物品相关配置
+    item: {
+        // 宽度(像素)
+        width: 75,
+        // 高度(像素)
+        height: 100,
+    },
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
@@ -155,6 +177,8 @@
         angularVelocity: Math.PI / 180 * 10,
         // 同时能存在的最大数量
         maxCount: 5,
+        // 半径(像素)
+        radius: 35,
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
@@ -179,6 +203,10 @@
         collideTimes: 3,
         // 距离飞船的距离
         distance: 100,
+        // 宽度(像素)
+        width: 25,
+        // 高度(像素)
+        height: 50,
     },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
@@ -199,9 +227,9 @@
     // 背景云相关配置
     cloud: {
         // 云每帧的最小速度
-        minSpeed: 1,
+        minSpeed: 0.2,
         // 云每帧的最大速度
-        maxSpeed: 2
+        maxSpeed: 0.4
     },
     // 随即出来的道具类型
     randomItemList: [

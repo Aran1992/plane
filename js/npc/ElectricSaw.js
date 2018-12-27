@@ -17,7 +17,7 @@ export default class ElectricSaw {
         this.sprite.position.set(renderPos.x, renderPos.y);
 
         this.body = this.world.createDynamicBody();
-        let esBodyRadius = texture.width * Config.pixel2meter / 2;
+        let esBodyRadius = Config.electricSaw.radius * Config.pixel2meter;
         this.body.createFixture(Circle(esBodyRadius), {friction: 0, density: Config.electricSaw.density});
         this.body.setPosition(GameUtils.renderPos2PhysicsPos(renderPos));
         this.body.setUserData(this);
