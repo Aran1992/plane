@@ -129,6 +129,7 @@
             "images/meteor-explode-1.png",
             "images/meteor-explode-2.png",
             "images/meteor-explode-3.png",
+            "images/meteor-explode-4.png",
         ],
         shield: "images/shield.png",
         rocker: "images/rocker.png",
