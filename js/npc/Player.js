@@ -78,7 +78,7 @@ export default class Player extends Component {
             this.explode();
         } else {
             if (this._contacted) {
-                if (this._scale > 0) {
+                if (!this._takenBomb && !this._invincible && this._scale > 0) {
                     this._scale--;
                     this._setScale(this._scale);
                 }
