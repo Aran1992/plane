@@ -49,7 +49,7 @@ function deleteAll(path) {
     }
 }
 
-deleteAll("wx");
+// deleteAll("wx");
 copyDir("images", "wx\\");
 copyDir("sounds", "wx\\");
 copyDir("js", "wx\\");
