@@ -25,10 +25,10 @@ export default class Player extends Component {
         let sprite = new Sprite();
         this.sprite = sprite;
         this.container.addChild(sprite);
-        sprite.anchor.set(0.6, 0.5);
+        sprite.anchor.set(0.55, 0.5);
         sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
 
-        this.frames = resources.planeScaleTexture[0];
+        this.frames = Config.imagePath.rocket.map(path => resources[path].texture);
         this.frameIndex = 0;
 
         let body = this.world.createDynamicBody();
@@ -78,7 +78,7 @@ export default class Player extends Component {
             this.explode();
         } else {
             if (this._contacted) {
-                if (this._scale > 0) {
+                if (!this._takenBomb && !this._invincible && this._scale > 0) {
                     this._scale--;
                     this._setScale(this._scale);
                 }
@@ -237,16 +237,17 @@ export default class Player extends Component {
         return this.destroyed;
     }
 
-    _setScale(scale) {
-        this.frames = resources.planeScaleTexture[scale];
+    _setScale(scaleLevel) {
+        let spriteScale = Config.planeScaleList[scaleLevel] / Config.planeBaseScale;
+        this.sprite.scale.set(spriteScale, spriteScale);
         this._updateFrame();
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
         }
-        let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scale] / 2;
+        let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scaleLevel] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
-            {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scale], 2)});
-        this.gameScene.setLifeCount(scale + 1);
+            {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scaleLevel], 2)});
+        this.gameScene.setLifeCount(scaleLevel + 1);
     }
 
     _createElectricSaw() {
