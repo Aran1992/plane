@@ -131,6 +131,7 @@
             "images/meteor-explode-1.png",
             "images/meteor-explode-2.png",
             "images/meteor-explode-3.png",
+            "images/meteor-explode-4.png",
         ],
         shield: "images/shield.png",
         rocker: "images/rocker.png",
@@ -184,11 +185,11 @@
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
+        15,
         47.5,
-        102.5,
-        202.5,
-        277.5,
-        277.5,
+        130,
+        214,
+        252,
     ],
     // 混乱相关配置
     confused: {
