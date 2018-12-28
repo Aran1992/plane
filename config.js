@@ -76,6 +76,8 @@
     planeInvincibleTwinkleInterval: 8,
     // 飞机无敌闪烁透明度（0-1）
     planeInvincibleAlpha: 0.5,
+    // 飞机原始放大尺寸
+    planeBaseScale: 5,
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
@@ -89,7 +91,7 @@
         terrain3: "images/terrain-3.png",
         star: "images/star.png",
         bg: "images/bg.png",
-        originPlane: [
+        rocket: [
             "images/rocket-1.png",
             "images/rocket-2.png",
             "images/rocket-3.png",
