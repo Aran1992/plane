@@ -136,6 +136,12 @@
         shield: "images/shield.png",
         rocker: "images/rocker.png",
         rockerBottom: "images/rocker-bottom.png",
+        title: "images/title.png",
+        startButton: "images/start-button.png",
+        restartButton: "images/restart-button.png",
+        mainButton: "images/main-button.png",
+        shareButton: "images/share-button.png",
+        adButton: "images/ad-button.png",
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -241,6 +247,37 @@
         "Shield",
         "Confused",
     ],
+    startScene: {
+        title: {
+            position: {
+                y: 100
+            }
+        },
+    },
+    gameOverScene: {
+        restartButton: {
+            position: {
+                y: 540
+            }
+        },
+        mainButton: {
+            position: {
+                y: 740
+            }
+        },
+        adButton: {
+            position: {
+                x: 1800,
+                y: 750
+            }
+        },
+        shareButton: {
+            position: {
+                x: 1800,
+                y: 950
+            }
+        },
+    },
     bgJson: [
         {
             "x": 977,

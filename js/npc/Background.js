@@ -7,7 +7,6 @@ export default class Background {
         this.world = world;
         this.container = container;
 
-
         let texture = resources[Config.imagePath.bg].texture;
         let bgSprite = new Sprite(texture);
         this.container.addChild(bgSprite);

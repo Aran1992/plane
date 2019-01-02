@@ -18,22 +18,50 @@ export default class GameOverScene extends Scene {
         gameOverText.position.set(Config.designWidth / 2, Config.designHeight / 9 * 3);
         this.gameOverText = gameOverText;
 
-        textStyle = new TextStyle({fontSize: 100, fill: 0x0000ff});
-        let restartText = new Text("重新开始", textStyle);
-        this.addChild(restartText);
-        restartText.anchor.set(0.5, 0.5);
-        restartText.position.set(Config.designWidth / 2, Config.designHeight / 9 * 6);
-        restartText.interactive = true;
-        restartText.buttonMode = true;
-        restartText.on("pointerdown", this.onClickRestartText.bind(this));
+        this.createButton(
+            Config.imagePath.restartButton,
+            App.sceneWidth / 2,
+            Config.gameOverScene.restartButton.position.y,
+            this.onClickRestart.bind(this)
+        );
+        this.createButton(
+            Config.imagePath.mainButton,
+            App.sceneWidth / 2,
+            Config.gameOverScene.mainButton.position.y,
+            this.onClickMain.bind(this)
+        );
+        this.createButton(
+            Config.imagePath.adButton,
+            Config.gameOverScene.adButton.position.x,
+            Config.gameOverScene.adButton.position.y,
+            this.onClickAd.bind(this)
+        );
+        this.createButton(
+            Config.imagePath.shareButton,
+            Config.gameOverScene.shareButton.position.x,
+            Config.gameOverScene.shareButton.position.y,
+            this.onClickShare.bind(this)
+        );
     }
 
     onShow(survivalTime) {
         this.gameOverText.text = `游戏结束，生存时间为：${Math.floor(survivalTime / Config.fps * 100) / 100}秒`;
     }
 
-    onClickRestartText() {
+    onClickRestart() {
         App.hideScene("GameOverScene");
         App.dispatchEvent("Restart");
+    }
+
+    onClickMain() {
+        App.hideScene("GameOverScene");
+        App.hideScene("GameScene");
+        App.showScene("StartScene");
+    }
+
+    onClickShare() {
+    }
+
+    onClickAd() {
     }
 }

@@ -50,8 +50,8 @@ export default class GameScene extends Scene {
         }
 
         this.createSurvivalTimeText();
-
         this.createLifeText();
+        this.createTakenBombIcon();
 
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
@@ -61,26 +61,6 @@ export default class GameScene extends Scene {
         this.gameEnded = false;
         this.gameContainer.removeChildren();
         this.gameContainer.position.set(0, 0);
-        let pathList = Utils.recursiveValues(Config.imagePath);
-        App.loadResources(pathList, this.onLoaded.bind(this));
-    }
-
-    onRestart() {
-        this.heartMgr.destroy();
-        this.heartMgr = undefined;
-        this.itemMgr.destroy();
-        this.itemMgr = undefined;
-        this.animationMgr.destroy();
-        this.animationMgr = undefined;
-        this.background.destroy();
-        this.background = undefined;
-        this.lifeCount = 1;
-        App.ticker.remove(this.onTickHandler);
-        this.onShow();
-    }
-
-    onLoaded() {
-        this.createTakenBombIcon();
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.world, this.gameContainer);
         this.wall = new Wall(this.world);
@@ -92,6 +72,24 @@ export default class GameScene extends Scene {
         this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
+    }
+
+    onRestart() {
+        this.onHide();
+        this.onShow();
+    }
+
+    onHide() {
+        this.heartMgr.destroy();
+        this.heartMgr = undefined;
+        this.itemMgr.destroy();
+        this.itemMgr = undefined;
+        this.animationMgr.destroy();
+        this.animationMgr = undefined;
+        this.background.destroy();
+        this.background = undefined;
+        this.lifeCount = 1;
+        App.ticker.remove(this.onTickHandler);
     }
 
     onTick(delta) {
@@ -216,16 +214,16 @@ export default class GameScene extends Scene {
     }
 
     createTakenBombIcon() {
-        if (this._takenBombIcon === undefined) {
-            this._takenBombIcon = Sprite.fromImage("images/bomb.png");
-            this._takenBombIcon.anchor.set(1, 0);
-            this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5, Config.bombIconPos.y);
-            this._takenBombIcon.visible = false;
-            this.addChild(this._takenBombIcon);
-        }
+        this._takenBombIcon = Sprite.fromImage("images/bomb.png");
+        this._takenBombIcon.anchor.set(1, 0);
+        this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5, Config.bombIconPos.y);
+        this._takenBombIcon.visible = false;
+        this.addChild(this._takenBombIcon);
     }
 
     showTakenBombIcon(visible) {
         this._takenBombIcon.visible = visible;
     }
 }
+
+GameScene.resPathList = Utils.recursiveValues(Config.imagePath);

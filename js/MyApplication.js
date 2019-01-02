@@ -2,6 +2,7 @@ import {Application, loader, resources} from "./libs/pixi-wrapper.js";
 import GameScene from "./scenes/GameScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 import Utils from "./utils/Utils";
+import StartScene from "./scenes/StartScene";
 
 export default class MyApplication extends Application {
     constructor(args) {
@@ -20,6 +21,7 @@ export default class MyApplication extends Application {
         this.sceneClassTable = {
             "GameScene": GameScene,
             "GameOverScene": GameOverScene,
+            "StartScene": StartScene,
         };
         this.sceneTable = {};
 
@@ -35,8 +37,12 @@ export default class MyApplication extends Application {
             let scene = this.sceneClassTable[sceneName];
             this.sceneTable[sceneName] = new scene();
             this.scenesContainer.addChild(this.sceneTable[sceneName]);
+            this.sceneTable[sceneName].create(() => {
+                this.sceneTable[sceneName].show(...args);
+            });
+        } else {
+            this.sceneTable[sceneName].show(...args);
         }
-        this.sceneTable[sceneName].show(...args);
     }
 
     hideScene(sceneName) {
