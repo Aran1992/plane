@@ -22,9 +22,9 @@
     // 飞机的速度
     planeVelocity: 30,
     // 飞机的推进力
-    planeEngineForce: 19,
+    planeEngineForce: 33,
     // 飞机旋转的速度
-    planeAngularVelocity: Math.PI / 180 * 4,
+    planeAngularVelocity: Math.PI / 180 * 6,
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
     // 陨石物理半径（米）
@@ -38,7 +38,7 @@
     // 初始化时生成陨石的最大数量
     meteorMaxCount: 20,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
-    meteorRestitution: 1.06,
+    meteorRestitution: 1.00,
     // 陨石的旋转速度
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
@@ -47,9 +47,9 @@
     meteor: {
         // 陨石数量随着时间的裱花
         countBySeconds: {
-            "15": 50,
-            "30": 60,
-            "60": 80,
+            "30": 30,
+            "60": 40,
+            "90": 80,
         }
     },
     // 每帧刷新陨石的最小数量
@@ -57,11 +57,11 @@
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
     // 虫子的旋转速度
-    wormAngularVelocity: Math.PI / 180 * 5,
+    wormAngularVelocity: Math.PI / 180 * 4,
     // 虫子的速度
-    wormVelocity: 21,
+    wormVelocity: 33,
     // 虫子的推进力
-    wormEngineForce: 10,
+    wormEngineForce: 11,
     // 初始化时生成虫子的最小数量
     wormMinCount: 1,
     // 初始化时生成虫子的最大数量
@@ -81,7 +81,7 @@
     // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
     planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.23,
+    wormDropHeartProbability: 0.20,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -171,9 +171,9 @@
     // 电锯相关配置
     electricSaw: {
         // 电锯密度（越大越重）
-        density: 0.5,
+        density: 0.01,
         // 可以进行几次碰撞
-        collideTimes: 6,
+        collideTimes: 12,
         // 距离飞船的距离
         distance: 150,
         // 距离飞船的距离
@@ -185,7 +185,7 @@
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
-        15,
+        30,
         47.5,
         130,
         214,
@@ -194,16 +194,16 @@
     // 混乱相关配置
     confused: {
         // 持续帧数
-        countdown: 300,
+        countdown: 500,
         // 开始混乱无敌帧数
-        startInvincibleFrames: 60,
+        startInvincibleFrames: 300,
         // 结束混乱无敌帧数
-        endInvincibleFrames: 60,
+        endInvincibleFrames: 100,
     },
     // 盾牌相关配置
     shield: {
         // 可以进行几次碰撞
-        collideTimes: 3,
+        collideTimes: 8,
         // 距离飞船的距离
         distance: 100,
         // 宽度(像素)
@@ -212,11 +212,11 @@
         height: 50,
     },
     // 刷新道具的时间间隔
-    refreshItemInterval: 10,
+    refreshItemInterval: 6.5,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
-    frameInterval: 10,
+    frameInterval: 8,
     // 炸弹图标显示位置
     bombIconPos: {
         x: 10,
@@ -225,14 +225,14 @@
     // 背景星星相关配置
     star: {
         // 数量
-        count: 50,
+        count: 35,
     },
     // 背景云相关配置
     cloud: {
         // 云每帧的最小速度
-        minSpeed: 0.2,
+        minSpeed: 0.1,
         // 云每帧的最大速度
-        maxSpeed: 0.4
+        maxSpeed: 0.2
     },
     // 随即出来的道具类型
     randomItemList: [
