@@ -1,5 +1,5 @@
 import Scene from "../base/Scene";
-import {resources, Sprite} from "../libs/pixi-wrapper";
+import {Container, resources, Sprite} from "../libs/pixi-wrapper";
 import Config from "../../config";
 import Utils from "../utils/Utils";
 import Background from "../npc/Background";
@@ -9,7 +9,14 @@ import {Vec2} from "../libs/planck-wrapper";
 export default class StartScene extends Scene {
     onCreate() {
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
-        this.background = new Background(this.world, this);
+
+        this.gameContainer = new Container();
+        this.addChild(this.gameContainer);
+        this.gameContainer.position.set((Config.designWidth - Config.gameSceneWidth) / 2,
+            (Config.designHeight - Config.gameSceneHeight) / 2);
+
+        this.background = new Background(this.world, this.gameContainer);
+
         this.title = new Sprite(resources[Config.imagePath.title].texture);
         this.addChild(this.title);
         this.title.anchor.set(0.5, 0);
