@@ -99,7 +99,7 @@ export default class StartScene extends Scene {
             worm.animationSpeed = 1 / Config.frameInterval;
             worm.anchor.set(0.5, 0.5);
             let y = Utils.randomInRange(-Config.startScene.worm.halfYRange, Config.startScene.worm.halfYRange);
-            let x = -Utils.randomInRange(200, 500);
+            let x = -Utils.randomInRange(Config.startScene.worm.minX, Config.startScene.worm.maxX);
             worm.position.set(x, y);
             if (x < maxWormX) {
                 maxWormX = x;

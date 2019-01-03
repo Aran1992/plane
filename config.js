@@ -259,6 +259,8 @@
         worm: {
             minCount: 2,
             maxCount: 4,
+            minX: 200,
+            maxX: 500,
             halfYRange: 200,
         }
     },
