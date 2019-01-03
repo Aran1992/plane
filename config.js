@@ -253,6 +253,14 @@
                 y: 100
             }
         },
+        player: {
+            velocity: 10
+        },
+        worm: {
+            minCount: 2,
+            maxCount: 4,
+            halfYRange: 200,
+        }
     },
     gameOverScene: {
         restartButton: {

@@ -45,6 +45,10 @@ export default class Utils {
         return min + Math.random() * (max - min);
     }
 
+    static randomIntInRange(min, max) {
+        return min + Math.floor(Math.random() * (max + 1 - min));
+    }
+
     static randomChoose(list) {
         return list[Math.floor(Math.random() * list.length)];
     }
