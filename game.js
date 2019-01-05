@@ -34,4 +34,4 @@ app.view.style.position = "absolute";
 app.view.style.left = (window.innerWidth - app.view.offsetWidth) / 2 + "px";
 app.view.style.top = (window.innerHeight - app.view.offsetHeight) / 2 + "px";
 
-app.showScene("GameScene");
+App.showScene("StartScene");
