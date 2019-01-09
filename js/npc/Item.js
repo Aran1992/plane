@@ -16,31 +16,32 @@ export default class Item {
         this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position.set(renderPos.x, renderPos.y);
 
-        this.body = this.world.createBody();
-        let sd = {};
-        sd.shape = Box(Config.item.width * Config.pixel2meter / 2, Config.item.height * Config.pixel2meter / 2);
-        sd.isSensor = true;
-        this.body.createFixture(sd);
+        this.body = this.world.createDynamicBody();
+        let shape = Box(Config.item.width * Config.pixel2meter / 2, Config.item.height * Config.pixel2meter / 2);
+        this.body.createFixture(shape, {density: 1});
         let physicalPos = GameUtils.renderPos2PhysicsPos(renderPos);
         this.body.setPosition(physicalPos);
         this.body.setUserData(this);
 
-        this.world.registerEvent("begin-contact", this);
+        this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("step", this);
         this.world.registerEvent("animation-frame", this);
     }
 
-    onBeginContact(contact, anotherFixture) {
+    onPreSolve(contact, anotherFixture) {
         if (!(anotherFixture.getUserData() instanceof window.Shield)
             && anotherFixture.getBody().getUserData() instanceof window.Player) {
             this.ate = true;
         }
+        contact.setEnabled(false);
     }
 
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
             App.dispatchEvent("AteItem", Utils.randomChoose(Config.randomItemList));
+        } else {
+            GameUtils.syncSpriteWithBody(this);
         }
     }
 

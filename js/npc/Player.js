@@ -8,6 +8,7 @@ import ElectricSaw from "./ElectricSaw";
 import BombExplode from "./BombExplode";
 import Shield from "./Shield";
 import MusicMgr from "../mgr/MusicMgr";
+import Magnet from "./Magnet";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -49,6 +50,8 @@ export default class Player extends Component {
         this.world.registerEvent("step", this);
 
         this._invincible = false;
+
+        this._createMagnet();
 
         // setTimeout(() => {
         //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
@@ -122,6 +125,10 @@ export default class Player extends Component {
 
             if (this._shield && !this._shield.destroyed) {
                 this._shield.onStep();
+            }
+
+            if (this._magnet ) {
+                this._magnet.onStep();
             }
         }
 
@@ -280,6 +287,12 @@ export default class Player extends Component {
     _startInvincible(invincibleFrame) {
         this._invincible = true;
         this._invincibleCount = invincibleFrame;
+    }
+
+    _createMagnet() {
+        if (this._magnet === undefined) {
+            this._magnet = new Magnet(this.sprite);
+        }
     }
 }
 
