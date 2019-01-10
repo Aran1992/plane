@@ -261,6 +261,7 @@
         "Bomb",
         "Shield",
         "Confused",
+        "Magnet",
     ],
     startScene: {
         title: {
