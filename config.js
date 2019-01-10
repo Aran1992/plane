@@ -142,6 +142,7 @@
         mainButton: "images/main-button.png",
         shareButton: "images/share-button.png",
         adButton: "images/ad-button.png",
+        magnet: "images/magnet.png",
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -222,7 +223,9 @@
         // 半径(像素)
         radius: 500,
         // 靠近的速度
-        velocity: 0.5,
+        velocity: 0.6,
+        // 持续时间（单位秒）
+        duration: 5,
     },
     // 刷新道具的时间间隔
     refreshItemInterval: 10,
@@ -233,6 +236,11 @@
     // 炸弹图标显示位置
     bombIconPos: {
         x: 10,
+        y: 10
+    },
+    // 磁铁图标显示位置
+    magnetIconPos: {
+        x: 170,
         y: 10
     },
     // 背景星星相关配置

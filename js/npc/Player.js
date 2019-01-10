@@ -51,8 +51,6 @@ export default class Player extends Component {
 
         this._invincible = false;
 
-        this._createMagnet();
-
         // setTimeout(() => {
         //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
         // }, 0);
@@ -123,12 +121,20 @@ export default class Player extends Component {
             this.frameIndex++;
             this._updateFrame();
 
-            if (this._shield && !this._shield.destroyed) {
-                this._shield.onStep();
+            if (this._shield) {
+                if (this._shield.destroyed) {
+                    this._shield = undefined;
+                } else {
+                    this._shield.onStep();
+                }
             }
 
-            if (this._magnet ) {
-                this._magnet.onStep();
+            if (this._magnet) {
+                if (this._magnet.destroyed) {
+                    this._magnet = undefined;
+                } else {
+                    this._magnet.onStep();
+                }
             }
         }
 
@@ -166,6 +172,11 @@ export default class Player extends Component {
             this._shield.destroy();
         }
         this._shield = undefined;
+
+        if (this._magnet && !this._magnet.destroyed) {
+            this._magnet.destroy();
+        }
+        this._magnet = undefined;
 
         if (this._confusedAudio) {
             this._confusedAudio.pause();
@@ -264,7 +275,7 @@ export default class Player extends Component {
     }
 
     _createShield() {
-        if (this._shield === undefined) {
+        if (this._shield === undefined || this._shield.destroyed) {
             this._shield = new Shield(this);
         }
     }
@@ -290,7 +301,7 @@ export default class Player extends Component {
     }
 
     _createMagnet() {
-        if (this._magnet === undefined) {
+        if (this._magnet === undefined || this._magnet.destroyed) {
             this._magnet = new Magnet(this.sprite);
         }
     }

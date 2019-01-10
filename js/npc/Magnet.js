@@ -6,11 +6,13 @@ import GameUtils from "../utils/GameUtils";
 export default class Magnet {
     constructor(sprite) {
         this.sprite = sprite;
+        this.countDown = Config.magnet.duration * Config.fps;
+        App.getScene("GameScene").showTakenMagnetIcon(true);
     }
 
     onStep() {
         this.itemMgr = App.getScene("GameScene").itemMgr;
-        if (this.itemMgr) {
+        if (this.itemMgr && this.itemMgr.item) {
             let item = this.itemMgr.item;
             let distance = Utils.calcPointsDistance(item.sprite.position, this.sprite.position);
             let itemRadius = item.sprite.width > item.sprite.height ? item.sprite.width : item.sprite.height;
@@ -21,5 +23,14 @@ export default class Magnet {
                 item.body.setPosition(Vec2(x, y));
             }
         }
+        this.countDown--;
+        if (this.countDown === 0) {
+            this.destroy();
+        }
+    }
+
+    destroy() {
+        App.getScene("GameScene").showTakenMagnetIcon(false);
+        this.destroyed = true;
     }
 }
