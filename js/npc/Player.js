@@ -17,7 +17,6 @@ export default class Player extends Component {
         this.gameScene = App.getScene("GameScene");
 
         this.eventMgr = this.createComponent(EventMgr);
-        this.eventMgr.registerEvent("AteHeart", this.onAteHeart.bind(this));
         this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
 
         this.world = world;
@@ -222,6 +221,10 @@ export default class Player extends Component {
             }
             case "Shield": {
                 this._createShield();
+                break;
+            }
+            case "Heart": {
+                this.onAteHeart();
                 break;
             }
         }

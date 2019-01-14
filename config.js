@@ -143,6 +143,10 @@
         shareButton: "images/share-button.png",
         adButton: "images/ad-button.png",
         magnet: "images/magnet.png",
+        coin: [
+            "images/coin-1.png",
+            "images/coin-2.png",
+        ],
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -167,6 +171,15 @@
         width: 45,
         // 高度(像素)
         height: 35,
+    },
+    // 金币相关配置
+    coin: {
+        // 宽度(像素)
+        width: 25,
+        // 高度(像素)
+        height: 50,
+        // 掉落概率（0-1）
+        probability: 0.5,
     },
     // 物品相关配置
     item: {

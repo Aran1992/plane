@@ -15,6 +15,7 @@ import HeartMgr from "../mgr/HeartMgr";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
+import DataMgr from "../mgr/DataMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -105,7 +106,8 @@ export default class GameScene extends Scene {
             this.debugText.text = `FPS:${Math.floor(delta * Config.fps)}
 虫子数量：${this.wormMgr.getWormCount()}
 陨石数量：${this.meteorMgr.getMeteorCount()}
-红心数量：${this.heartMgr.getHeartCount()}`;
+红心数量：${this.heartMgr.getHeartCount()}
+持有金币：${DataMgr.get("coin", 0)}`;
         }
 
         let x = Config.designWidth / 2 - this.plane.sprite.x,
