@@ -1,7 +1,7 @@
 class DataMgr_ {
     constructor() {
         if (localStorage.data) {
-            this.dataTable = JSON.parse(localStorage.data);
+            this.dataTable = JSON.parse(localStorage.getItem("data"));
         } else {
             this.dataTable = {};
         }
@@ -9,7 +9,7 @@ class DataMgr_ {
 
     set(key, value) {
         this.dataTable[key] = value;
-        localStorage.data = JSON.stringify(this.dataTable);
+        localStorage.setItem("data", JSON.stringify(this.dataTable));
     }
 
     get(key, defaultValue) {

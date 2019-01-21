@@ -97,6 +97,12 @@
             "images/rocket-3.png",
             "images/rocket-4.png",
         ],
+        plane: [
+            "images/plane-1.png",
+        ],
+        spacecraft: [
+            "images/spacecraft-1.png",
+        ],
         meteor: "images/meteorite.png",
         worm: [
             "images/worm-1.png",
@@ -143,6 +149,7 @@
         shareButton: "images/share-button.png",
         adButton: "images/ad-button.png",
         magnet: "images/magnet.png",
+        leftButton: "images/left-button.png",
         coin: [
             "images/coin-1.png",
             "images/coin-2.png",
@@ -276,14 +283,32 @@
         "Confused",
         "Magnet",
     ],
+    // 飞机列表
+    planeList: [
+        {
+            id: 1,
+            name: "火箭",
+            code: "rocket",
+        },
+        {
+            id: 2,
+            name: "飞船",
+            code: "spacecraft",
+        },
+        {
+            id: 3,
+            name: "战机",
+            code: "plane",
+        },
+    ],
     startScene: {
         title: {
             position: {
-                y: 100
+                y: 100,
             }
         },
         player: {
-            velocity: 10
+            velocity: 10,
         },
         worm: {
             minCount: 2,
@@ -291,7 +316,20 @@
             minX: 200,
             maxX: 500,
             halfYRange: 200,
-        }
+        },
+        toggleButton: {
+            offset: 400,
+        },
+        nameText: {
+            fontSize: 60,
+            fill: "white",
+            offset: 400,
+        },
+        countText: {
+            fontSize: 30,
+            fill: "white",
+            offset: 350,
+        },
     },
     gameOverScene: {
         restartButton: {
