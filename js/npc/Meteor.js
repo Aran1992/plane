@@ -3,10 +3,12 @@ import {resources, Sprite} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import GameUtils from "../utils/GameUtils";
 import MusicMgr from "../mgr/MusicMgr";
+import Coin from "./Coin";
 
 export default class Meteor {
     constructor(world, container, init) {
         this.world = world;
+        this.container = container;
 
         let sprite = new Sprite(resources[Config.imagePath.meteor].texture);
         this.sprite = sprite;
@@ -64,6 +66,15 @@ export default class Meteor {
     }
 
     onExplode() {
+        if (Math.random() < Config.coin.probability) {
+            let pos = this.body.getPosition();
+            new Coin(this.world, this.container, Vec2(pos.x, pos.y));
+        }
+        let gameScene = App.getScene("GameScene");
+        gameScene.animationMgr.createAnimation(Config.imagePath.meteorExplode, this.sprite.position, this.sprite.rotation + Math.PI);
+        if (gameScene.isPointInView(this.sprite.position)) {
+            MusicMgr.playSound(Config.soundPath.enemyExplode);
+        }
         this.destroy();
     }
 

@@ -2,12 +2,6 @@ import Config from "../../config";
 import {Vec2} from "../libs/planck-wrapper";
 import {Rectangle, Texture} from "../libs/pixi-wrapper";
 
-const worldEventList = [
-    "pre-solve",
-    "begin-contact",
-    "step"
-];
-
 export default class GameUtils {
     static syncSpriteWithBody(obj) {
         let pos = obj.body.getPosition();
@@ -18,7 +12,7 @@ export default class GameUtils {
     static destroyPhysicalSprite(obj) {
         obj.sprite.parent.removeChild(obj.sprite);
         obj.world.destroyBody(obj.body);
-        worldEventList.forEach(event => obj.world.unregisterEvent(event, obj));
+        obj.world.unregisterAllEvent(obj);
         obj.destroyed = true;
     }
 

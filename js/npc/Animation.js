@@ -11,7 +11,7 @@ export default class Animation {
         this.container.addChild(this.sprite);
         this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position.set(pos.x, pos.y);
-        this.sprite.rotation = rotation;
+        this.sprite.rotation = rotation || 0;
         this.world.registerEvent("step", this);
     }
 

@@ -27,6 +27,14 @@ export default class MyWorld {
         Utils.removeItemFromArray(this.eventTable[event], item);
     }
 
+    unregisterAllEvent(item) {
+        for (let event in this.eventTable) {
+            if (this.eventTable.hasOwnProperty(event)) {
+                Utils.removeItemFromArray(this.eventTable[event], item)
+            }
+        }
+    }
+
     onPreSolve(contact) {
         let fa = contact.getFixtureA();
         let fb = contact.getFixtureB();

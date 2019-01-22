@@ -8,6 +8,7 @@ import ElectricSaw from "./ElectricSaw";
 import BombExplode from "./BombExplode";
 import Shield from "./Shield";
 import MusicMgr from "../mgr/MusicMgr";
+import Magnet from "./Magnet";
 
 export default class Player extends Component {
     constructor(world, container) {
@@ -16,7 +17,6 @@ export default class Player extends Component {
         this.gameScene = App.getScene("GameScene");
 
         this.eventMgr = this.createComponent(EventMgr);
-        this.eventMgr.registerEvent("AteHeart", this.onAteHeart.bind(this));
         this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
 
         this.world = world;
@@ -120,8 +120,20 @@ export default class Player extends Component {
             this.frameIndex++;
             this._updateFrame();
 
-            if (this._shield && !this._shield.destroyed) {
-                this._shield.onStep();
+            if (this._shield) {
+                if (this._shield.destroyed) {
+                    this._shield = undefined;
+                } else {
+                    this._shield.onStep();
+                }
+            }
+
+            if (this._magnet) {
+                if (this._magnet.destroyed) {
+                    this._magnet = undefined;
+                } else {
+                    this._magnet.onStep();
+                }
             }
         }
 
@@ -159,6 +171,11 @@ export default class Player extends Component {
             this._shield.destroy();
         }
         this._shield = undefined;
+
+        if (this._magnet && !this._magnet.destroyed) {
+            this._magnet.destroy();
+        }
+        this._magnet = undefined;
 
         if (this._confusedAudio) {
             this._confusedAudio.pause();
@@ -204,6 +221,10 @@ export default class Player extends Component {
             }
             case "Shield": {
                 this._createShield();
+                break;
+            }
+            case "Heart": {
+                this.onAteHeart();
                 break;
             }
         }
@@ -257,7 +278,7 @@ export default class Player extends Component {
     }
 
     _createShield() {
-        if (this._shield === undefined) {
+        if (this._shield === undefined || this._shield.destroyed) {
             this._shield = new Shield(this);
         }
     }
@@ -280,6 +301,12 @@ export default class Player extends Component {
     _startInvincible(invincibleFrame) {
         this._invincible = true;
         this._invincibleCount = invincibleFrame;
+    }
+
+    _createMagnet() {
+        if (this._magnet === undefined || this._magnet.destroyed) {
+            this._magnet = new Magnet(this.sprite);
+        }
     }
 }
 

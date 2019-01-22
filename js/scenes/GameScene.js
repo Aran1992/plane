@@ -15,6 +15,8 @@ import HeartMgr from "../mgr/HeartMgr";
 import {resources, Sprite} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
+import DataMgr from "../mgr/DataMgr";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -52,6 +54,7 @@ export default class GameScene extends Scene {
         this.createSurvivalTimeText();
         this.createLifeText();
         this.createTakenBombIcon();
+        this.createTakenMagnetIcon();
 
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
@@ -72,6 +75,7 @@ export default class GameScene extends Scene {
         this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
+        MusicMgr.playBGM(Config.soundPath.bgm);
     }
 
     onRestart() {
@@ -90,6 +94,7 @@ export default class GameScene extends Scene {
         this.background = undefined;
         this.lifeCount = 1;
         App.ticker.remove(this.onTickHandler);
+        MusicMgr.pauseBGM();
     }
 
     onTick(delta) {
@@ -104,7 +109,8 @@ export default class GameScene extends Scene {
             this.debugText.text = `FPS:${Math.floor(delta * Config.fps)}
 虫子数量：${this.wormMgr.getWormCount()}
 陨石数量：${this.meteorMgr.getMeteorCount()}
-红心数量：${this.heartMgr.getHeartCount()}`;
+红心数量：${this.heartMgr.getHeartCount()}
+持有金币：${DataMgr.get("coin", 0)}`;
         }
 
         let x = Config.designWidth / 2 - this.plane.sprite.x,
@@ -216,13 +222,27 @@ export default class GameScene extends Scene {
     createTakenBombIcon() {
         this._takenBombIcon = Sprite.fromImage("images/bomb.png");
         this._takenBombIcon.anchor.set(1, 0);
-        this._takenBombIcon.position.set(Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5, Config.bombIconPos.y);
+        let x = Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5;
+        this._takenBombIcon.position.set(x, Config.bombIconPos.y);
         this._takenBombIcon.visible = false;
         this.addChild(this._takenBombIcon);
     }
 
     showTakenBombIcon(visible) {
         this._takenBombIcon.visible = visible;
+    }
+
+    createTakenMagnetIcon() {
+        this._takenMagnetIcon = Sprite.fromImage("images/magnet.png");
+        this._takenMagnetIcon.anchor.set(1, 0);
+        let x = Config.designWidth - Config.magnetIconPos.x - this.lifeText.width - 5;
+        this._takenMagnetIcon.position.set(x, Config.magnetIconPos.y);
+        this._takenMagnetIcon.visible = false;
+        this.addChild(this._takenMagnetIcon);
+    }
+
+    showTakenMagnetIcon(visible) {
+        this._takenMagnetIcon.visible = visible;
     }
 }
 

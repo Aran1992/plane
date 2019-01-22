@@ -36,7 +36,7 @@ export default class Heart {
     onStep() {
         if (this.ate) {
             GameUtils.destroyPhysicalSprite(this);
-            App.dispatchEvent("AteHeart");
+            App.dispatchEvent("AteItem","Heart");
         }
     }
 

@@ -97,6 +97,18 @@
             "images/rocket-3.png",
             "images/rocket-4.png",
         ],
+        plane: [
+            "images/plane-1.png",
+            "images/plane-2.png",
+            "images/plane-3.png",
+            "images/plane-4.png",
+        ],
+        spacecraft: [
+            "images/spacecraft-1.png",
+            "images/spacecraft-2.png",
+            "images/spacecraft-3.png",
+            "images/spacecraft-4.png",
+        ],
         meteor: "images/meteorite.png",
         worm: [
             "images/worm-1.png",
@@ -142,6 +154,12 @@
         mainButton: "images/main-button.png",
         shareButton: "images/share-button.png",
         adButton: "images/ad-button.png",
+        magnet: "images/magnet.png",
+        leftButton: "images/left-button.png",
+        coin: [
+            "images/coin-1.png",
+            "images/coin-2.png",
+        ],
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -152,6 +170,7 @@
         shoot: "sounds/shoot.mp3",
         trail: "sounds/trail.mp3",
         esRotate: "sounds/electric-saw-rotate.mp3",
+        bgm: "sounds/bgm.mp3",
     },
     // 红心相关配置
     worm: {
@@ -166,6 +185,15 @@
         width: 45,
         // 高度(像素)
         height: 35,
+    },
+    // 金币相关配置
+    coin: {
+        // 宽度(像素)
+        width: 25,
+        // 高度(像素)
+        height: 50,
+        // 掉落概率（0-1）
+        probability: 0.5,
     },
     // 物品相关配置
     item: {
@@ -217,6 +245,15 @@
         // 高度(像素)
         height: 50,
     },
+    // 磁铁相关配置
+    magnet: {
+        // 半径(像素)
+        radius: 500,
+        // 靠近的速度
+        velocity: 0.6,
+        // 持续时间（单位秒）
+        duration: 5,
+    },
     // 刷新道具的时间间隔
     refreshItemInterval: 6.5,
     // 刷新道具中心最少距离墙壁多少像素
@@ -226,6 +263,11 @@
     // 炸弹图标显示位置
     bombIconPos: {
         x: 10,
+        y: 10
+    },
+    // 磁铁图标显示位置
+    magnetIconPos: {
+        x: 170,
         y: 10
     },
     // 背景星星相关配置
@@ -246,15 +288,34 @@
         "Bomb",
         "Shield",
         "Confused",
+        "Magnet",
+    ],
+    // 飞机列表
+    planeList: [
+        {
+            id: 1,
+            name: "火箭",
+            code: "rocket",
+        },
+        {
+            id: 2,
+            name: "飞船",
+            code: "spacecraft",
+        },
+        {
+            id: 3,
+            name: "战机",
+            code: "plane",
+        },
     ],
     startScene: {
         title: {
             position: {
-                y: 100
+                y: 100,
             }
         },
         player: {
-            velocity: 10
+            velocity: 10,
         },
         worm: {
             minCount: 2,
@@ -262,7 +323,20 @@
             minX: 200,
             maxX: 500,
             halfYRange: 200,
-        }
+        },
+        toggleButton: {
+            offset: 400,
+        },
+        nameText: {
+            fontSize: 60,
+            fill: "white",
+            offset: 400,
+        },
+        countText: {
+            fontSize: 30,
+            fill: "white",
+            offset: 350,
+        },
     },
     gameOverScene: {
         restartButton: {
