@@ -51,8 +51,10 @@ export default class StartScene extends Scene {
         this.countText.anchor.set(0.5, 0.5);
         this.countText.position.set(App.sceneWidth / 2, App.sceneHeight / 2 - Config.startScene.countText.offset);
 
-        this.plane = this.selectLayer.addChild(new Sprite());
-        this.plane.texture = resources[Config.imagePath.rocket[0]].texture;
+        let textures = Config.imagePath.rocket.map(path => resources[path].texture);
+        this.plane = this.selectLayer.addChild(new AnimatedSprite(textures));
+        this.plane.animationSpeed = 0.1;
+        this.plane.play();
         this.plane.anchor.set(0.5, 0.5);
         this.plane.position.set(App.sceneWidth / 2, App.sceneHeight / 2);
         this.onClick(this.plane, this.onClickPlane.bind(this));
@@ -163,7 +165,8 @@ export default class StartScene extends Scene {
             let config = Config.planeList[this.index];
             this.nameText.text = config.name;
             this.countText.text = `${this.index + 1}/${Config.planeList.length}`;
-            this.plane.texture = resources[Config.imagePath[config.code][0]].texture;
+            this.plane.textures = Config.imagePath[config.code].map(path => resources[path].texture);
+            this.plane.play();
         }
     }
 
