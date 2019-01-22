@@ -99,9 +99,15 @@
         ],
         plane: [
             "images/plane-1.png",
+            "images/plane-2.png",
+            "images/plane-3.png",
+            "images/plane-4.png",
         ],
         spacecraft: [
             "images/spacecraft-1.png",
+            "images/spacecraft-2.png",
+            "images/spacecraft-3.png",
+            "images/spacecraft-4.png",
         ],
         meteor: "images/meteorite.png",
         worm: [
@@ -164,6 +170,7 @@
         shoot: "sounds/shoot.mp3",
         trail: "sounds/trail.mp3",
         esRotate: "sounds/electric-saw-rotate.mp3",
+        bgm: "sounds/bgm.mp3",
     },
     // 红心相关配置
     worm: {

@@ -16,6 +16,7 @@ import {resources, Sprite} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
 import DataMgr from "../mgr/DataMgr";
+import MusicMgr from "../mgr/MusicMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -74,6 +75,7 @@ export default class GameScene extends Scene {
         this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
+        MusicMgr.playBGM(Config.soundPath.bgm);
     }
 
     onRestart() {
@@ -92,6 +94,7 @@ export default class GameScene extends Scene {
         this.background = undefined;
         this.lifeCount = 1;
         App.ticker.remove(this.onTickHandler);
+        MusicMgr.pauseBGM();
     }
 
     onTick(delta) {
