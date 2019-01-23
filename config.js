@@ -17,14 +17,64 @@
     },
     // 摇杆半径
     rockerRadius: 90,
-    // 飞机船体的像素长度
-    planePixelLength: 17,
-    // 飞机的速度
-    planeVelocity: 30,
-    // 飞机的推进力
-    planeEngineForce: 33,
-    // 飞机旋转的速度
-    planeAngularVelocity: Math.PI / 180 * 6,
+    // 飞机列表
+    planeList: [
+        {
+            id: 1,
+            name: "火箭",
+            code: "rocket",
+            // 飞机船体的像素长度
+            planePixelLength: 17,
+            // 飞机的anchor
+            anchor: [0.55, 0.5],
+            // 飞机的速度
+            planeVelocity: 30,
+            // 飞机的推进力
+            planeEngineForce: 21,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 6,
+        },
+        {
+            id: 2,
+            name: "飞船",
+            code: "spacecraft",
+            // 飞机船体的像素长度
+            planePixelLength: 12,
+            // 飞机的anchor
+            anchor: [0.5, 0.43],
+            // 飞机的速度
+            planeVelocity: 33,
+            // 飞机的推进力
+            planeEngineForce: 20,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 不旋转飞机（1是不进行旋转，0是进行旋转）
+            noRotation: 1,
+        },
+        {
+            id: 3,
+            name: "战机",
+            code: "plane",
+            // 飞机船体的像素长度
+            planePixelLength: 17,
+            // 飞机的anchor
+            anchor: [0.58, 0.5],
+            // 飞机的速度
+            planeVelocity: 33,
+            // 飞机的推进力
+            planeEngineForce: 33,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+        },
+    ],
+    // 飞机无敌闪烁间隔帧数
+    planeInvincibleTwinkleInterval: 8,
+    // 飞机无敌闪烁透明度（0-1）
+    planeInvincibleAlpha: 0.5,
+    // 飞机原始放大尺寸
+    planeBaseScale: 5,
+    // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
+    planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子跟随飞机的位置是飞机几帧前的
     planePastPosLength: 15,
     // 陨石物理半径（米）
@@ -72,14 +122,6 @@
     refreshWormProbability: 0.15,
     // 世界边缘
     worldViewRectMargin: 200,
-    // 飞机无敌闪烁间隔帧数
-    planeInvincibleTwinkleInterval: 8,
-    // 飞机无敌闪烁透明度（0-1）
-    planeInvincibleAlpha: 0.5,
-    // 飞机原始放大尺寸
-    planeBaseScale: 5,
-    // 飞机变大配置，有几项就能变大几次，变大系数是按照元素像素来的
-    planeScaleList: [5, 6, 7, 8, 9, 10, 11],
     // 虫子爆炸掉落红心概率
     wormDropHeartProbability: 0.20,
     imagePath: {
@@ -284,29 +326,11 @@
     },
     // 随即出来的道具类型
     randomItemList: [
-        "ElectricSaw",
-        "Bomb",
+        // "ElectricSaw",
+        // "Bomb",
+        // "Confused",
+        // "Magnet",
         "Shield",
-        "Confused",
-        "Magnet",
-    ],
-    // 飞机列表
-    planeList: [
-        {
-            id: 1,
-            name: "火箭",
-            code: "rocket",
-        },
-        {
-            id: 2,
-            name: "飞船",
-            code: "spacecraft",
-        },
-        {
-            id: 3,
-            name: "战机",
-            code: "plane",
-        },
     ],
     startScene: {
         title: {

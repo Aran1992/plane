@@ -43,11 +43,12 @@ export default class Shield {
     }
 
     _updateSprite() {
+        let rotation = this.player.body.getAngle();
         this.sprite.position.set(
-            this.player.sprite.x + Math.cos(this.player.sprite.rotation) * Config.shield.distance,
-            this.player.sprite.y + Math.sin(this.player.sprite.rotation) * Config.shield.distance,
+            this.player.sprite.x + Math.cos(rotation) * Config.shield.distance,
+            this.player.sprite.y + Math.sin(rotation) * Config.shield.distance,
         );
-        this.sprite.rotation = this.player.sprite.rotation;
+        this.sprite.rotation = rotation;
     }
 
     destroy() {

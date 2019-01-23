@@ -11,7 +11,7 @@ import MusicMgr from "../mgr/MusicMgr";
 import Magnet from "./Magnet";
 
 export default class Player extends Component {
-    constructor(world, container) {
+    constructor(world, container, id) {
         super();
 
         this.gameScene = App.getScene("GameScene");
@@ -22,13 +22,15 @@ export default class Player extends Component {
         this.world = world;
         this.container = container;
 
+        this.config = Config.planeList.find(plane => plane.id === id);
+
         let sprite = new Sprite();
         this.sprite = sprite;
         this.container.addChild(sprite);
-        sprite.anchor.set(0.55, 0.5);
+        sprite.anchor.set(...this.config.anchor);
         sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
 
-        this.frames = Config.imagePath.rocket.map(path => resources[path].texture);
+        this.frames = Config.imagePath[this.config.code].map(path => resources[path].texture);
         this.frameIndex = 0;
 
         let body = this.world.createDynamicBody();
@@ -89,7 +91,7 @@ export default class Player extends Component {
                 }
             }
 
-            GameUtils.syncSpriteWithBody(this);
+            GameUtils.syncSpriteWithBody(this, this.config.noRotation);
 
             let pos = this.body.getPosition();
             this.pastPos.push(Vec2(pos.x, pos.y));
@@ -247,11 +249,11 @@ export default class Player extends Component {
                     this.targetAngle - Math.PI :
                     this.targetAngle + Math.PI) :
                 this.targetAngle;
-            angle = GameUtils.calcStepAngle(angle, targetAngle, Config.planeAngularVelocity);
+            angle = GameUtils.calcStepAngle(angle, targetAngle, this.config.planeAngularVelocity);
         }
         this.body.setAngle(angle);
 
-        GameUtils.fireEngine(this, Config.planeVelocity, Config.planeEngineForce);
+        GameUtils.fireEngine(this, this.config.planeVelocity, this.config.planeEngineForce);
     }
 
     isDestroyed() {
@@ -265,7 +267,7 @@ export default class Player extends Component {
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
         }
-        let radius = Config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scaleLevel] / 2;
+        let radius = this.config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scaleLevel] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scaleLevel], 2)});
         this.gameScene.setLifeCount(scaleLevel + 1);

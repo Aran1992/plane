@@ -3,10 +3,12 @@ import {Vec2} from "../libs/planck-wrapper";
 import {Rectangle, Texture} from "../libs/pixi-wrapper";
 
 export default class GameUtils {
-    static syncSpriteWithBody(obj) {
+    static syncSpriteWithBody(obj, noRotation) {
         let pos = obj.body.getPosition();
         obj.sprite.position.set(pos.x * Config.meter2pixel, pos.y * Config.meter2pixel);
-        obj.sprite.rotation = obj.body.getAngle();
+        if (!noRotation) {
+            obj.sprite.rotation = obj.body.getAngle();
+        }
     }
 
     static destroyPhysicalSprite(obj) {

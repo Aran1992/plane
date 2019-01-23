@@ -67,7 +67,7 @@ export default class GameScene extends Scene {
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.world, this.gameContainer);
         this.wall = new Wall(this.world);
-        this.plane = new Player(this.world, this.gameContainer);
+        this.plane = new Player(this.world, this.gameContainer, DataMgr.get("selectedPlane"));
         this.meteorMgr = new MeteorMgr(this.world, this.gameContainer);
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);

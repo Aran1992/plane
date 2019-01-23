@@ -5,6 +5,7 @@ import Utils from "../utils/Utils";
 import Background from "../npc/Background";
 import MyWorld from "../MyWorld";
 import {Vec2} from "../libs/planck-wrapper";
+import DataMgr from "../mgr/DataMgr";
 
 export default class StartScene extends Scene {
     onCreate() {
@@ -166,11 +167,13 @@ export default class StartScene extends Scene {
             this.nameText.text = config.name;
             this.countText.text = `${this.index + 1}/${Config.planeList.length}`;
             this.plane.textures = Config.imagePath[config.code].map(path => resources[path].texture);
+            this.plane.anchor.set(...config.anchor);
             this.plane.play();
         }
     }
 
     onClickPlane() {
+        DataMgr.set("selectedPlane", Config.planeList[this.index].id);
         App.hideScene("StartScene");
         App.showScene("GameScene");
     }
