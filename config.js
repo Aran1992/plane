@@ -326,10 +326,10 @@
     },
     // 随即出来的道具类型
     randomItemList: [
-        // "ElectricSaw",
-        // "Bomb",
-        // "Confused",
-        // "Magnet",
+        "ElectricSaw",
+        "Bomb",
+        "Confused",
+        "Magnet",
         "Shield",
     ],
     startScene: {
