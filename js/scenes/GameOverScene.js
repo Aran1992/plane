@@ -1,6 +1,7 @@
 import Scene from "../base/Scene.js";
 import {Graphics, Text, TextStyle} from "../libs/pixi-wrapper.js";
 import Config from "../../config.js";
+import GameUtils from "../utils/GameUtils";
 
 export default class GameOverScene extends Scene {
     onCreate() {
@@ -11,22 +12,21 @@ export default class GameOverScene extends Scene {
         mask.endFill();
         mask.interactive = true;
 
-        let textStyle = new TextStyle({fontSize: 100, fill: 0xff0000});
-        let gameOverText = new Text("游戏结束!", textStyle);
+        let gameOverText = new Text("游戏结束!", new TextStyle(Config.gameOverScene.gameOverText));
         this.addChild(gameOverText);
         gameOverText.anchor.set(0.5, 0.5);
-        gameOverText.position.set(Config.designWidth / 2, Config.designHeight / 9 * 3);
+        gameOverText.position.set(Config.gameOverScene.gameOverText.x, Config.gameOverScene.gameOverText.y);
         this.gameOverText = gameOverText;
 
         this.createButton(
             Config.imagePath.restartButton,
-            App.sceneWidth / 2,
+            Config.gameOverScene.restartButton.position.x,
             Config.gameOverScene.restartButton.position.y,
             this.onClickRestart.bind(this)
         );
         this.createButton(
             Config.imagePath.mainButton,
-            App.sceneWidth / 2,
+            Config.gameOverScene.mainButton.position.x,
             Config.gameOverScene.mainButton.position.y,
             this.onClickMain.bind(this)
         );
@@ -45,7 +45,7 @@ export default class GameOverScene extends Scene {
     }
 
     onShow(survivalTime) {
-        this.gameOverText.text = `游戏结束，生存时间为：${Math.floor(survivalTime / Config.fps * 100) / 100}秒`;
+        this.gameOverText.text = `本次时间\n${GameUtils.getTimeString(survivalTime)}`;
     }
 
     onClickRestart() {

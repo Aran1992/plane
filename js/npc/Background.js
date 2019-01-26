@@ -1,4 +1,4 @@
-import {resources, Sprite} from "../libs/pixi-wrapper";
+import {Graphics, resources, Sprite} from "../libs/pixi-wrapper";
 import Config from "../../config";
 import Utils from "../utils/Utils";
 
@@ -9,9 +9,22 @@ export default class Background {
 
         let texture = resources[Config.imagePath.bg].texture;
         let bgSprite = new Sprite(texture);
+        bgSprite.width = Config.gameSceneWidth + Config.designWidth;
+        bgSprite.height = Config.gameSceneHeight + Config.designHeight;
         this.container.addChild(bgSprite);
-        bgSprite.scale.set(Config.gameSceneWidth / texture.width,
-            Config.gameSceneHeight / texture.height);
+        bgSprite.position.set(-Config.designWidth / 2, -Config.designHeight / 2);
+
+        let graphics = new Graphics();
+        graphics.beginFill(0x000000, 0);
+        let borderConfig = Config.gameScene.border;
+        graphics.lineStyle(borderConfig.lineWidth, borderConfig.color, borderConfig.alpha);
+        graphics.moveTo(0, 0);
+        graphics.lineTo(Config.gameSceneWidth, 0);
+        graphics.lineTo(Config.gameSceneWidth, Config.gameSceneHeight);
+        graphics.lineTo(0, Config.gameSceneHeight);
+        graphics.lineTo(0, 0);
+        graphics.endFill();
+        this.container.addChild(graphics);
 
         let starList = [];
         for (let i = 0; i < Config.star.count; i++) {

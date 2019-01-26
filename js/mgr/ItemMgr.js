@@ -19,7 +19,10 @@ export default class ItemMgr extends Component {
         });
     }
 
-    onAteItem() {
+    onAteItem(type) {
+        if (Config.randomItemList.indexOf(type) === -1) {
+            return;
+        }
         if (this.item && !this.item.destroyed) {
             this.item.destroy();
         }

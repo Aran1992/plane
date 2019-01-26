@@ -33,6 +33,8 @@
             planeEngineForce: 21,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 6,
+            // 飞机的描述
+            dsc: "这是一个火箭，他就是一个火箭啦~",
         },
         {
             id: 2,
@@ -50,6 +52,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
             noRotation: 1,
+            // 飞机的描述
+            dsc: "这是一个飞船，他就是一个飞船啦~",
         },
         {
             id: 3,
@@ -65,6 +69,8 @@
             planeEngineForce: 33,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "这是一个战机，他就是一个战机啦~",
         },
     ],
     // 飞机无敌闪烁间隔帧数
@@ -151,6 +157,12 @@
             "images/spacecraft-3.png",
             "images/spacecraft-4.png",
         ],
+        magnetCircle: [
+            "images/magnet-4.png",
+            "images/magnet-3.png",
+            "images/magnet-2.png",
+            "images/magnet-1.png",
+        ],
         meteor: "images/meteorite.png",
         worm: [
             "images/worm-1.png",
@@ -166,7 +178,6 @@
             "images/random-item-4.png",
         ],
         electricSaw: "images/electric-saw.png",
-        bomb: "images/bomb.png",
         bombExplode: [
             "images/bomb-explode-1.png",
             "images/bomb-explode-2.png",
@@ -196,8 +207,8 @@
         mainButton: "images/main-button.png",
         shareButton: "images/share-button.png",
         adButton: "images/ad-button.png",
-        magnet: "images/magnet.png",
         leftButton: "images/left-button.png",
+        bombCircle: "images/bomb-circle.png",
         coin: [
             "images/coin-1.png",
             "images/coin-2.png",
@@ -352,25 +363,43 @@
             offset: 400,
         },
         nameText: {
-            fontSize: 60,
+            fontSize: 100,
             fill: "white",
+            fontWeight: "bolder",
+            padding: 100,
             offset: 400,
         },
         countText: {
-            fontSize: 30,
+            fontSize: 50,
             fill: "white",
-            offset: 350,
+            fontWeight: "bolder",
+            offset: 300,
+        },
+        dscText: {
+            fontSize: 50,
+            fill: "white",
+            offset: 300,
         },
     },
     gameOverScene: {
+        gameOverText: {
+            fontSize: 150,
+            fill: 0xffffff,
+            align: "center",
+            fontWeight: "bolder",
+            x: 960,
+            y: 350
+        },
         restartButton: {
             position: {
-                y: 540
+                x: 860,
+                y: 650,
             }
         },
         mainButton: {
             position: {
-                y: 740
+                x: 1060,
+                y: 650,
             }
         },
         adButton: {
@@ -385,6 +414,21 @@
                 y: 950
             }
         },
+    },
+    gameScene: {
+        survivalTimeText: {
+            fontSize: 50,
+            fill: "white",
+            fontWeight: "bolder",
+        },
+        lifePanel: {
+            heartOffset: 70
+        },
+        border: {
+            lineWidth: 4,
+            color: 0xff0000,
+            alpha: 0.5,
+        }
     },
     bgJson: [
         {

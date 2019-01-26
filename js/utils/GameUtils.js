@@ -212,4 +212,14 @@ export default class GameUtils {
         ctx.drawImage(texture.baseTexture.source, 0, 0, texture.width, texture.height);
         return ctx.getImageData(0, 0, texture.width, texture.height).data;
     }
+
+    static getTimeString(frame) {
+        let format = n => n < 10 ? "0" + n : n;
+        let time = frame / Config.fps;
+        let seconds = Math.floor(time);
+        let ms = Math.floor((time - seconds) * 100);
+        let s = seconds % 60;
+        let m = (seconds - s) / 60;
+        return `${format(m)}:${format(s)}.${format(ms)}`;
+    }
 }

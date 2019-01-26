@@ -52,9 +52,7 @@ export default class GameScene extends Scene {
         }
 
         this.createSurvivalTimeText();
-        this.createLifeText();
-        this.createTakenBombIcon();
-        this.createTakenMagnetIcon();
+        this.createLifePanel();
 
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
@@ -100,7 +98,7 @@ export default class GameScene extends Scene {
     onTick(delta) {
         if (!this.gameEnded) {
             this.survivalTime++;
-            this.survivalTimeText.text = `生存时间：${Math.floor(this.survivalTime / Config.fps * 100) / 100}s`;
+            this.survivalTimeText.text = `${GameUtils.getTimeString(this.survivalTime)}`;
         }
 
         this.world.step(1 / Config.fps);
@@ -172,31 +170,28 @@ export default class GameScene extends Scene {
     }
 
     setLifeCount(count) {
-        this.lifeCount = count;
-        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
+        if (count !== this.lifeCount) {
+            this.lifeCount = count;
+            this.lifePanel.removeChildren();
+            let texture = resources[Config.imagePath.heart].texture;
+            for (let i = 0; i < this.lifeCount; i++) {
+                let heart = this.lifePanel.addChild(new Sprite(texture));
+                heart.anchor.set(1, 0);
+                heart.position.set(-i * Config.gameScene.lifePanel.heartOffset, 0);
+            }
+        }
     }
 
     createSurvivalTimeText() {
-        let textStyle = new TextStyle({
-            fontSize: 50,
-            fill: "white"
-        });
-        this.survivalTimeText = new Text("生存时间:0", textStyle);
+        this.survivalTimeText = new Text("生存时间:0", new TextStyle(Config.gameScene.survivalTimeText));
         this.addChild(this.survivalTimeText);
         this.survivalTime = 0;
     }
 
-    createLifeText() {
-        let textStyle = new TextStyle({
-            fontSize: 50,
-            fill: "white"
-        });
-        this.lifeCount = 1;
-        this.lifeText = new Text("", textStyle);
-        this.lifeText.text = `再碰撞几次就会爆炸:${this.lifeCount}`;
-        this.lifeText.anchor.set(1, 0);
-        this.lifeText.position.set(Config.designWidth, 0);
-        this.addChild(this.lifeText);
+    createLifePanel() {
+        this.lifePanel = this.addChild(new Container());
+        this.lifePanel.position.set(Config.designWidth, 0);
+        this.setLifeCount(1);
     }
 
     createDebugText() {
@@ -217,32 +212,6 @@ export default class GameScene extends Scene {
             height: Config.designHeight
         };
         return Utils.isPointInRect(pos, rect);
-    }
-
-    createTakenBombIcon() {
-        this._takenBombIcon = Sprite.fromImage("images/bomb.png");
-        this._takenBombIcon.anchor.set(1, 0);
-        let x = Config.designWidth - Config.bombIconPos.x - this.lifeText.width - 5;
-        this._takenBombIcon.position.set(x, Config.bombIconPos.y);
-        this._takenBombIcon.visible = false;
-        this.addChild(this._takenBombIcon);
-    }
-
-    showTakenBombIcon(visible) {
-        this._takenBombIcon.visible = visible;
-    }
-
-    createTakenMagnetIcon() {
-        this._takenMagnetIcon = Sprite.fromImage("images/magnet.png");
-        this._takenMagnetIcon.anchor.set(1, 0);
-        let x = Config.designWidth - Config.magnetIconPos.x - this.lifeText.width - 5;
-        this._takenMagnetIcon.position.set(x, Config.magnetIconPos.y);
-        this._takenMagnetIcon.visible = false;
-        this.addChild(this._takenMagnetIcon);
-    }
-
-    showTakenMagnetIcon(visible) {
-        this._takenMagnetIcon.visible = visible;
     }
 }
 

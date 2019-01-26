@@ -2,22 +2,26 @@ import {Vec2} from "../libs/planck-wrapper";
 import Utils from "../utils/Utils";
 import Config from "../../config";
 import GameUtils from "../utils/GameUtils";
+import {resources, Sprite} from "../libs/pixi-wrapper";
 
 export default class Magnet {
-    constructor(sprite) {
-        this.sprite = sprite;
+    constructor(parentSprite) {
+        this.parentSprite = parentSprite;
+        this.frames = Config.imagePath.magnetCircle.map(path => resources[path].texture);
+        this.frameIndex = 0;
+        this.sprite = this.parentSprite.addChild(new Sprite(this.frames[this.frameIndex]));
+        this.sprite.anchor.set(0.5, 0.5);
         this.countDown = Config.magnet.duration * Config.fps;
-        App.getScene("GameScene").showTakenMagnetIcon(true);
     }
 
     onStep() {
         this.itemMgr = App.getScene("GameScene").itemMgr;
         if (this.itemMgr && this.itemMgr.item) {
             let item = this.itemMgr.item;
-            let distance = Utils.calcPointsDistance(item.sprite.position, this.sprite.position);
+            let distance = Utils.calcPointsDistance(item.sprite.position, this.parentSprite.position);
             let itemRadius = item.sprite.width > item.sprite.height ? item.sprite.width : item.sprite.height;
             if (distance < itemRadius + Config.magnet.radius) {
-                let radians = GameUtils.calcVectorAngle(this.sprite.x - item.sprite.x, this.sprite.y - item.sprite.y);
+                let radians = GameUtils.calcVectorAngle(this.parentSprite.x - item.sprite.x, this.parentSprite.y - item.sprite.y);
                 let x = item.body.getPosition().x + Math.cos(radians) * Config.magnet.velocity;
                 let y = item.body.getPosition().y + Math.sin(radians) * Config.magnet.velocity;
                 item.body.setPosition(Vec2(x, y));
@@ -29,8 +33,16 @@ export default class Magnet {
         }
     }
 
+    onAnimationFrame() {
+        this.frameIndex++;
+        if (this.frames[this.frameIndex] === undefined) {
+            this.frameIndex = 0;
+        }
+        this.sprite.texture = this.frames[this.frameIndex];
+    }
+
     destroy() {
-        App.getScene("GameScene").showTakenMagnetIcon(false);
+        this.sprite.destroy();
         this.destroyed = true;
     }
 }

@@ -11,7 +11,7 @@ import MusicMgr from "../mgr/MusicMgr";
 import Magnet from "./Magnet";
 
 export default class Player extends Component {
-    constructor(world, container, id) {
+    constructor(world, parent, id) {
         super();
 
         this.gameScene = App.getScene("GameScene");
@@ -20,15 +20,17 @@ export default class Player extends Component {
         this.eventMgr.registerEvent("AteItem", this.onAteItem.bind(this));
 
         this.world = world;
-        this.container = container;
+        this.parent = parent;
 
         this.config = Config.planeList.find(plane => plane.id === id);
 
-        let sprite = new Sprite();
-        this.sprite = sprite;
-        this.container.addChild(sprite);
-        sprite.anchor.set(...this.config.anchor);
-        sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
+        this.sprite = this.parent.addChild(new Sprite());
+        this.sprite.anchor.set(...this.config.anchor);
+        this.sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
+
+        this.bombCircle = this.sprite.addChild(new Sprite(resources[Config.imagePath.bombCircle].texture));
+        this.bombCircle.anchor.set(0.5, 0.5);
+        this.bombCircle.visible = false;
 
         this.frames = Config.imagePath[this.config.code].map(path => resources[path].texture);
         this.frameIndex = 0;
@@ -76,6 +78,7 @@ export default class Player extends Component {
     }
 
     onStep() {
+        this.bombCircle.rotation++;
         if (this._contacted && this._scale === 0 && !this._invincible && !this._takenBomb) {
             this.explode();
         } else {
@@ -86,8 +89,8 @@ export default class Player extends Component {
                 }
                 if (this._takenBomb) {
                     this._takenBomb = false;
-                    this.gameScene.showTakenBombIcon(false);
-                    this._bombExplode = new BombExplode(this.world, this.container, this.sprite.position);
+                    this.bombCircle.visible = false;
+                    this._bombExplode = new BombExplode(this.world, this.parent, this.sprite.position);
                 }
             }
 
@@ -187,8 +190,6 @@ export default class Player extends Component {
         // this._trailAudio.pause();
         // this._trailAudio = undefined;
 
-        this.gameScene.showTakenBombIcon(false);
-
         GameUtils.destroyPhysicalSprite(this);
 
         super.destroy();
@@ -211,7 +212,7 @@ export default class Player extends Component {
             }
             case "Bomb": {
                 this._takenBomb = true;
-                this.gameScene.showTakenBombIcon(true);
+                this.bombCircle.visible = true;
                 break;
             }
             case "Confused": {
@@ -223,6 +224,10 @@ export default class Player extends Component {
             }
             case "Shield": {
                 this._createShield();
+                break;
+            }
+            case "Magnet": {
+                this._createMagnet();
                 break;
             }
             case "Heart": {
@@ -275,7 +280,7 @@ export default class Player extends Component {
 
     _createElectricSaw() {
         if (this._electricSawList.length < Config.electricSaw.maxCount) {
-            this._electricSawList.push(new ElectricSaw(this.world, this.container, this));
+            this._electricSawList.push(new ElectricSaw(this.world, this.parent, this));
         }
     }
 
@@ -296,6 +301,9 @@ export default class Player extends Component {
             this.sprite.texture = this.frames[frame];
             if (this._confused) {
                 this.sprite.tint = Math.random() * 0xFFFFFF;
+            }
+            if (this._magnet) {
+                this._magnet.onAnimationFrame();
             }
         }
     }
