@@ -28,17 +28,17 @@
             // 飞机的anchor
             anchor: [0.55, 0.5],
             // 飞机的速度
-            planeVelocity: 30,
+            planeVelocity: 36,
             // 飞机的推进力
             planeEngineForce: 21,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 6,
+            planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
-            dsc: "这是一个火箭，他就是一个火箭啦~",
+            dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。~",
         },
         {
             id: 2,
-            name: "飞船",
+            name: "飞碟",
             code: "spacecraft",
             // 飞机船体的像素长度
             planePixelLength: 12,
@@ -47,17 +47,17 @@
             // 飞机的速度
             planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 20,
+            planeEngineForce: 21,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
             noRotation: 1,
             // 飞机的描述
-            dsc: "这是一个飞船，他就是一个飞船啦~",
+            dsc: " 飞碟：更便于操作飘逸灵活。~",
         },
         {
             id: 3,
-            name: "战机",
+            name: "飞船",
             code: "plane",
             // 飞机船体的像素长度
             planePixelLength: 17,
@@ -70,7 +70,7 @@
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
-            dsc: "这是一个战机，他就是一个战机啦~",
+            dsc: "飞船:受到很小的惯性，操作灵活方便更快的飞行速度~",
         },
     ],
     // 飞机无敌闪烁间隔帧数
@@ -98,18 +98,21 @@
     // 陨石的旋转速度
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshMeteorProbability: 0.05,
+    refreshMeteorProbability: 0.3,
     // 陨石相关配置
     meteor: {
-        // 陨石数量随着时间的裱花
+        // 陨石数量随着时间的变化
         countBySeconds: {
             "30": 30,
             "60": 40,
-            "90": 80,
+            "90": 60,
+            "120": 80,
+            "150": 90,
+            "180": 100,
         }
     },
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount: 0.5,
+    refreshMeteorMinCount: 0.05,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
     // 虫子的旋转速度
@@ -129,7 +132,7 @@
     // 世界边缘
     worldViewRectMargin: 200,
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.20,
+    wormDropHeartProbability: 0.15,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -246,7 +249,7 @@
         // 高度(像素)
         height: 50,
         // 掉落概率（0-1）
-        probability: 0.5,
+        probability: 0.75,
     },
     // 物品相关配置
     item: {
@@ -272,18 +275,18 @@
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
-        30,
-        47.5,
-        130,
-        214,
-        252,
+        50,
+        120,
+        230,
+        280,
+        550,
     ],
     // 混乱相关配置
     confused: {
         // 持续帧数
-        countdown: 500,
+        countdown: 300,
         // 开始混乱无敌帧数
-        startInvincibleFrames: 300,
+        startInvincibleFrames: 200,
         // 结束混乱无敌帧数
         endInvincibleFrames: 100,
     },
@@ -292,7 +295,7 @@
         // 可以进行几次碰撞
         collideTimes: 8,
         // 距离飞船的距离
-        distance: 100,
+        distance: 120,
         // 宽度(像素)
         width: 25,
         // 高度(像素)
@@ -301,14 +304,14 @@
     // 磁铁相关配置
     magnet: {
         // 半径(像素)
-        radius: 500,
+        radius: 300,
         // 靠近的速度
-        velocity: 0.6,
+        velocity: 0.3,
         // 持续时间（单位秒）
-        duration: 5,
+        duration: 30,
     },
     // 刷新道具的时间间隔
-    refreshItemInterval: 6.5,
+    refreshItemInterval: 3,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
