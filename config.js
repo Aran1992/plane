@@ -28,7 +28,7 @@
             // 飞机的anchor
             anchor: [0.55, 0.5],
             // 飞机的速度
-            planeVelocity: 36,
+            planeVelocity: 33,
             // 飞机的推进力
             planeEngineForce: 21,
             // 飞机旋转的速度
@@ -64,13 +64,13 @@
             // 飞机的anchor
             anchor: [0.58, 0.5],
             // 飞机的速度
-            planeVelocity: 33,
+            planeVelocity: 35,
             // 飞机的推进力
-            planeEngineForce: 33,
+            planeEngineForce: 35,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
-            dsc: "飞船:受到很小的惯性，操作灵活方便更快的飞行速度~",
+            dsc: "飞船:受到很小的惯性，操作灵活拥有更快的飞行速度~",
         },
     ],
     // 飞机无敌闪烁间隔帧数
@@ -128,7 +128,7 @@
     // 虫子同时能存在的最大数量
     wormExistMaxCount: 5,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshWormProbability: 0.15,
+    refreshWormProbability: 0.175,
     // 世界边缘
     worldViewRectMargin: 200,
     // 虫子爆炸掉落红心概率
