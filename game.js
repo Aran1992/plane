@@ -4,34 +4,31 @@ import config from "./config.js";
 
 document.body.style.margin = "0";
 
-let resolution;
-let wwhRatio = window.innerWidth / window.innerHeight;
-let dwhRatio = config.designWidth / config.designHeight;
-if (wwhRatio < dwhRatio) {
-    resolution = window.innerWidth / config.designWidth;
+let width;
+let height;
+let designSizeWHRatio = config.designWidth / config.designHeight;
+let windowSizeWHRatio = window.innerWidth / window.innerHeight;
+if (designSizeWHRatio > windowSizeWHRatio) {
+    width = config.designWidth;
+    height = config.designWidth / windowSizeWHRatio;
 } else {
-    resolution = window.innerHeight / config.designHeight;
+    width = config.designHeight * windowSizeWHRatio;
+    height = config.designHeight;
 }
 
 let app = new MyApplication({
     backgroundColor: config.backgroundColor,
-    width: config.designWidth,
-    height: config.designHeight,
-    resolution: resolution,
-    antialiasing: true,
+    width: width,
+    height: height,
+    antialias: true,
     transparent: false,
     view: canvas
 });
 
-let pixelRatio = config.designWidth / window.innerWidth;
-
+let pixelRatio = width / window.innerWidth;
 app.renderer.plugins.interaction.mapPositionToPoint = (point, x, y) => {
     point.x = x * pixelRatio;
     point.y = y * pixelRatio;
 };
-
-app.view.style.position = "absolute";
-app.view.style.left = (window.innerWidth - app.view.offsetWidth) / 2 + "px";
-app.view.style.top = (window.innerHeight - app.view.offsetHeight) / 2 + "px";
 
 App.showScene("StartScene");

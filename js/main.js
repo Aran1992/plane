@@ -1,29 +1,31 @@
 import MyApplication from "./MyApplication.js";
 import Config from "../config.js";
+import config from "../config";
 
 document.body.style.margin = "0";
 
-let resolution;
-let wwhRatio = window.innerWidth / window.innerHeight;
-let dwhRatio = Config.designWidth / Config.designHeight;
-if (wwhRatio < dwhRatio) {
-    resolution = window.innerWidth / Config.designWidth;
+let width;
+let height;
+let designSizeWHRatio = config.designWidth / config.designHeight;
+let windowSizeWHRatio = window.innerWidth / window.innerHeight;
+if (designSizeWHRatio > windowSizeWHRatio) {
+    width = config.designWidth;
+    height = config.designWidth / windowSizeWHRatio;
 } else {
-    resolution = window.innerHeight / Config.designHeight;
+    width = config.designHeight * windowSizeWHRatio;
+    height = config.designHeight;
 }
 
 let App = new MyApplication({
     backgroundColor: Config.backgroundColor,
-    width: Config.designWidth,
-    height: Config.designHeight,
-    resolution: resolution,
-    antialiasing: true,
+    width: width,
+    height: height,
+    antialias: true,
     transparent: false,
 });
 document.body.appendChild(App.view);
 
-App.view.style.position = "absolute";
-App.view.style.left = (window.innerWidth - App.view.offsetWidth) / 2 + "px";
-App.view.style.top = (window.innerHeight - App.view.offsetHeight) / 2 + "px";
+App.view.style.width = "100%";
+App.view.style.height = "100%";
 
 App.showScene("StartScene");
