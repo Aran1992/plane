@@ -3,27 +3,26 @@ import Config from "../config.js";
 
 document.body.style.margin = "0";
 
-let resolution;
+let width;
+let height;
 let wwhRatio = window.innerWidth / window.innerHeight;
 let dwhRatio = Config.designWidth / Config.designHeight;
-if (wwhRatio < dwhRatio) {
-    resolution = window.innerWidth / Config.designWidth;
+if (wwhRatio > dwhRatio) {
+    height = Config.designHeight;
+    width = height * wwhRatio;
 } else {
-    resolution = window.innerHeight / Config.designHeight;
+    width = Config.designWidth;
+    height = width / wwhRatio;
 }
 
 let App = new MyApplication({
     backgroundColor: Config.backgroundColor,
-    width: Config.designWidth,
-    height: Config.designHeight,
-    resolution: resolution,
-    antialiasing: true,
+    width: width,
+    height: height,
+    resolution: window.innerWidth / width,
+    antialias: true,
     transparent: false,
 });
 document.body.appendChild(App.view);
-
-App.view.style.position = "absolute";
-App.view.style.left = (window.innerWidth - App.view.offsetWidth) / 2 + "px";
-App.view.style.top = (window.innerHeight - App.view.offsetHeight) / 2 + "px";
 
 App.showScene("StartScene");

@@ -20,12 +20,6 @@ import MusicMgr from "../mgr/MusicMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
-        this.controlRect = {
-            x: 0,
-            y: Config.designHeight - Config.controlRect.height,
-            width: Config.controlRect.width,
-            height: Config.controlRect.height
-        };
         this.interactive = true;
         this.buttonMode = true;
         this.hitArea = new Rectangle(0, 0, Config.designWidth, Config.designHeight);
@@ -122,14 +116,18 @@ export default class GameScene extends Scene {
     }
 
     onPointerdown(event) {
-        if (this.startPoint
-            || !Utils.isPointInRect(event.data.global, this.controlRect)) {
+        if (this.startPoint) {
             return;
         }
 
+        let point = {
+            x: event.data.global.x - App.scenesContainer.x,
+            y: event.data.global.y - App.scenesContainer.y
+        };
+
         let targetAngle = this.plane.sprite.rotation;
-        let x = event.data.global.x - Math.cos(targetAngle) * Config.rockerRadius;
-        let y = event.data.global.y - Math.sin(targetAngle) * Config.rockerRadius;
+        let x = point.x - Math.cos(targetAngle) * Config.rockerRadius;
+        let y = point.y - Math.sin(targetAngle) * Config.rockerRadius;
         this.startPoint = {x: x, y: y};
 
         this.startPointCircle = new Sprite(resources[Config.imagePath.rockerBottom].texture);
@@ -140,13 +138,17 @@ export default class GameScene extends Scene {
         this.endPointCircle = new Sprite(resources[Config.imagePath.rocker].texture);
         this.addChild(this.endPointCircle);
         this.endPointCircle.anchor.set(0.5, 0.5);
-        this.endPointCircle.position.set(event.data.global.x, event.data.global.y);
+        this.endPointCircle.position.set(point.x, point.y);
     }
 
     onPointermove(event) {
         if (this.startPoint) {
-            let y = event.data.global.y - this.startPoint.y;
-            let x = event.data.global.x - this.startPoint.x;
+            let point = {
+                x: event.data.global.x - App.scenesContainer.x,
+                y: event.data.global.y - App.scenesContainer.y
+            };
+            let y = point.y - this.startPoint.y;
+            let x = point.x - this.startPoint.x;
             let targetAngle = GameUtils.calcVectorAngle(x, y);
             this.plane.setTargetAngle(targetAngle);
 

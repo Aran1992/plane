@@ -8,13 +8,6 @@
     gravity: 0,
     pixel2meter: 0.0625,
     meter2pixel: 16,
-    // 控制区域的大小
-    controlRect: {
-        // 宽度
-        width: 1920,
-        // 高度
-        height: 1080,
-    },
     // 摇杆半径
     rockerRadius: 90,
     // 飞机列表
