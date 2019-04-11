@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./js/main.js",
+    entry: "./game-web.js",
     module: {
         rules: [{
             test: /\.js$/,
