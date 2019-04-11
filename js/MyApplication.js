@@ -1,8 +1,9 @@
-import {Application, loader, resources} from "./libs/pixi-wrapper.js";
+import {Application, loader, resources, Container} from "./libs/pixi-wrapper.js";
 import GameScene from "./scenes/GameScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 import Utils from "./utils/Utils";
 import StartScene from "./scenes/StartScene";
+import Config from "../config.js";
 
 export default class MyApplication extends Application {
     constructor(args) {
@@ -14,9 +15,11 @@ export default class MyApplication extends Application {
 
         window.App = this;
 
-        this.scenesContainer = this.stage;
-        this.sceneWidth = args.width;
-        this.sceneHeight = args.height;
+        this.scenesContainer = this.stage.addChild(new Container());
+        this.scenesContainer.x = (args.width - Config.designWidth) / 2;
+        this.scenesContainer.y = (args.height - Config.designHeight) / 2;
+        this.sceneWidth = Config.designWidth;
+        this.sceneHeight = Config.designHeight;
 
         this.sceneClassTable = {
             "GameScene": GameScene,
