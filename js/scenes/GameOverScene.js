@@ -60,6 +60,9 @@ export default class GameOverScene extends Scene {
     }
 
     onClickShare() {
+        if (window.PlatformHelper.share) {
+            window.PlatformHelper.share();
+        }
     }
 
     onClickAd() {
