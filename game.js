@@ -4,7 +4,8 @@ import main from "./js/main.js";
 wx.showShareMenu();
 
 const shareInfo = {
-    title: "转发标题"
+    title: "像素飞船大！作！战！",
+    imageUrl: "images/share-content.png"
 };
 
 wx.onShareAppMessage(() => shareInfo);
