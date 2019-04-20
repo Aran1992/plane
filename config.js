@@ -209,6 +209,7 @@
             "images/coin-1.png",
             "images/coin-2.png",
         ],
+        bombIcon: "images/bomb-explode-1.png",
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -419,6 +420,11 @@
         },
         lifePanel: {
             heartOffset: 70
+        },
+        bombPanel: {
+            positionY: 100,
+            right: 35,
+            iconOffset: 70,
         },
         border: {
             lineWidth: 4,
