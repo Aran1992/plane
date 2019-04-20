@@ -47,6 +47,7 @@ export default class GameScene extends Scene {
 
         this.createSurvivalTimeText();
         this.createLifePanel();
+        this.createBombPanel();
 
         App.registerEvent("Restart", this.onRestart.bind(this));
     }
@@ -84,7 +85,6 @@ export default class GameScene extends Scene {
         this.animationMgr = undefined;
         this.background.destroy();
         this.background = undefined;
-        this.lifeCount = 1;
         App.ticker.remove(this.onTickHandler);
         MusicMgr.pauseBGM();
     }
@@ -171,19 +171,6 @@ export default class GameScene extends Scene {
         }
     }
 
-    setLifeCount(count) {
-        if (count !== this.lifeCount) {
-            this.lifeCount = count;
-            this.lifePanel.removeChildren();
-            let texture = resources[Config.imagePath.heart].texture;
-            for (let i = 0; i < this.lifeCount; i++) {
-                let heart = this.lifePanel.addChild(new Sprite(texture));
-                heart.anchor.set(1, 0);
-                heart.position.set(-i * Config.gameScene.lifePanel.heartOffset, 0);
-            }
-        }
-    }
-
     createSurvivalTimeText() {
         this.survivalTimeText = new Text("生存时间:0", new TextStyle(Config.gameScene.survivalTimeText));
         this.addChild(this.survivalTimeText);
@@ -194,6 +181,40 @@ export default class GameScene extends Scene {
         this.lifePanel = this.addChild(new Container());
         this.lifePanel.position.set(Config.designWidth, 0);
         this.setLifeCount(1);
+    }
+
+    setLifeCount(count) {
+        if (count !== this.lifeCount) {
+            this.lifeCount = count;
+            this.lifePanel.removeChildren();
+            let texture = resources[Config.imagePath.heart].texture;
+            for (let i = 0; i < this.lifeCount; i++) {
+                let icon = this.lifePanel.addChild(new Sprite(texture));
+                icon.anchor.set(1, 0);
+                icon.position.set(-i * Config.gameScene.lifePanel.heartOffset, 0);
+            }
+        }
+    }
+
+    createBombPanel() {
+        this.bombPanel = this.addChild(new Container());
+        this.bombPanel.position.set(
+            Config.designWidth - Config.gameScene.bombPanel.right,
+            Config.gameScene.bombPanel.positionY);
+        this.setBombCount(0);
+    }
+
+    setBombCount(count) {
+        if (count !== this.bombCount) {
+            this.bombCount = count;
+            this.bombPanel.removeChildren();
+            let texture = resources[Config.imagePath.bombIcon].texture;
+            for (let i = 0; i < this.bombCount; i++) {
+                let icon = this.bombPanel.addChild(new Sprite(texture));
+                icon.anchor.set(1, 0);
+                icon.position.set(-i * Config.gameScene.bombPanel.iconOffset, 0);
+            }
+        }
     }
 
     createDebugText() {

@@ -28,6 +28,7 @@ export default class Player extends Component {
         this.sprite.anchor.set(...this.config.anchor);
         this.sprite.position.set(Config.gameSceneWidth / 2, Config.gameSceneHeight / 2);
 
+        this.setBombCount(0);
         this.bombCircle = this.sprite.addChild(new Sprite(resources[Config.imagePath.bombCircle].texture));
         this.bombCircle.anchor.set(0.5, 0.5);
         this.bombCircle.visible = false;
@@ -79,17 +80,19 @@ export default class Player extends Component {
 
     onStep() {
         this.bombCircle.rotation++;
-        if (this._contacted && this._scale === 0 && !this._invincible && !this._takenBomb) {
+        if (this._contacted && this._scale === 0 && !this._invincible && !this._bombCount) {
             this.explode();
         } else {
             if (this._contacted) {
-                if (!this._takenBomb && !this._invincible && this._scale > 0) {
+                if (!this._bombCount && !this._invincible && this._scale > 0) {
                     this._scale--;
                     this._setScale(this._scale);
                 }
-                if (this._takenBomb) {
-                    this._takenBomb = false;
-                    this.bombCircle.visible = false;
+                if (this._bombCount) {
+                    this.setBombCount(this._bombCount - 1);
+                    if (this._bombCount === 0) {
+                        this.bombCircle.visible = false;
+                    }
                     this._bombExplode = new BombExplode(this.world, this.parent, this.sprite.position);
                 }
             }
@@ -211,7 +214,7 @@ export default class Player extends Component {
                 break;
             }
             case "Bomb": {
-                this._takenBomb = true;
+                this.setBombCount(this._bombCount + 1);
                 this.bombCircle.visible = true;
                 break;
             }
@@ -317,6 +320,11 @@ export default class Player extends Component {
         if (this._magnet === undefined || this._magnet.destroyed) {
             this._magnet = new Magnet(this.sprite);
         }
+    }
+
+    setBombCount(count) {
+        this._bombCount = count;
+        this.gameScene.setBombCount(count);
     }
 }
 
