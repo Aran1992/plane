@@ -27,7 +27,7 @@
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
-            dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。~",
+            dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
         },
         {
             id: 2,
@@ -46,7 +46,7 @@
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
             noRotation: 1,
             // 飞机的描述
-            dsc: " 飞碟：更便于操作飘逸灵活。~",
+            dsc: " 飞碟：更便于操作飘逸灵活。",
         },
         {
             id: 3,
@@ -63,7 +63,177 @@
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
-            dsc: "飞船:受到很小的惯性，操作灵活拥有更快的飞行速度~",
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 4,
+            name: "导弹",
+            code: "missile",
+            // 飞机船体的像素长度
+            planePixelLength: 6,
+            // 飞机的anchor
+            anchor: [67 / 137, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 5,
+            name: "飞鹰",
+            code: "eagle",
+            // 飞机船体的像素长度
+            planePixelLength: 8,
+            // 飞机的anchor
+            anchor: [80 / 146, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 6,
+            name: "蜉蝣",
+            code: "mayfly",
+            // 飞机船体的像素长度
+            planePixelLength: 7,
+            // 飞机的anchor
+            anchor: [67 / 120, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 7,
+            name: "黑鹰",
+            code: "blackhawk",
+            // 飞机船体的像素长度
+            planePixelLength: 8,
+            // 飞机的anchor
+            anchor: [60 / 122, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 8,
+            name: "蝴蝶",
+            code: "butterfly",
+            // 飞机船体的像素长度
+            planePixelLength: 4,
+            // 飞机的anchor
+            anchor: [70 / 138, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 9,
+            name: "歼灭机",
+            code: "annihilation",
+            // 飞机船体的像素长度
+            planePixelLength: 6,
+            // 飞机的anchor
+            anchor: [0.5, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 10,
+            name: "拦截者",
+            code: "interceptor",
+            // 飞机船体的像素长度
+            planePixelLength: 10,
+            // 飞机的anchor
+            anchor: [63 / 133, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 11,
+            name: "外星虫",
+            code: "alienworm",
+            // 飞机船体的像素长度
+            planePixelLength: 6,
+            // 飞机的anchor
+            anchor: [55 / 97, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 12,
+            name: "小飞机",
+            code: "litteplane",
+            // 飞机船体的像素长度
+            planePixelLength: 8,
+            // 飞机的anchor
+            anchor: [68 / 133, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+        },
+        {
+            id: 13,
+            name: "雄鹿",
+            code: "thebucks",
+            // 飞机船体的像素长度
+            planePixelLength: 8,
+            // 飞机的anchor
+            anchor: [66 / 128, 0.5],
+            // 飞机的速度
+            planeVelocity: 35,
+            // 飞机的推进力
+            planeEngineForce: 35,
+            // 飞机旋转的速度
+            planeAngularVelocity: Math.PI / 180 * 5,
+            // 飞机的描述
+            dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
     ],
     // 飞机无敌闪烁间隔帧数
@@ -136,22 +306,71 @@
         star: "images/star.png",
         bg: "images/bg.png",
         rocket: [
-            "images/rocket-1.png",
-            "images/rocket-2.png",
-            "images/rocket-3.png",
-            "images/rocket-4.png",
+            "images/planes/rocket-1.png",
+            "images/planes/rocket-2.png",
+            "images/planes/rocket-3.png",
+            "images/planes/rocket-4.png",
         ],
         plane: [
-            "images/plane-1.png",
-            "images/plane-2.png",
-            "images/plane-3.png",
-            "images/plane-4.png",
+            "images/planes/plane-1.png",
+            "images/planes/plane-2.png",
+            "images/planes/plane-3.png",
+            "images/planes/plane-4.png",
         ],
         spacecraft: [
-            "images/spacecraft-1.png",
-            "images/spacecraft-2.png",
-            "images/spacecraft-3.png",
-            "images/spacecraft-4.png",
+            "images/planes/spacecraft-1.png",
+            "images/planes/spacecraft-2.png",
+            "images/planes/spacecraft-3.png",
+            "images/planes/spacecraft-4.png",
+        ],
+        missile: [
+            "images/planes/missile-1.png",
+            "images/planes/missile-2.png",
+            "images/planes/missile-3.png",
+        ],
+        eagle: [
+            "images/planes/eagle-1.png",
+            "images/planes/eagle-2.png",
+            "images/planes/eagle-3.png",
+            "images/planes/eagle-4.png",
+        ],
+        mayfly: [
+            "images/planes/mayfly.png"
+        ],
+        blackhawk: [
+            "images/planes/blackhawk-1.png",
+            "images/planes/blackhawk-2.png",
+            "images/planes/blackhawk-3.png",
+            "images/planes/blackhawk-4.png",
+        ],
+        butterfly: [
+            "images/planes/butterfly.png"
+        ],
+        annihilation: [
+            "images/planes/annihilation-1.png",
+            "images/planes/annihilation-2.png",
+            "images/planes/annihilation-3.png",
+            "images/planes/annihilation-4.png",
+        ],
+        interceptor: [
+            "images/planes/interceptor-1.png",
+            "images/planes/interceptor-2.png",
+            "images/planes/interceptor-3.png",
+            "images/planes/interceptor-4.png",
+        ],
+        alienworm: [
+            "images/planes/alienworm-1.png",
+            "images/planes/alienworm-2.png",
+            "images/planes/alienworm-3.png",
+        ],
+        litteplane: [
+            "images/planes/litteplane.png"
+        ],
+        thebucks: [
+            "images/planes/thebucks-1.png",
+            "images/planes/thebucks-2.png",
+            "images/planes/thebucks-3.png",
+            "images/planes/thebucks-4.png",
         ],
         magnetCircle: [
             "images/magnet-4.png",
