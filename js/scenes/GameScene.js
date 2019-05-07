@@ -17,6 +17,7 @@ import ItemMgr from "../mgr/ItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
 import DataMgr from "../mgr/DataMgr";
 import MusicMgr from "../mgr/MusicMgr";
+import Bullet from "../npc/Bullet";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -235,6 +236,10 @@ export default class GameScene extends Scene {
             height: Config.designHeight
         };
         return Utils.isPointInRect(pos, rect);
+    }
+
+    createBullet(pos, radius) {
+        new Bullet(this.gameContainer, this.world, pos, radius);
     }
 }
 

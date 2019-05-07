@@ -38,6 +38,8 @@ export default class Meteor {
         this.world.registerEvent("pre-solve", this);
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
+
+        this.blood = Config.meteor.blood;
     }
 
     onPreSolve(contact, anotherFixture) {
@@ -54,6 +56,12 @@ export default class Meteor {
             || item instanceof window.ElectricSaw
             || item instanceof window.BombExplode) {
             this.exploded = true;
+        }
+        if (item instanceof window.Bullet) {
+            this.blood -= Config.bullet.damage;
+            if (this.blood <= 0) {
+                this.exploded = true;
+            }
         }
     }
 
@@ -97,6 +105,10 @@ export default class Meteor {
 
     isDestroyed() {
         return this.destroyed;
+    }
+
+    canExplode() {
+        return true;
     }
 }
 

@@ -272,7 +272,9 @@
             "120": 80,
             "150": 90,
             "180": 100,
-        }
+        },
+        // 血量
+        blood: 3,
     },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 0.05,
@@ -441,12 +443,14 @@
         esRotate: "sounds/electric-saw-rotate.mp3",
         bgm: "sounds/bgm.mp3",
     },
-    // 红心相关配置
+    // 虫子相关配置
     worm: {
         // 宽度(像素)
         width: 110,
         // 高度(像素)
         height: 35,
+        // 血量
+        blood: 5,
     },
     // 红心相关配置
     heart: {
@@ -551,7 +555,7 @@
         // 云每帧的最大速度
         maxSpeed: 0.2
     },
-    // 随即出来的道具类型
+    // 随机出来的道具类型
     randomItemList: [
         "ElectricSaw",
         "Bomb",
@@ -559,6 +563,19 @@
         "Magnet",
         "Shield",
     ],
+    // 子弹相关配置
+    bullet: {
+        // 半径（单位：像素）
+        radius: 10,
+        // 速度（单位：像素）
+        velocity: 1000,
+        // 颜色
+        color: 0xff0000,
+        // 创建时间间隔（单位：秒）
+        createInterval: 0.1,
+        // 伤害
+        damage: 1,
+    },
     startScene: {
         title: {
             position: {

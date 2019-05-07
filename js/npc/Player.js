@@ -55,6 +55,8 @@ export default class Player extends Component {
 
         this._invincible = false;
 
+        this.bulletCount = 0;
+
         // setTimeout(() => {
         //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
         // }, 0);
@@ -156,6 +158,12 @@ export default class Player extends Component {
                 this._confusedAudio = undefined;
                 this._startInvincible(Config.confused.endInvincibleFrames);
             }
+        }
+
+        this.bulletCount++;
+        if (this.bulletCount / Config.fps > Config.bullet.createInterval) {
+            this.bulletCount = 0;
+            this.gameScene.createBullet(this.body.getPosition(), this.body.getAngle());
         }
     }
 

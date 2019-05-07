@@ -31,6 +31,8 @@ export default class Worm {
 
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
+
+        this.blood = Config.worm.blood;
     }
 
     onBeginContact(contact, anotherFixture,) {
@@ -42,6 +44,12 @@ export default class Worm {
             this.exploded = true;
             if (item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)) {
                 this._contactedPlayerSelf = true;
+            }
+        }
+        if (item instanceof window.Bullet) {
+            this.blood -= Config.bullet.damage;
+            if (this.blood <= 0) {
+                this.exploded = true;
             }
         }
     }
@@ -103,6 +111,10 @@ export default class Worm {
 
     isDestroyed() {
         return this.destroyed;
+    }
+
+    canExplode() {
+        return true;
     }
 }
 
