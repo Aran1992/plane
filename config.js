@@ -21,7 +21,7 @@
             // 飞机的anchor
             anchor: [0.55, 0.5],
             // 飞机的速度
-            planeVelocity: 33,
+            planeVelocity: 28,
             // 飞机的推进力
             planeEngineForce: 21,
             // 飞机旋转的速度
@@ -38,11 +38,11 @@
             // 飞机的anchor
             anchor: [0.5, 0.43],
             // 飞机的速度
-            planeVelocity: 33,
+            planeVelocity: 27,
             // 飞机的推进力
-            planeEngineForce: 21,
+            planeEngineForce: 27,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 180,
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
             noRotation: 1,
             // 飞机的描述
@@ -57,9 +57,9 @@
             // 飞机的anchor
             anchor: [0.58, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 26,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 26,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -274,7 +274,7 @@
             "180": 100,
         },
         // 血量
-        blood: 3,
+        blood: 1,
     },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 0.05,
@@ -283,21 +283,21 @@
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 4,
     // 虫子的速度
-    wormVelocity: 33,
+    wormVelocity: 30,
     // 虫子的推进力
-    wormEngineForce: 11,
+    wormEngineForce: 8,
     // 初始化时生成虫子的最小数量
     wormMinCount: 1,
     // 初始化时生成虫子的最大数量
     wormMaxCount: 2,
     // 虫子同时能存在的最大数量
-    wormExistMaxCount: 5,
+    wormExistMaxCount: 6,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshWormProbability: 0.175,
     // 世界边缘
-    worldViewRectMargin: 200,
+    worldViewRectMargin: 300,
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.15,
+    wormDropHeartProbability: 0.10,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -450,7 +450,7 @@
         // 高度(像素)
         height: 35,
         // 血量
-        blood: 5,
+        blood: 2,
     },
     // 红心相关配置
     heart: {
@@ -482,7 +482,7 @@
         // 可以进行几次碰撞
         collideTimes: 12,
         // 距离飞船的距离
-        distance: 150,
+        distance: 300,
         // 距离飞船的距离
         angularVelocity: Math.PI / 180 * 10,
         // 同时能存在的最大数量
@@ -528,7 +528,7 @@
         duration: 30,
     },
     // 刷新道具的时间间隔
-    refreshItemInterval: 3,
+    refreshItemInterva2: 4,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
@@ -546,14 +546,14 @@
     // 背景星星相关配置
     star: {
         // 数量
-        count: 35,
+        count: 60,
     },
     // 背景云相关配置
     cloud: {
         // 云每帧的最小速度
         minSpeed: 0.1,
         // 云每帧的最大速度
-        maxSpeed: 0.2
+        maxSpeed: 0.5
     },
     // 随机出来的道具类型
     randomItemList: [
@@ -572,7 +572,7 @@
         // 颜色
         color: 0xff0000,
         // 创建时间间隔（单位：秒）
-        createInterval: 0.1,
+        createInterval: 0.3,
         // 伤害
         damage: 1,
     },
