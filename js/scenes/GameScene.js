@@ -238,9 +238,24 @@ export default class GameScene extends Scene {
         return Utils.isPointInRect(pos, rect);
     }
 
-    createBullet(pos, radius) {
-        new Bullet(this.gameContainer, this.world, pos, radius);
+    createBullet(pos, radians) {
+        new Bullet(this.gameContainer, this.world, pos, radians);
+    }
+
+    findNearestEnemy() {
+        let enemyList = this.meteorMgr.meteorList.concat(this.wormMgr.wormList);
+        let minDistance = undefined;
+        let nearestEnemy = undefined;
+        enemyList.forEach(enemy => {
+            let distance = Utils.calcPointsDistance(enemy.body.getPosition(), this.plane.body.getPosition());
+            if (minDistance === undefined || distance < minDistance) {
+                minDistance = distance;
+                nearestEnemy = enemy;
+            }
+        });
+        return nearestEnemy;
     }
 }
+
 
 GameScene.resPathList = Utils.recursiveValues(Config.imagePath);

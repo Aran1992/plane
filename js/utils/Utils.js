@@ -60,4 +60,22 @@ export default class Utils {
     static calcPointsDistance(p1, p2) {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
+
+    static calcRadians(sp, ep) {
+        let x = ep.x - sp.x;
+        let y = ep.y - sp.y;
+        if (x > 0) {
+            return Math.atan(y / x);
+        } else if (x < 0) {
+            return Math.atan(y / x) + Math.PI;
+        } else if (x === 0) {
+            if (y > 0) {
+                return Math.PI / 2;
+            } else if (y < 0) {
+                return Math.PI / 2 * 3;
+            } else {
+                return 0;
+            }
+        }
+    }
 }

@@ -9,6 +9,7 @@ import BombExplode from "./BombExplode";
 import Shield from "./Shield";
 import MusicMgr from "../mgr/MusicMgr";
 import Magnet from "./Magnet";
+import Utils from "../utils/Utils";
 
 export default class Player extends Component {
     constructor(world, parent, id) {
@@ -163,7 +164,9 @@ export default class Player extends Component {
         this.bulletCount++;
         if (this.bulletCount / Config.fps > Config.bullet.createInterval) {
             this.bulletCount = 0;
-            this.gameScene.createBullet(this.body.getPosition(), this.body.getAngle());
+            let nearestEnemy = this.gameScene.findNearestEnemy();
+            let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
+            this.gameScene.createBullet(this.body.getPosition(), radians);
         }
     }
 
