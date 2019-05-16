@@ -165,8 +165,10 @@ export default class Player extends Component {
         if (this.bulletCount / Config.fps > Config.bullet.createInterval) {
             this.bulletCount = 0;
             let nearestEnemy = this.gameScene.findNearestEnemy();
-            let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
-            this.gameScene.createBullet(this.body.getPosition(), radians);
+            if (nearestEnemy) {
+                let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
+                this.gameScene.createBullet(this.body.getPosition(), radians);
+            }
         }
     }
 
