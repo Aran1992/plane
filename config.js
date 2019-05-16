@@ -283,7 +283,7 @@
     // 虫子的旋转速度
     wormAngularVelocity: Math.PI / 180 * 4,
     // 虫子的速度
-    wormVelocity: 30,
+    wormVelocity: 33,
     // 虫子的推进力
     wormEngineForce: 8,
     // 初始化时生成虫子的最小数量
@@ -297,7 +297,7 @@
     // 世界边缘
     worldViewRectMargin: 300,
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.10,
+    wormDropHeartProbability: 0.15,
     imagePath: {
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
@@ -568,11 +568,11 @@
         // 半径（单位：像素）
         radius: 10,
         // 速度（单位：像素）
-        velocity: 1000,
+        velocity: 650,
         // 颜色
         color: 0xff0000,
         // 创建时间间隔（单位：秒）
-        createInterval: 0.3,
+        createInterval: 0.5,
         // 伤害
         damage: 1,
     },
