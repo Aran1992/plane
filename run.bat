@@ -1,2 +1,2 @@
-start http-server
+start static-server
 npx webpack --watch
