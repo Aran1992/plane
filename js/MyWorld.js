@@ -30,7 +30,7 @@ export default class MyWorld {
     unregisterAllEvent(item) {
         for (let event in this.eventTable) {
             if (this.eventTable.hasOwnProperty(event)) {
-                Utils.removeItemFromArray(this.eventTable[event], item)
+                Utils.removeItemFromArray(this.eventTable[event], item);
             }
         }
     }

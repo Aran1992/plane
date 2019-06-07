@@ -431,6 +431,11 @@
             "images/coin-2.png",
         ],
         bombIcon: "images/bomb-explode-1.png",
+        weaponItem: [
+            "images/weapon-item/1.png",
+            "images/weapon-item/2.png",
+            "images/weapon-item/3.png",
+        ],
     },
     soundPath: {
         bombExplode: "sounds/bomb-explode.mp3",
@@ -527,8 +532,19 @@
         // 持续时间（单位秒）
         duration: 30,
     },
-    // 刷新道具的时间间隔
-    refreshItemInterva2: 4,
+    // 武器道具
+    weaponItem: {
+        // 宽（像素）
+        width: 56,
+        // 高（像素）
+        height: 110,
+        // 刷新时间间隔（单位：秒）
+        refreshInterval: 4,
+        // 吃下去之后减少子弹创建间隔（单位：秒）
+        reduceBulletCreateInterval: 0.1,
+    },
+    // 刷新道具的时间间隔（单位：秒）
+    refreshItemInterval: 4,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
@@ -573,6 +589,8 @@
         color: 0xff0000,
         // 创建时间间隔（单位：秒）
         createInterval: 0.5,
+        // 最小创建时间间隔（单位：秒）
+        minCreateInterval: 0.1,
         // 伤害
         damage: 1,
     },

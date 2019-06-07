@@ -54,8 +54,9 @@ export default class Player extends Component {
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
 
-        this._invincible = false;
+        this._invincible = true;
 
+        this.bulletCreateInterval = Config.bullet.createInterval;
         this.bulletCount = 0;
 
         // setTimeout(() => {
@@ -77,6 +78,13 @@ export default class Player extends Component {
                 this._shield.onBeginContact(contact, anotherFixture, selfFixture);
             } else {
                 this._contacted = true;
+            }
+        } else if (item instanceof window.WeaponItem) {
+            if (this.isPlayerSelfFixture(selfFixture)) {
+                this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
+                if (this.bulletCreateInterval < Config.bullet.minCreateInterval) {
+                    this.bulletCreateInterval = Config.bullet.minCreateInterval;
+                }
             }
         }
     }
@@ -162,7 +170,7 @@ export default class Player extends Component {
         }
 
         this.bulletCount++;
-        if (this.bulletCount / Config.fps > Config.bullet.createInterval) {
+        if (this.bulletCount / Config.fps > this.bulletCreateInterval) {
             this.bulletCount = 0;
             let nearestEnemy = this.gameScene.findNearestEnemy();
             if (nearestEnemy) {
@@ -338,6 +346,10 @@ export default class Player extends Component {
     setBombCount(count) {
         this._bombCount = count;
         this.gameScene.setBombCount(count);
+    }
+
+    isPlayerSelfFixture(fixture) {
+        return fixture === this.fixture;
     }
 }
 

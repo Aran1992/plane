@@ -18,6 +18,7 @@ import AnimationMgr from "../mgr/AnimationMgr";
 import DataMgr from "../mgr/DataMgr";
 import MusicMgr from "../mgr/MusicMgr";
 import Bullet from "../npc/Bullet";
+import WeaponItemMgr from "../mgr/WeaponItemMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -67,6 +68,7 @@ export default class GameScene extends Scene {
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);
         this.itemMgr = new ItemMgr(this.world, this.gameContainer);
         this.animationMgr = new AnimationMgr(this.world, this.gameContainer);
+        this.weaponItemMgr = new WeaponItemMgr(this.gameContainer, this.world);
         this.onTickHandler = this.onTick.bind(this);
         App.ticker.add(this.onTickHandler);
         MusicMgr.playBGM(Config.soundPath.bgm);
@@ -86,6 +88,8 @@ export default class GameScene extends Scene {
         this.animationMgr = undefined;
         this.background.destroy();
         this.background = undefined;
+        this.weaponItemMgr.destroy();
+        this.weaponItemMgr = undefined;
         App.ticker.remove(this.onTickHandler);
         MusicMgr.pauseBGM();
     }
@@ -256,6 +260,5 @@ export default class GameScene extends Scene {
         return nearestEnemy;
     }
 }
-
 
 GameScene.resPathList = Utils.recursiveValues(Config.imagePath);
