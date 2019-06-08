@@ -36,6 +36,7 @@ export default class WeaponItem {
 
     onStep() {
         if (this.ated) {
+            App.dispatchEvent("WeaponItemAte");
             this.destroy();
         }
     }
