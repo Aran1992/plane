@@ -54,7 +54,7 @@ export default class Player extends Component {
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
 
-        this._invincible = true;
+        this._invincible = false;
 
         this.bulletCreateInterval = Config.bullet.createInterval;
         this.bulletCount = 0;
