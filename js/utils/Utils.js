@@ -34,6 +34,10 @@ export default class Utils {
         return radian / Math.PI * 180;
     }
 
+    static angle2radian(angle) {
+        return angle / 180 * Math.PI;
+    }
+
     static isPointInRect(point, rect) {
         return point.x >= rect.x
             && point.x <= rect.x + rect.width

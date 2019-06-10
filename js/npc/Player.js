@@ -59,6 +59,9 @@ export default class Player extends Component {
         this.bulletCreateInterval = Config.bullet.createInterval;
         this.bulletCount = 0;
 
+        this._maxShieldCount = 360 / Config.shield.angleInterval;
+        this._shieldList = [];
+
         // setTimeout(() => {
         //     this._trailAudio = MusicMgr.playSound(Config.soundPath.trail, true);
         // }, 0);
@@ -75,7 +78,7 @@ export default class Player extends Component {
         let item = anotherFixture.getBody().getUserData();
         if (item instanceof window.Meteor || item instanceof window.Worm) {
             if (selfFixture.getUserData() instanceof Shield) {
-                this._shield.onBeginContact(contact, anotherFixture, selfFixture);
+                this._shieldList.forEach(shield => shield.onBeginContact(contact, anotherFixture, selfFixture));
             } else {
                 this._contacted = true;
             }
@@ -139,13 +142,8 @@ export default class Player extends Component {
             this.frameIndex++;
             this._updateFrame();
 
-            if (this._shield) {
-                if (this._shield.destroyed) {
-                    this._shield = undefined;
-                } else {
-                    this._shield.onStep();
-                }
-            }
+            this._shieldList.forEach(shield => shield.onStep());
+            GameUtils.cleanDestroyedNpc(this._shieldList);
 
             if (this._magnet) {
                 if (this._magnet.destroyed) {
@@ -196,10 +194,8 @@ export default class Player extends Component {
         }
         this._bombExplode = undefined;
 
-        if (this._shield && !this._shield.destroyed) {
-            this._shield.destroy();
-        }
-        this._shield = undefined;
+        this._shieldList.forEach(shield => shield.destroy());
+        this._shieldList = [];
 
         if (this._magnet && !this._magnet.destroyed) {
             this._magnet.destroy();
@@ -309,8 +305,16 @@ export default class Player extends Component {
     }
 
     _createShield() {
-        if (this._shield === undefined || this._shield.destroyed) {
-            this._shield = new Shield(this);
+        if (this._shieldList.length < this._maxShieldCount) {
+            let radiansList = [];
+            for (let i = 0; i < this._maxShieldCount; i++) {
+                let radians = i * Utils.angle2radian(Config.shield.angleInterval);
+                if (!this._shieldList.some(shield => shield.getRadians() === radians)) {
+                    radiansList.push(radians);
+                }
+            }
+            let radians = Utils.randomChoose(radiansList);
+            this._shieldList.push(new Shield(this, radians));
         }
     }
 
