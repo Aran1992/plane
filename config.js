@@ -515,7 +515,7 @@
     // 盾牌相关配置
     shield: {
         // 可以进行几次碰撞
-        collideTimes: 8,
+        collideTimes: 25,
         // 距离飞船的距离
         distance: 120,
         // 宽度(像素)
@@ -539,7 +539,7 @@
         // 宽（像素）
         width: 56,
         // 高（像素）
-        height: 110,
+        height: 56,
         // 刷新时间间隔（单位：秒）
         refreshInterval: 4,
         // 吃下去之后减少子弹创建间隔（单位：秒）
@@ -575,10 +575,7 @@
     },
     // 随机出来的道具类型
     randomItemList: [
-        "ElectricSaw",
-        "Bomb",
-        "Confused",
-        "Magnet",
+        
         "Shield",
     ],
     // 子弹相关配置
@@ -590,7 +587,7 @@
         // 颜色
         color: 0xff0000,
         // 创建时间间隔（单位：秒）
-        createInterval: 0.5,
+        createInterval: 1.3,
         // 最小创建时间间隔（单位：秒）
         minCreateInterval: 0.1,
         // 伤害
