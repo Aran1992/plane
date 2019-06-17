@@ -596,6 +596,10 @@
         // 伤害
         damage: 1,
     },
+    // 敌机
+    enemy: {
+        count: 10,
+    },
     startScene: {
         title: {
             position: {

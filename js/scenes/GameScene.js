@@ -64,7 +64,7 @@ export default class GameScene extends Scene {
         this.wall = new Wall(this.world);
         this.createPlayer();
         this.enemyList = [];
-        for (let i = Utils.randomIntInRange(0, 10); i >= 0; i--) {
+        for (let i = Config.enemy.count; i > 0; i--) {
             let renderPosition = {x: Math.random() * Config.gameSceneWidth, y: Math.random() * Config.gameSceneHeight};
             this.enemyList.push(new Enemy(this.world, this.gameContainer, Utils.randomChoose(Config.planeList).id, renderPosition));
         }
