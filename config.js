@@ -575,7 +575,10 @@
     },
     // 随机出来的道具类型
     randomItemList: [
-        
+        "Bomb",
+        "Confused",
+        "ElectricSaw",
+        "Magnet",
         "Shield",
     ],
     // 子弹相关配置

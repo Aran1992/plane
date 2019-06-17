@@ -1,7 +1,7 @@
-import Scene from "../base/Scene.js";
 import Config from "../../config.js";
 import RunOption from "../../run-option.js";
-import {Container, Rectangle, Text, TextStyle} from "../libs/pixi-wrapper.js";
+import Scene from "../base/Scene.js";
+import {resources, Container, Rectangle, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js";
 import {Vec2} from "../libs/planck-wrapper.js";
 import Utils from "../utils/Utils";
 import GameUtils from "../utils/GameUtils";
@@ -12,13 +12,13 @@ import Player from "../npc/Player";
 import MeteorMgr from "../mgr/MeteorMgr";
 import WormMgr from "../mgr/WormMgr";
 import HeartMgr from "../mgr/HeartMgr";
-import {resources, Sprite} from "../libs/pixi-wrapper";
 import ItemMgr from "../mgr/ItemMgr";
+import WeaponItemMgr from "../mgr/WeaponItemMgr";
 import AnimationMgr from "../mgr/AnimationMgr";
 import DataMgr from "../mgr/DataMgr";
 import MusicMgr from "../mgr/MusicMgr";
 import Bullet from "../npc/Bullet";
-import WeaponItemMgr from "../mgr/WeaponItemMgr";
+import Enemy from "../npc/Enemy";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -62,7 +62,12 @@ export default class GameScene extends Scene {
         this.world = new MyWorld({gravity: Vec2(0, Config.gravity)});
         this.background = new Background(this.world, this.gameContainer);
         this.wall = new Wall(this.world);
-        this.plane = new Player(this.world, this.gameContainer, DataMgr.get("selectedPlane"));
+        this.createPlayer();
+        this.enemyList = [];
+        for (let i = Utils.randomIntInRange(0, 10); i >= 0; i--) {
+            let renderPosition = {x: Math.random() * Config.gameSceneWidth, y: Math.random() * Config.gameSceneHeight};
+            this.enemyList.push(new Enemy(this.world, this.gameContainer, Utils.randomChoose(Config.planeList).id, renderPosition));
+        }
         this.meteorMgr = new MeteorMgr(this.world, this.gameContainer);
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);
@@ -81,15 +86,11 @@ export default class GameScene extends Scene {
 
     onHide() {
         this.heartMgr.destroy();
-        this.heartMgr = undefined;
         this.itemMgr.destroy();
-        this.itemMgr = undefined;
         this.animationMgr.destroy();
-        this.animationMgr = undefined;
         this.background.destroy();
-        this.background = undefined;
         this.weaponItemMgr.destroy();
-        this.weaponItemMgr = undefined;
+        this.enemyList.forEach(enemy => enemy.destroy());
         App.ticker.remove(this.onTickHandler);
         MusicMgr.pauseBGM();
     }
@@ -110,11 +111,13 @@ export default class GameScene extends Scene {
 持有金币：${DataMgr.get("coin", 0)}`;
         }
 
-        let x = Config.designWidth / 2 - this.plane.sprite.x,
-            y = Config.designHeight / 2 - this.plane.sprite.y;
-        this.gameContainer.position.set(x, y);
+        if (!this.player.isDestroyed()) {
+            let x = Config.designWidth / 2 - this.player.sprite.x,
+                y = Config.designHeight / 2 - this.player.sprite.y;
+            this.gameContainer.position.set(x, y);
+        }
 
-        if (!this.gameEnded && this.plane.isDestroyed()) {
+        if (!this.gameEnded && this.player.isDestroyed()) {
             this.gameEnded = true;
             App.showScene("GameOverScene", this.survivalTime);
         }
@@ -130,7 +133,7 @@ export default class GameScene extends Scene {
             y: event.data.global.y - App.scenesContainer.y
         };
 
-        let targetAngle = this.plane.sprite.rotation;
+        let targetAngle = this.player.sprite.rotation;
         let x = point.x - Math.cos(targetAngle) * Config.rockerRadius;
         let y = point.y - Math.sin(targetAngle) * Config.rockerRadius;
         this.startPoint = {x: x, y: y};
@@ -155,7 +158,7 @@ export default class GameScene extends Scene {
             let y = point.y - this.startPoint.y;
             let x = point.x - this.startPoint.x;
             let targetAngle = GameUtils.calcVectorAngle(x, y);
-            this.plane.setTargetAngle(targetAngle);
+            this.player.setTargetAngle(targetAngle);
 
             let ex = this.startPoint.x + Math.cos(targetAngle) * Config.rockerRadius,
                 ey = this.startPoint.y + Math.sin(targetAngle) * Config.rockerRadius;
@@ -165,7 +168,7 @@ export default class GameScene extends Scene {
 
     onPointerup() {
         this.startPoint = undefined;
-        this.plane.setTargetAngle(undefined);
+        this.player.setTargetAngle(undefined);
         if (this.startPointCircle) {
             this.startPointCircle.parent.removeChild(this.startPointCircle);
             this.startPointCircle = undefined;
@@ -251,13 +254,19 @@ export default class GameScene extends Scene {
         let minDistance = undefined;
         let nearestEnemy = undefined;
         enemyList.forEach(enemy => {
-            let distance = Utils.calcPointsDistance(enemy.body.getPosition(), this.plane.body.getPosition());
+            let distance = Utils.calcPointsDistance(enemy.body.getPosition(), this.player.body.getPosition());
             if (minDistance === undefined || distance < minDistance) {
                 minDistance = distance;
                 nearestEnemy = enemy;
             }
         });
         return nearestEnemy;
+    }
+
+    createPlayer() {
+        let id = DataMgr.get("selectedPlane");
+        let renderPosition = {x: Config.gameSceneWidth / 2, y: Config.gameSceneHeight / 2};
+        this.player = new Player(this.world, this.gameContainer, id, renderPosition);
     }
 }
 

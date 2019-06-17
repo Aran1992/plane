@@ -3,7 +3,6 @@ import {Circle, Vec2} from "../libs/planck-wrapper";
 import {Graphics} from "../libs/pixi-wrapper";
 import GameUtils from "../utils/GameUtils";
 import Utils from "../utils/Utils";
-import MusicMgr from "../mgr/MusicMgr";
 
 const GAME_VISIBLE_RECT = {
     x: -Config.designWidth / 2,
@@ -35,8 +34,6 @@ export default class Bullet {
         let vx = Math.cos(radius) * velocity;
         let vy = Math.sin(radius) * velocity;
         this.body.setLinearVelocity(Vec2(vx, vy));
-
-        MusicMgr.playSound(Config.soundPath.shoot);
 
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);

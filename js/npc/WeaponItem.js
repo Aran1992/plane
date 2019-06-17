@@ -1,7 +1,7 @@
 import Config from "../../config";
 import {Sprite, Texture} from "../libs/pixi-wrapper";
-import GameUtils from "../utils/GameUtils";
 import {Box} from "../libs/planck-wrapper";
+import GameUtils from "../utils/GameUtils";
 
 export default class WeaponItem {
     constructor(parent, world, renderPosition) {
@@ -38,6 +38,8 @@ export default class WeaponItem {
         if (this.ated) {
             App.dispatchEvent("WeaponItemAte");
             this.destroy();
+        } else {
+            GameUtils.syncSpriteWithBody(this);
         }
     }
 
@@ -51,7 +53,7 @@ export default class WeaponItem {
 
     onBeginContact(contact, anotherFixture) {
         let another = anotherFixture.getBody().getUserData();
-        if (another instanceof window.Player && another.isPlayerSelfFixture(anotherFixture)) {
+        if (another instanceof window.Plane && another.isPlaneSelfFixture(anotherFixture)) {
             this.ated = true;
         }
     }

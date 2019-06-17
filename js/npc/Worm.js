@@ -38,11 +38,11 @@ export default class Worm {
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
         if (item instanceof window.Meteor
-            || item instanceof window.Player
+            || item instanceof window.Plane
             || item instanceof window.BombExplode
             || item instanceof window.ElectricSaw) {
             this.exploded = true;
-            if (item instanceof window.Player && !(anotherFixture.getUserData() instanceof window.Shield)) {
+            if (item instanceof window.Plane && item.isPlaneSelfFixture(anotherFixture)) {
                 this._contactedPlayerSelf = true;
             }
         }
@@ -97,10 +97,9 @@ export default class Worm {
     }
 
     followPlayer() {
-        //todo 暂时先不写游戏管理器 直接从scene里面获取
-        let player = App.getScene("GameScene").plane;
+        let player = App.getScene("GameScene").player;
         if (!player.isDestroyed()) {
-            let pp = player.pastPos[0];
+            let pp = player.getPastPosition();
             let wp = this.body.getPosition();
             let targetAngle = GameUtils.calcVectorAngle(pp.x - wp.x, pp.y - wp.y);
             let angle = GameUtils.calcStepAngle(this.body.getAngle(), targetAngle, Config.wormAngularVelocity);

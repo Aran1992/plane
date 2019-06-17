@@ -52,7 +52,7 @@ export default class Meteor {
     onBeginContact(contact, anotherFixture,) {
         let item = anotherFixture.getBody().getUserData();
         if (item instanceof window.Worm
-            || item instanceof window.Player
+            || item instanceof window.Plane
             || item instanceof window.ElectricSaw
             || item instanceof window.BombExplode) {
             this.exploded = true;
