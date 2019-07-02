@@ -270,7 +270,7 @@ export default class Plane {
 
     setBombCount(count) {
         this.bombCount = count;
-        this.bombCircle.visible = this.bombCircle > 0;
+        this.bombCircle.visible = this.bombCount > 0;
     }
 
     onAteConfused() {
