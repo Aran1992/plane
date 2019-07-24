@@ -102,55 +102,58 @@ export default class Plane {
             if (this.bombCount > 0) {
                 this.setBombCount(this.bombCount - 1);
                 this.bombExplode = new BombExplode(this.world, this.parent, this.sprite.position);
-            } else if (!this.invincible && this.scale > 0) {
-                this.setScale(this.scale - 1);
+            } else if (!this.invincible) {
+                if (this.scale > 0) {
+                    this.setScale(this.scale - 1);
+                } else {
+                    let animationMgr = this.gameScene.animationMgr;
+                    animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
+                    MusicMgr.playSound(Config.soundPath.planeExplode);
+                    this.destroy();
+                    return;
+                }
+            }
+        }
+
+        GameUtils.syncSpriteWithBody(this, this.config.noRotation);
+
+        let pos = this.body.getPosition();
+        this.pastPos.push(Vec2(pos.x, pos.y));
+        if (this.pastPos.length > Config.planePastPosLength) {
+            this.pastPos.shift();
+        }
+
+        this.movePlayer();
+
+        if (this.invincible) {
+            if (this.invincibleCount <= 0) {
+                this.invincible = false;
+                this.sprite.alpha = 1;
             } else {
-                let animationMgr = this.gameScene.animationMgr;
-                animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
-                MusicMgr.playSound(Config.soundPath.planeExplode);
-                this.destroy();
-            }
-        } else {
-            GameUtils.syncSpriteWithBody(this, this.config.noRotation);
-
-            let pos = this.body.getPosition();
-            this.pastPos.push(Vec2(pos.x, pos.y));
-            if (this.pastPos.length > Config.planePastPosLength) {
-                this.pastPos.shift();
-            }
-
-            this.movePlayer();
-
-            if (this.invincible) {
-                if (this.invincibleCount <= 0) {
-                    this.invincible = false;
-                    this.sprite.alpha = 1;
-                } else {
-                    if (this.invincibleCount % Config.planeInvincibleTwinkleInterval === 0) {
-                        if (this.sprite.alpha === 1) {
-                            this.sprite.alpha = Config.planeInvincibleAlpha;
-                        } else {
-                            this.sprite.alpha = 1;
-                        }
+                if (this.invincibleCount % Config.planeInvincibleTwinkleInterval === 0) {
+                    if (this.sprite.alpha === 1) {
+                        this.sprite.alpha = Config.planeInvincibleAlpha;
+                    } else {
+                        this.sprite.alpha = 1;
                     }
-                    this.invincibleCount--;
                 }
+                this.invincibleCount--;
             }
+        }
 
-            GameUtils.destroyWillDestroyedNpc(this.electricSawList);
+        GameUtils.destroyWillDestroyedNpc(this.electricSawList);
 
-            this.frameIndex++;
-            this.updateFrame();
+        this.frameIndex++;
+        this.updateFrame();
 
-            this.shieldList.forEach(shield => shield.onStep());
-            GameUtils.cleanDestroyedNpc(this.shieldList);
+        this.shieldList.forEach(shield => shield.onStep());
+        GameUtils.cleanDestroyedNpc(this.shieldList);
 
-            if (this.magnet) {
-                if (this.magnet.destroyed) {
-                    this.magnet = undefined;
-                } else {
-                    this.magnet.onStep();
-                }
+        if (this.magnet) {
+            if (this.magnet.destroyed) {
+                this.magnet = undefined;
+            } else {
+                this.magnet.onStep();
             }
         }
 
