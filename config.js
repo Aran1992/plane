@@ -21,7 +21,7 @@
             // 飞机的anchor
             anchor: [0.55, 0.5],
             // 飞机的速度
-            planeVelocity: 28,
+            planeVelocity: 29,
             // 飞机的推进力
             planeEngineForce: 21,
             // 飞机旋转的速度
@@ -38,9 +38,9 @@
             // 飞机的anchor
             anchor: [0.5, 0.43],
             // 飞机的速度
-            planeVelocity: 27,
+            planeVelocity: 28,
             // 飞机的推进力
-            planeEngineForce: 27,
+            planeEngineForce: 28,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 180,
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
@@ -57,9 +57,9 @@
             // 飞机的anchor
             anchor: [0.58, 0.5],
             // 飞机的速度
-            planeVelocity: 26,
+            planeVelocity: 29,
             // 飞机的推进力
-            planeEngineForce: 26,
+            planeEngineForce: 25,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -74,9 +74,9 @@
             // 飞机的anchor
             anchor: [67 / 137, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 25,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -91,9 +91,9 @@
             // 飞机的anchor
             anchor: [80 / 146, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 28,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 26,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -108,11 +108,11 @@
             // 飞机的anchor
             anchor: [67 / 120, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 30,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 30,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -125,9 +125,9 @@
             // 飞机的anchor
             anchor: [60 / 122, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 30,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -261,20 +261,20 @@
     // 陨石的旋转速度
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshMeteorProbability: 0.3,
+    refreshMeteorProbability: 0.5,
     // 陨石相关配置
     meteor: {
         // 陨石数量随着时间的变化
         countBySeconds: {
-            "30": 30,
-            "60": 40,
-            "90": 60,
-            "120": 80,
-            "150": 90,
-            "180": 100,
+            "30": 10,
+            "60": 20,
+            "90": 30,
+            "120": 40,
+            "150": 50,
+            "180": 60,
         },
         // 血量
-        blood: 1,
+        blood: 2,
     },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 0.05,
@@ -291,9 +291,9 @@
     // 初始化时生成虫子的最大数量
     wormMaxCount: 2,
     // 虫子同时能存在的最大数量
-    wormExistMaxCount: 6,
+    wormExistMaxCount: 4,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
-    refreshWormProbability: 0.175,
+    refreshWormProbability: 0.2,
     // 世界边缘
     worldViewRectMargin: 300,
     // 虫子爆炸掉落红心概率
@@ -455,7 +455,7 @@
         // 高度(像素)
         height: 35,
         // 血量
-        blood: 2,
+        blood: 3,
     },
     // 红心相关配置
     heart: {
@@ -485,7 +485,7 @@
         // 电锯密度（越大越重）
         density: 0.01,
         // 可以进行几次碰撞
-        collideTimes: 12,
+        collideTimes: 15,
         // 距离飞船的距离
         distance: 300,
         // 距离飞船的距离
@@ -592,7 +592,7 @@
         // 创建时间间隔（单位：秒）
         createInterval: 1.3,
         // 最小创建时间间隔（单位：秒）
-        minCreateInterval: 0.1,
+        minCreateInterval: 0.5,
         // 伤害
         damage: 1,
     },
@@ -601,7 +601,7 @@
         // 总数
         totalCount: 99,
         // 战场上同时能存在的最大数量
-        maxCountInBattlefield: 9,
+        maxCountInBattlefield: 6,
     },
     startScene: {
         title: {
