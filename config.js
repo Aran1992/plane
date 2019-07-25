@@ -598,7 +598,10 @@
     },
     // 敌机
     enemy: {
-        count: 10,
+        // 总数
+        totalCount: 99,
+        // 战场上同时能存在的最大数量
+        maxCountInBattlefield: 9,
     },
     startScene: {
         title: {

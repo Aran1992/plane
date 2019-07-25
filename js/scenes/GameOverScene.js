@@ -1,7 +1,6 @@
 import Scene from "../base/Scene.js";
 import {Graphics, Text, TextStyle} from "../libs/pixi-wrapper.js";
 import Config from "../../config.js";
-import GameUtils from "../utils/GameUtils";
 
 export default class GameOverScene extends Scene {
     onCreate() {
@@ -12,7 +11,7 @@ export default class GameOverScene extends Scene {
         mask.endFill();
         mask.interactive = true;
 
-        let gameOverText = new Text("游戏结束!", new TextStyle(Config.gameOverScene.gameOverText));
+        let gameOverText = new Text("", new TextStyle(Config.gameOverScene.gameOverText));
         this.addChild(gameOverText);
         gameOverText.anchor.set(0.5, 0.5);
         gameOverText.position.set(Config.gameOverScene.gameOverText.x, Config.gameOverScene.gameOverText.y);
@@ -44,8 +43,8 @@ export default class GameOverScene extends Scene {
         );
     }
 
-    onShow(survivalTime) {
-        this.gameOverText.text = `本次时间\n${GameUtils.getTimeString(survivalTime)}`;
+    onShow(remainEnemyCount) {
+        this.gameOverText.text = `本次排名\n${remainEnemyCount + 1}`;
     }
 
     onClickRestart() {

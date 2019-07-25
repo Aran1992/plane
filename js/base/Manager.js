@@ -1,7 +1,10 @@
 export default class Manager {
-    constructor() {
+    constructor(...args) {
         this.eventTable = {};
-        this.onCreate();
+        this.onCreate(...args);
+    }
+
+    onCreate() {
     }
 
     destroy() {
@@ -11,9 +14,6 @@ export default class Manager {
             }
         }
         this.onDestroy();
-    }
-
-    onCreate() {
     }
 
     onDestroy() {
@@ -27,6 +27,6 @@ export default class Manager {
 
     unregisterEvent(event) {
         App.unregisterEvent(event, this.eventTable[event]);
-        this.eventTable[event] = undefined;
+        delete this.eventTable[event];
     }
 }

@@ -1,7 +1,7 @@
 import Config from "../../config.js";
 import RunOption from "../../run-option.js";
 import Scene from "../base/Scene.js";
-import {resources, Container, Rectangle, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js";
+import {Container, Rectangle, resources, Sprite, Text, TextStyle} from "../libs/pixi-wrapper.js";
 import {Vec2} from "../libs/planck-wrapper.js";
 import Utils from "../utils/Utils";
 import GameUtils from "../utils/GameUtils";
@@ -18,7 +18,7 @@ import AnimationMgr from "../mgr/AnimationMgr";
 import DataMgr from "../mgr/DataMgr";
 import MusicMgr from "../mgr/MusicMgr";
 import Bullet from "../npc/Bullet";
-import Enemy from "../npc/Enemy";
+import EnemyMgr from "../mgr/EnemyMgr";
 
 export default class GameScene extends Scene {
     onCreate() {
@@ -47,7 +47,7 @@ export default class GameScene extends Scene {
             this.createDebugText();
         }
 
-        this.createSurvivalTimeText();
+        this.createRemainEnemyCountText();
         this.createLifePanel();
         this.createBombPanel();
 
@@ -55,7 +55,6 @@ export default class GameScene extends Scene {
     }
 
     onShow() {
-        this.survivalTime = 0;
         this.gameEnded = false;
         this.gameContainer.removeChildren();
         this.gameContainer.position.set(0, 0);
@@ -63,11 +62,7 @@ export default class GameScene extends Scene {
         this.background = new Background(this.world, this.gameContainer);
         this.wall = new Wall(this.world);
         this.createPlayer();
-        this.enemyList = [];
-        for (let i = Config.enemy.count; i > 0; i--) {
-            let renderPosition = {x: Math.random() * Config.gameSceneWidth, y: Math.random() * Config.gameSceneHeight};
-            this.enemyList.push(new Enemy(this.world, this.gameContainer, Utils.randomChoose(Config.planeList).id, renderPosition));
-        }
+        this.enemyMgr = new EnemyMgr(this.world, this.gameContainer);
         this.meteorMgr = new MeteorMgr(this.world, this.gameContainer);
         this.wormMgr = new WormMgr(this.world, this.gameContainer);
         this.heartMgr = new HeartMgr(this.world, this.gameContainer);
@@ -90,15 +85,14 @@ export default class GameScene extends Scene {
         this.animationMgr.destroy();
         this.background.destroy();
         this.weaponItemMgr.destroy();
-        this.enemyList.forEach(enemy => enemy.destroy());
+        this.enemyMgr.destroy();
         App.ticker.remove(this.onTickHandler);
         MusicMgr.pauseBGM();
     }
 
     onTick(delta) {
         if (!this.gameEnded) {
-            this.survivalTime++;
-            this.survivalTimeText.text = `${GameUtils.getTimeString(this.survivalTime)}`;
+            this.remainEnmeyCountText.text = `剩余敌机数量：${this.enemyMgr.getRemainEnemyCount()}`;
         }
 
         this.world.step(1 / Config.fps);
@@ -119,7 +113,7 @@ export default class GameScene extends Scene {
 
         if (!this.gameEnded && this.player.isDestroyed()) {
             this.gameEnded = true;
-            App.showScene("GameOverScene", this.survivalTime);
+            App.showScene("GameOverScene", this.enemyMgr.getRemainEnemyCount());
         }
     }
 
@@ -179,10 +173,9 @@ export default class GameScene extends Scene {
         }
     }
 
-    createSurvivalTimeText() {
-        this.survivalTimeText = new Text("生存时间:0", new TextStyle(Config.gameScene.survivalTimeText));
-        this.addChild(this.survivalTimeText);
-        this.survivalTime = 0;
+    createRemainEnemyCountText() {
+        this.remainEnmeyCountText = new Text("", new TextStyle(Config.gameScene.survivalTimeText));
+        this.addChild(this.remainEnmeyCountText);
     }
 
     createLifePanel() {

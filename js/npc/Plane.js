@@ -110,6 +110,7 @@ export default class Plane {
                     animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
                     MusicMgr.playSound(Config.soundPath.planeExplode);
                     this.destroy();
+                    this.afterDestroyed();
                     return;
                 }
             }
@@ -322,6 +323,9 @@ export default class Plane {
     shoot(nearestEnemy) {
         let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
         this.gameScene.createBullet(this.body.getPosition(), radians);
+    }
+
+    afterDestroyed() {
     }
 }
 
