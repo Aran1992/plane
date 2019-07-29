@@ -1,18 +1,19 @@
 import Config from "../../config";
 import {Sprite, Texture} from "../libs/pixi-wrapper";
 import {Box} from "../libs/planck-wrapper";
-import Utils from "../utils/Utils";
 import GameUtils from "../utils/GameUtils";
 
 export default class Item {
-    constructor(world, container, renderPosition) {
+    constructor(mgr, parent, world, type, imagePathList, config, renderPosition) {
+        this.mgr = mgr;
+        this.parent = parent;
         this.world = world;
-        this.container = container;
+        this.type = type;
 
-        this.textures = Config.imagePath.item.map(path => Texture.from(path));
+        this.textures = imagePathList.map(path => Texture.from(path));
         this.textureIndex = 0;
         this.sprite = Sprite.from(this.textures[this.textureIndex]);
-        this.container.addChild(this.sprite);
+        this.parent.addChild(this.sprite);
         this.sprite.anchor.set(0.5, 0.5);
         this.sprite.position.set(renderPosition.x, renderPosition.y);
 
@@ -20,7 +21,7 @@ export default class Item {
         this.body.setUserData(this);
         let physicalPosition = GameUtils.renderPos2PhysicsPos(renderPosition);
         this.body.setPosition(physicalPosition);
-        let shape = Box(Config.item.width * Config.pixel2meter / 2, Config.item.height * Config.pixel2meter / 2);
+        let shape = Box(config.width * Config.pixel2meter / 2, config.height * Config.pixel2meter / 2);
         this.body.createFixture(shape, {isSensor: true});
 
         this.world.registerEvent("step", this);
@@ -28,18 +29,17 @@ export default class Item {
         this.world.registerEvent("begin-contact", this);
     }
 
-    onBeginContact(contact, anotherFixture) {
-        let another = anotherFixture.getBody().getUserData();
-        if (another instanceof window.Plane && another.isPlaneSelfFixture(anotherFixture)) {
-            this.ated = true;
-            this.atePlane = another;
-        }
+    destroy() {
+        this.mgr.removeChild(this);
+        this.sprite.destroy();
+        this.world.destroyBody(this.body);
+        this.world.unregisterAllEvent(this);
     }
 
     onStep() {
         if (this.ated) {
-            GameUtils.destroyPhysicalSprite(this);
-            this.atePlane.onAteItem(Utils.randomChoose(Config.randomItemList));
+            this.destroy();
+            this.mgr.onAteItem();
         } else {
             GameUtils.syncSpriteWithBody(this);
         }
@@ -53,10 +53,11 @@ export default class Item {
         this.sprite.texture = this.textures[this.textureIndex];
     }
 
-    destroy() {
-        this.sprite.destroy();
-        this.world.destroyBody(this.body);
-        this.world.unregisterAllEvent(this);
+    onBeginContact(contact, anotherFixture) {
+        let another = anotherFixture.getBody().getUserData();
+        if (another instanceof window.Plane && another.isPlaneSelfFixture(anotherFixture)) {
+            this.ated = true;
+        }
     }
 }
 

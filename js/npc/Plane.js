@@ -86,13 +86,8 @@ export default class Plane {
             } else {
                 this.contacted = true;
             }
-        } else if (item instanceof window.WeaponItem) {
-            if (this.isPlaneSelfFixture(selfFixture)) {
-                this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
-                if (this.bulletCreateInterval < Config.bullet.minCreateInterval) {
-                    this.bulletCreateInterval = Config.bullet.minCreateInterval;
-                }
-            }
+        } else if (item instanceof window.Item && this.isPlaneSelfFixture(selfFixture)) {
+            this.atedItem = item.type;
         }
     }
 
@@ -110,6 +105,7 @@ export default class Plane {
                     let animationMgr = this.gameScene.animationMgr;
                     animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
                     MusicMgr.playSound(Config.soundPath.planeExplode);
+                    this.explodedPosition = {x: this.sprite.x, y: this.sprite.y};
                     this.destroy();
                     this.afterDestroyed();
                     return;
@@ -177,6 +173,11 @@ export default class Plane {
             if (nearestEnemy) {
                 this.shoot(nearestEnemy);
             }
+        }
+
+        if (this.atedItem) {
+            this.onAteItem(this.atedItem);
+            this.atedItem = undefined;
         }
     }
 
@@ -246,29 +247,41 @@ export default class Plane {
 
     onAteItem(type) {
         switch (type) {
-            case "Bomb": {
-                this.setBombCount(this.bombCount + 1);
+            case "Weapon": {
+                this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
+                if (this.bulletCreateInterval < Config.bullet.minCreateInterval) {
+                    this.bulletCreateInterval = Config.bullet.minCreateInterval;
+                }
                 break;
             }
-            case "Confused": {
-                this.onAteConfused();
-                break;
-            }
-            case "ElectricSaw": {
-                this.createElectricSaw();
-                break;
-            }
-            case "Heart": {
-                this.onAteHeart();
-                break;
-            }
-            case "Magnet": {
-                this.createMagnet();
-                break;
-            }
-            case "Shield": {
-                this.createShield();
-                break;
+            case "Func": {
+                let type = Utils.randomChoose(Config.randomItemList);
+                switch (type) {
+                    case "Bomb": {
+                        this.setBombCount(this.bombCount + 1);
+                        break;
+                    }
+                    case "Confused": {
+                        this.onAteConfused();
+                        break;
+                    }
+                    case "ElectricSaw": {
+                        this.createElectricSaw();
+                        break;
+                    }
+                    case "Heart": {
+                        this.onAteHeart();
+                        break;
+                    }
+                    case "Magnet": {
+                        this.createMagnet();
+                        break;
+                    }
+                    case "Shield": {
+                        this.createShield();
+                        break;
+                    }
+                }
             }
         }
     }

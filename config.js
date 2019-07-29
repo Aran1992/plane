@@ -479,6 +479,8 @@
         width: 75,
         // 高度(像素)
         height: 100,
+        // 刷新道具的时间间隔（单位：秒）
+        refreshInterval: 4,
     },
     // 电锯相关配置
     electricSaw: {
@@ -545,8 +547,6 @@
         // 吃下去之后减少子弹创建间隔（单位：秒）
         reduceBulletCreateInterval: 0.1,
     },
-    // 刷新道具的时间间隔（单位：秒）
-    refreshItemInterval: 4,
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
     // 每动画帧占用多少游戏帧
@@ -602,6 +602,8 @@
         totalCount: 99,
         // 战场上同时能存在的最大数量
         maxCountInBattlefield: 6,
+        // 死亡掉落道具概率
+        explodedDropFuncItemProbability: 0.5,
     },
     startScene: {
         title: {

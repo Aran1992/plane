@@ -15,14 +15,9 @@ export default class Magnet {
     }
 
     onStep() {
-        let itemMgr = App.getScene("GameScene").itemMgr;
-        if (itemMgr && itemMgr.item) {
-            this.abstractItem(itemMgr.item);
-        }
-        let weaponItemMgr = App.getScene("GameScene").weaponItemMgr;
-        if (weaponItemMgr && weaponItemMgr.weaponItem) {
-            this.abstractItem(weaponItemMgr.weaponItem);
-        }
+        let gameScene = App.getScene("GameScene");
+        gameScene.itemMgr.itemList.concat(gameScene.weaponItemMgr.itemList)
+            .forEach(item => this.abstractItem(item));
         this.countDown--;
         if (this.countDown === 0) {
             this.destroy();

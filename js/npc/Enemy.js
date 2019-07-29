@@ -22,6 +22,9 @@ export default class Enemy extends Plane {
 
     afterDestroyed() {
         App.dispatchEvent("EnemyContacted");
+        if (Math.random() < Config.enemy.explodedDropFuncItemProbability) {
+            App.getScene("GameScene").itemMgr.refreshItem(this.explodedPosition);
+        }
     }
 
     followPlayer() {
