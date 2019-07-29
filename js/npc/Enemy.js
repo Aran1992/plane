@@ -1,4 +1,6 @@
 import Plane from "./Plane";
+import GameUtils from "../utils/GameUtils";
+import Config from "../../config";
 
 export default class Enemy extends Plane {
     constructor(mgr, ...args) {
@@ -8,7 +10,9 @@ export default class Enemy extends Plane {
 
     onStep() {
         super.onStep();
-        this.setTargetAngle(Math.random() * Math.PI * 2);
+        if (!this.destroyed) {
+            this.followPlayer();
+        }
     }
 
     destroy() {
@@ -18,5 +22,17 @@ export default class Enemy extends Plane {
 
     afterDestroyed() {
         App.dispatchEvent("EnemyContacted");
+    }
+
+    followPlayer() {
+        let player = App.getScene("GameScene").player;
+        if (!player.isDestroyed()) {
+            let pp = player.getPastPosition();
+            let wp = this.body.getPosition();
+            let targetAngle = GameUtils.calcVectorAngle(pp.x - wp.x, pp.y - wp.y);
+            let angle = GameUtils.calcStepAngle(this.body.getAngle(), targetAngle, Config.wormAngularVelocity);
+            this.body.setAngle(angle);
+            GameUtils.fireEngine(this, Config.wormVelocity, Config.wormEngineForce);
+        }
     }
 }

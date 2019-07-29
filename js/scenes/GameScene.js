@@ -238,12 +238,16 @@ export default class GameScene extends Scene {
         return Utils.isPointInRect(pos, rect);
     }
 
-    createBullet(pos, radians) {
-        new Bullet(this.gameContainer, this.world, pos, radians);
+    createBullet(pos, radians, creator) {
+        new Bullet(this.gameContainer, this.world, pos, radians, creator);
     }
 
-    findNearestEnemy() {
-        let enemyList = this.meteorMgr.meteorList.concat(this.wormMgr.wormList);
+    findNearestEnemy(self) {
+        let enemyList = [this.player]
+            .concat(this.enemyMgr.enemyList)
+            .concat(this.wormMgr.wormList)
+            .concat(this.meteorMgr.meteorList);
+        Utils.removeItemFromArray(enemyList, self);
         let minDistance = undefined;
         let nearestEnemy = undefined;
         enemyList.forEach(enemy => {

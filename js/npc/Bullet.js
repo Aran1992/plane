@@ -12,9 +12,10 @@ const GAME_VISIBLE_RECT = {
 };
 
 export default class Bullet {
-    constructor(parent, world, position, radius) {
+    constructor(parent, world, position, radius, creator) {
         this.parent = parent;
         this.world = world;
+        this.creator = creator;
 
         this.sprite = this.parent.addChild(new Graphics()
             .lineStyle(2, 0xFEEB77, 1)
@@ -59,7 +60,7 @@ export default class Bullet {
 
     onBeginContact(contact, anotherFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if (item.canExplode && item.canExplode()) {
+        if (item.canExplode && item.canExplode() && item !== this.creator) {
             this._exploded = true;
         }
     }

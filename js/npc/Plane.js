@@ -78,7 +78,8 @@ export default class Plane {
 
     onBeginContact(contact, anotherFixture, selfFixture) {
         let item = anotherFixture.getBody().getUserData();
-        if (item instanceof window.Meteor || item instanceof window.Worm) {
+        if (item instanceof window.Meteor || item instanceof window.Worm
+            || (item instanceof window.Bullet && item.creator !== this)) {
             let userData = selfFixture.getUserData();
             if (userData instanceof Shield) {
                 userData.onBeginContact(contact, anotherFixture, selfFixture);
@@ -172,7 +173,7 @@ export default class Plane {
         this.bulletCount++;
         if (this.bulletCount / Config.fps > this.bulletCreateInterval) {
             this.bulletCount = 0;
-            let nearestEnemy = this.gameScene.findNearestEnemy();
+            let nearestEnemy = this.gameScene.findNearestEnemy(this);
             if (nearestEnemy) {
                 this.shoot(nearestEnemy);
             }
@@ -322,10 +323,14 @@ export default class Plane {
 
     shoot(nearestEnemy) {
         let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
-        this.gameScene.createBullet(this.body.getPosition(), radians);
+        this.gameScene.createBullet(this.body.getPosition(), radians, this);
     }
 
     afterDestroyed() {
+    }
+
+    canExplode() {
+        return true;
     }
 }
 
