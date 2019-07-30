@@ -22,6 +22,11 @@ export default class Player extends Plane {
         super.shoot(nearestEnemy);
         MusicMgr.playSound(Config.soundPath.shoot);
     }
+
+    setScale(scaleLevel) {
+        super.setScale(scaleLevel);
+        this.gameScene.setLifeCount(this.scale + 1);
+    }
 }
 
 window.Player = Player;

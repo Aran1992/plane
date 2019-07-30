@@ -205,6 +205,9 @@ export default class Plane {
     }
 
     setScale(scaleLevel) {
+        if (Config.planeScaleList[scaleLevel] === undefined) {
+            scaleLevel = Utils.getLast(Config.planeScaleList);
+        }
         this.scale = scaleLevel;
         let spriteScale = Config.planeScaleList[scaleLevel] / Config.planeBaseScale;
         this.sprite.scale.set(spriteScale, spriteScale);
@@ -215,7 +218,6 @@ export default class Plane {
         let radius = this.config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scaleLevel] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scaleLevel], 2)});
-        this.gameScene.setLifeCount(scaleLevel + 1);
     }
 
     updateFrame() {
@@ -247,6 +249,10 @@ export default class Plane {
 
     onAteItem(type) {
         switch (type) {
+            case "Heart": {
+                this.onAteHeart();
+                break;
+            }
             case "Weapon": {
                 this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
                 if (this.bulletCreateInterval < Config.bullet.minCreateInterval) {
@@ -267,10 +273,6 @@ export default class Plane {
                     }
                     case "ElectricSaw": {
                         this.createElectricSaw();
-                        break;
-                    }
-                    case "Heart": {
-                        this.onAteHeart();
                         break;
                     }
                     case "Magnet": {
