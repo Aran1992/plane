@@ -21,11 +21,12 @@
             // 飞机的anchor
             anchor: [0.55, 0.5],
             // 飞机的速度
-            planeVelocity: 29,
+            planeVelocity: 35,
             // 飞机的推进力
-            planeEngineForce: 21,
+            planeEngineForce: 15,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 3
+,
             // 飞机的描述
             dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
         },
@@ -42,7 +43,7 @@
             // 飞机的推进力
             planeEngineForce: 28,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 180,
+            planeAngularVelocity: Math.PI / 180 * 10,
             // 不旋转飞机（1是不进行旋转，0是进行旋转）
             noRotation: 1,
             // 飞机的描述
@@ -57,11 +58,11 @@
             // 飞机的anchor
             anchor: [0.58, 0.5],
             // 飞机的速度
-            planeVelocity: 29,
+            planeVelocity: 28,
             // 飞机的推进力
-            planeEngineForce: 25,
+            planeEngineForce: 28,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 4,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -74,11 +75,11 @@
             // 飞机的anchor
             anchor: [67 / 137, 0.5],
             // 飞机的速度
-            planeVelocity: 33,
+            planeVelocity: 30,
             // 飞机的推进力
-            planeEngineForce: 25,
+            planeEngineForce: 20,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -93,7 +94,7 @@
             // 飞机的速度
             planeVelocity: 28,
             // 飞机的推进力
-            planeEngineForce: 26,
+            planeEngineForce: 28,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -127,7 +128,7 @@
             // 飞机的速度
             planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 30,
+            planeEngineForce: 20,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -142,11 +143,11 @@
             // 飞机的anchor
             anchor: [70 / 138, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 28,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 28,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 10,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -161,7 +162,7 @@
             // 飞机的速度
             planeVelocity: 35,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 20,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -176,11 +177,11 @@
             // 飞机的anchor
             anchor: [63 / 133, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 33,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 5,
+            planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -193,9 +194,9 @@
             // 飞机的anchor
             anchor: [55 / 97, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 25,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -210,9 +211,9 @@
             // 飞机的anchor
             anchor: [68 / 133, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 33,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 20,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -227,9 +228,9 @@
             // 飞机的anchor
             anchor: [66 / 128, 0.5],
             // 飞机的速度
-            planeVelocity: 35,
+            planeVelocity: 30,
             // 飞机的推进力
-            planeEngineForce: 35,
+            planeEngineForce: 30,
             // 飞机旋转的速度
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
@@ -277,11 +278,11 @@
         blood: 2,
     },
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount: 0.05,
+    refreshMeteorMinCount: 1,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
     // 虫子的旋转速度
-    wormAngularVelocity: Math.PI / 180 * 4,
+    wormAngularVelocity: Math.PI / 180 * 3,
     // 虫子的速度
     wormVelocity: 33,
     // 虫子的推进力
@@ -592,7 +593,7 @@
         // 创建时间间隔（单位：秒）
         createInterval: 1.3,
         // 最小创建时间间隔（单位：秒）
-        minCreateInterval: 0.5,
+        minCreateInterval: 0.3,
         // 伤害
         damage: 1,
     },
