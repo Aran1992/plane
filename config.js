@@ -58,11 +58,11 @@
             // 飞机的anchor
             anchor: [0.58, 0.5],
             // 飞机的速度
-            planeVelocity: 28,
+            planeVelocity: 30,
             // 飞机的推进力
-            planeEngineForce: 28,
+            planeEngineForce: 30,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 4,
+            planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
@@ -256,7 +256,7 @@
     // 初始化时生成陨石的最小数量
     meteorMinCount: 5,
     // 初始化时生成陨石的最大数量
-    meteorMaxCount: 10,
+    meteorMaxCount: 5,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
     meteorRestitution: 1.00,
     // 陨石的旋转速度
@@ -275,7 +275,7 @@
             "180": 35,
         },
         // 血量
-        blood: 2,
+        blood: 1,
     },
     // 每帧刷新陨石的最小数量
     refreshMeteorMinCount: 1,
@@ -292,7 +292,7 @@
     // 初始化时生成虫子的最大数量
     wormMaxCount: 2,
     // 虫子同时能存在的最大数量
-    wormExistMaxCount: 4,
+    wormExistMaxCount: 3,
     // 每帧刷新虫子的可能性(0.01表示百分之一，0.5表示百分之五十)
     refreshWormProbability: 0.35,
     // 世界边缘
@@ -456,7 +456,7 @@
         // 高度(像素)
         height: 35,
         // 血量
-        blood: 3,
+        blood: 2,
     },
     // 红心相关配置
     heart: {
@@ -602,9 +602,9 @@
         // 总数
         totalCount: 99,
         // 战场上同时能存在的最大数量
-        maxCountInBattlefield: 2,
+        maxCountInBattlefield: 1,
         // 死亡掉落道具概率
-        explodedDropFuncItemProbability: 0.25,
+        explodedDropFuncItemProbability: 0.35,
     },
     startScene: {
         title: {
