@@ -16,6 +16,8 @@
             id: 1,
             name: "火箭",
             code: "rocket",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 17,
             // 飞机的anchor
@@ -25,8 +27,7 @@
             // 飞机的推进力
             planeEngineForce: 15,
             // 飞机旋转的速度
-            planeAngularVelocity: Math.PI / 180 * 3
-,
+            planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
         },
@@ -34,6 +35,8 @@
             id: 2,
             name: "飞碟",
             code: "spacecraft",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 12,
             // 飞机的anchor
@@ -53,6 +56,8 @@
             id: 3,
             name: "飞船",
             code: "plane",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 17,
             // 飞机的anchor
@@ -70,6 +75,8 @@
             id: 4,
             name: "导弹",
             code: "missile",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 6,
             // 飞机的anchor
@@ -87,6 +94,8 @@
             id: 5,
             name: "飞鹰",
             code: "eagle",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 8,
             // 飞机的anchor
@@ -104,6 +113,8 @@
             id: 6,
             name: "蜉蝣",
             code: "mayfly",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 7,
             // 飞机的anchor
@@ -121,6 +132,8 @@
             id: 7,
             name: "黑鹰",
             code: "blackhawk",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 8,
             // 飞机的anchor
@@ -138,6 +151,8 @@
             id: 8,
             name: "蝴蝶",
             code: "butterfly",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 4,
             // 飞机的anchor
@@ -155,6 +170,8 @@
             id: 9,
             name: "歼灭机",
             code: "annihilation",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 6,
             // 飞机的anchor
@@ -172,6 +189,8 @@
             id: 10,
             name: "拦截者",
             code: "interceptor",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 10,
             // 飞机的anchor
@@ -189,6 +208,8 @@
             id: 11,
             name: "外星虫",
             code: "alienworm",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 6,
             // 飞机的anchor
@@ -206,6 +227,8 @@
             id: 12,
             name: "小飞机",
             code: "litteplane",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 8,
             // 飞机的anchor
@@ -223,6 +246,8 @@
             id: 13,
             name: "雄鹿",
             code: "thebucks",
+            // 初始心数
+            heartCount: 3,
             // 飞机船体的像素长度
             planePixelLength: 8,
             // 飞机的anchor
@@ -237,6 +262,16 @@
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
         },
     ],
+    // 飞船的统一配置
+    plane: {
+        // 生命面板相关配置
+        lifePanel: {
+            // 距离飞船中心Y轴的距离
+            y: -100,
+            // 红心之间的距离
+            heartOffset: 70,
+        }
+    },
     // 飞机无敌闪烁间隔帧数
     planeInvincibleTwinkleInterval: 8,
     // 飞机无敌闪烁透明度（0-1）

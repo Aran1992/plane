@@ -1,5 +1,5 @@
 import Config from "../../config";
-import {Sprite, Texture} from "../libs/pixi-wrapper";
+import {Container, Sprite, Texture} from "../libs/pixi-wrapper";
 import {Circle, Vec2} from "../libs/planck-wrapper";
 import Utils from "../utils/Utils";
 import GameUtils from "../utils/GameUtils";
@@ -16,25 +16,28 @@ export default class Plane {
         this.config = Config.planeList.find(plane => plane.id === id);
         this.gameScene = App.getScene("GameScene");
 
-        this.sprite = this.parent.addChild(new Sprite());
-        this.sprite.anchor.set(...this.config.anchor);
+        this.sprite = this.parent.addChild(new Container());
         this.sprite.position.set(renderPosition.x, renderPosition.y);
+        this.planeSprite = this.sprite.addChild(new Sprite());
+        this.planeSprite.anchor.set(...this.config.anchor);
 
         this.frames = Config.imagePath[this.config.code].map(path => Texture.from(path));
         this.frameIndex = 0;
+
+        this.createLifePanel();
 
         this.body = this.world.createDynamicBody();
         let physicalPosition = GameUtils.renderPos2PhysicsPos(renderPosition);
         this.body.setPosition(physicalPosition);
         this.body.setUserData(this);
 
-        this.setScale(0);
+        this.setScale(this.config.heartCount - 1);
 
         this.pastPos = [this.body.getPosition()];
 
         this.invincible = false;
 
-        this.bombCircle = this.sprite.addChild(Sprite.from(Config.imagePath.bombCircle));
+        this.bombCircle = this.planeSprite.addChild(Sprite.from(Config.imagePath.bombCircle));
         this.bombCircle.anchor.set(0.5, 0.5);
         this.setBombCount(0);
 
@@ -103,7 +106,7 @@ export default class Plane {
                     this.setScale(this.scale - 1);
                 } else {
                     let animationMgr = this.gameScene.animationMgr;
-                    animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.sprite.rotation);
+                    animationMgr.createAnimation(Config.imagePath.planeExplode, this.sprite.position, this.planeSprite.rotation);
                     MusicMgr.playSound(Config.soundPath.planeExplode);
                     this.explodedPosition = {x: this.sprite.x, y: this.sprite.y};
                     this.destroy();
@@ -113,7 +116,7 @@ export default class Plane {
             }
         }
 
-        GameUtils.syncSpriteWithBody(this, this.config.noRotation);
+        this.syncSpriteWithBody();
 
         let pos = this.body.getPosition();
         this.pastPos.push(Vec2(pos.x, pos.y));
@@ -126,13 +129,13 @@ export default class Plane {
         if (this.invincible) {
             if (this.invincibleCount <= 0) {
                 this.invincible = false;
-                this.sprite.alpha = 1;
+                this.planeSprite.alpha = 1;
             } else {
                 if (this.invincibleCount % Config.planeInvincibleTwinkleInterval === 0) {
-                    if (this.sprite.alpha === 1) {
-                        this.sprite.alpha = Config.planeInvincibleAlpha;
+                    if (this.planeSprite.alpha === 1) {
+                        this.planeSprite.alpha = Config.planeInvincibleAlpha;
                     } else {
-                        this.sprite.alpha = 1;
+                        this.planeSprite.alpha = 1;
                     }
                 }
                 this.invincibleCount--;
@@ -161,7 +164,7 @@ export default class Plane {
             this.confusedCountdown--;
             if (this.confusedCountdown === 0) {
                 this.confused = false;
-                this.sprite.tint = 0xFFFFFF;
+                this.planeSprite.tint = 0xFFFFFF;
                 this.startInvincible(Config.confused.endInvincibleFrames);
             }
         }
@@ -205,12 +208,15 @@ export default class Plane {
     }
 
     setScale(scaleLevel) {
+        if (scaleLevel === this.scale) {
+            return;
+        }
         if (Config.planeScaleList[scaleLevel] === undefined) {
             scaleLevel = Utils.getLast(Config.planeScaleList);
         }
         this.scale = scaleLevel;
         let spriteScale = Config.planeScaleList[scaleLevel] / Config.planeBaseScale;
-        this.sprite.scale.set(spriteScale, spriteScale);
+        this.planeSprite.scale.set(spriteScale, spriteScale);
         this.updateFrame();
         if (this.fixture) {
             this.body.destroyFixture(this.fixture);
@@ -218,6 +224,7 @@ export default class Plane {
         let radius = this.config.planePixelLength * Config.pixel2meter * Config.planeScaleList[scaleLevel] / 2;
         this.fixture = this.body.createFixture(Circle(radius),
             {friction: 0, density: Math.pow(Config.planeScaleList[0] / Config.planeScaleList[scaleLevel], 2)});
+        this.setLifeCount(this.scale + 1);
     }
 
     updateFrame() {
@@ -228,9 +235,9 @@ export default class Plane {
                 this.frameIndex = 0;
                 frame = 0;
             }
-            this.sprite.texture = this.frames[frame];
+            this.planeSprite.texture = this.frames[frame];
             if (this.confused) {
-                this.sprite.tint = Math.random() * 0xFFFFFF;
+                this.planeSprite.tint = Math.random() * 0xFFFFFF;
             }
             if (this.magnet) {
                 this.magnet.onAnimationFrame();
@@ -314,7 +321,7 @@ export default class Plane {
 
     createMagnet() {
         if (this.magnet === undefined || this.magnet.destroyed) {
-            this.magnet = new Magnet(this.sprite);
+            this.magnet = new Magnet(this.planeSprite);
         }
     }
 
@@ -346,6 +353,29 @@ export default class Plane {
 
     canExplode() {
         return true;
+    }
+
+    createLifePanel() {
+        this.lifePanel = this.sprite.addChild(new Container());
+        this.lifePanel.y = Config.plane.lifePanel.y;
+    }
+
+    setLifeCount() {
+        this.lifePanel.removeChildren();
+        for (let i = 0; i <= this.scale; i++) {
+            let icon = this.lifePanel.addChild(Sprite.from(Config.imagePath.heart));
+            icon.anchor.set(0.5, 0.5);
+            icon.x = i * Config.plane.lifePanel.heartOffset;
+        }
+        this.lifePanel.x = -this.scale * Config.plane.lifePanel.heartOffset / 2;
+    }
+
+    syncSpriteWithBody() {
+        let pos = this.body.getPosition();
+        this.sprite.position.set(pos.x * Config.meter2pixel, pos.y * Config.meter2pixel);
+        if (!this.config.noRotation) {
+            this.planeSprite.rotation = this.body.getAngle();
+        }
     }
 }
 
