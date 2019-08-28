@@ -106,6 +106,10 @@ export default class GameUtils {
         return curAngle;
     }
 
+    static calcPointVectorAngle(sp, ep) {
+        return GameUtils.calcVectorAngle(ep.x - sp.x, ep.y - sp.y);
+    }
+
     static calcVectorAngle(x, y) {
         let angle;
         if (x === 0) {

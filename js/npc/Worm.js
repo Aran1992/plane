@@ -101,7 +101,7 @@ export default class Worm {
         if (!player.isDestroyed()) {
             let pp = player.getPastPosition();
             let wp = this.body.getPosition();
-            let targetAngle = GameUtils.calcVectorAngle(pp.x - wp.x, pp.y - wp.y);
+            let targetAngle = GameUtils.calcPointVectorAngle(wp, pp);
             let angle = GameUtils.calcStepAngle(this.body.getAngle(), targetAngle, Config.wormAngularVelocity);
             this.body.setAngle(angle);
             GameUtils.fireEngine(this, Config.wormVelocity, Config.wormEngineForce);

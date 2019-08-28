@@ -36,7 +36,7 @@ export default class Magnet {
         let distance = Utils.calcPointsDistance(item.sprite.position, this.parentSprite.position);
         let itemRadius = item.sprite.width > item.sprite.height ? item.sprite.width : item.sprite.height;
         if (distance < itemRadius + Config.magnet.radius) {
-            let radians = GameUtils.calcVectorAngle(this.parentSprite.x - item.sprite.x, this.parentSprite.y - item.sprite.y);
+            let radians = GameUtils.calcPointVectorAngle(item.sprite, this.parentSprite);
             let x = item.body.getPosition().x + Math.cos(radians) * Config.magnet.velocity;
             let y = item.body.getPosition().y + Math.sin(radians) * Config.magnet.velocity;
             item.body.setPosition(Vec2(x, y));

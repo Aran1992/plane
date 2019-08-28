@@ -30,6 +30,8 @@
             planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 2,
@@ -51,6 +53,8 @@
             noRotation: 1,
             // 飞机的描述
             dsc: " 飞碟：更便于操作飘逸灵活。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 3,
@@ -70,6 +74,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 4,
@@ -89,6 +95,8 @@
             planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 5,
@@ -108,6 +116,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 6,
@@ -127,6 +137,8 @@
             planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 7,
@@ -146,6 +158,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 8,
@@ -165,6 +179,8 @@
             planeAngularVelocity: Math.PI / 180 * 10,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 9,
@@ -184,6 +200,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 10,
@@ -203,6 +221,8 @@
             planeAngularVelocity: Math.PI / 180 * 3,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 11,
@@ -222,6 +242,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 12,
@@ -241,6 +263,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
         {
             id: 13,
@@ -260,6 +284,8 @@
             planeAngularVelocity: Math.PI / 180 * 5,
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
+            // 作为敌机的时候绕着飞船转的距离的随机范围
+            moveAroundDistanceRange: [100, 200],
         },
     ],
     // 飞船的统一配置

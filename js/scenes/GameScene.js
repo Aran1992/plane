@@ -148,9 +148,7 @@ export default class GameScene extends Scene {
                 x: event.data.global.x - App.scenesContainer.x,
                 y: event.data.global.y - App.scenesContainer.y
             };
-            let y = point.y - this.startPoint.y;
-            let x = point.x - this.startPoint.x;
-            let targetAngle = GameUtils.calcVectorAngle(x, y);
+            let targetAngle = GameUtils.calcPointVectorAngle(this.startPoint, point);
             this.player.setTargetAngle(targetAngle);
 
             let ex = this.startPoint.x + Math.cos(targetAngle) * Config.rockerRadius,
