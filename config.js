@@ -31,7 +31,7 @@
             // 飞机的描述
             dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 2,
@@ -54,7 +54,7 @@
             // 飞机的描述
             dsc: " 飞碟：更便于操作飘逸灵活。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 3,
@@ -75,7 +75,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 4,
@@ -96,7 +96,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 5,
@@ -117,7 +117,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 6,
@@ -138,7 +138,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 7,
@@ -159,7 +159,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 8,
@@ -180,7 +180,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 9,
@@ -201,7 +201,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 10,
@@ -222,7 +222,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 11,
@@ -243,7 +243,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 12,
@@ -264,7 +264,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
         {
             id: 13,
@@ -285,7 +285,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [100, 200],
+            moveAroundDistanceRange: [500, 900],
         },
     ],
     // 飞船的统一配置
@@ -293,9 +293,9 @@
         // 生命面板相关配置
         lifePanel: {
             // 距离飞船中心Y轴的距离
-            y: -100,
+            y: -50,
             // 红心之间的距离
-            heartOffset: 70,
+            heartOffset: 50,
         }
     },
     // 飞机无敌闪烁间隔帧数
@@ -663,7 +663,7 @@
         // 总数
         totalCount: 99,
         // 战场上同时能存在的最大数量
-        maxCountInBattlefield: 1,
+        maxCountInBattlefield: 2,
         // 死亡掉落道具概率
         explodedDropFuncItemProbability: 0.35,
     },
