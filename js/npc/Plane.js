@@ -88,7 +88,6 @@ export default class Plane {
                 userData.onBeginContact(contact, anotherFixture, selfFixture);
             } else {
                 this.contacted = true;
-                this.contacted = false;
             }
         } else if (item instanceof window.Item && this.isPlaneSelfFixture(selfFixture)) {
             this.atedItem = item.type;
