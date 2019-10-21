@@ -6,6 +6,16 @@ export default class Utils {
         }
     }
 
+    static keys(json) {
+        let arr = [];
+        for (let name in json) {
+            if (json.hasOwnProperty(name)) {
+                arr.push(name);
+            }
+        }
+        return arr;
+    }
+
     static values(json) {
         let arr = [];
         for (let name in json) {
@@ -81,5 +91,18 @@ export default class Utils {
                 return 0;
             }
         }
+    }
+
+    static copyProperty(src, dst) {
+        for (let key in dst) {
+            if (dst.hasOwnProperty(key)) {
+                src[key] = dst[key];
+            }
+        }
+        return src;
+    }
+
+    static copy(src) {
+        return JSON.parse(JSON.stringify(src));
     }
 }

@@ -12,15 +12,16 @@ const GAME_VISIBLE_RECT = {
 };
 
 export default class Bullet {
-    constructor(parent, world, position, radius, creator) {
+    constructor(parent, world, config, position, radius, creator) {
         this.parent = parent;
         this.world = world;
         this.creator = creator;
+        this.damage = config.damage;
 
         this.sprite = this.parent.addChild(new Graphics()
             .lineStyle(2, 0xFEEB77, 1)
-            .beginFill(Config.bullet.color)
-            .drawCircle(0, 0, Config.bullet.radius)
+            .beginFill(config.color)
+            .drawCircle(0, 0, config.radius)
             .endFill());
         let {x, y} = GameUtils.physicalPos2renderPos(position);
         this.sprite.position.set(x, y);
@@ -28,10 +29,10 @@ export default class Bullet {
         this.body = this.world.createBody();
         this.body.setUserData(this);
         this.body.setKinematic();
-        this.body.createFixture(Circle(Config.bullet.radius * Config.pixel2meter), {isSensor: true});
+        this.body.createFixture(Circle(config.radius * Config.pixel2meter), {isSensor: true});
         this.body.setPosition(position);
 
-        let velocity = Config.bullet.velocity * Config.pixel2meter;
+        let velocity = config.velocity * Config.pixel2meter;
         let vx = Math.cos(radius) * velocity;
         let vy = Math.sin(radius) * velocity;
         this.body.setLinearVelocity(Vec2(vx, vy));

@@ -54,6 +54,7 @@ export default class GameScene extends Scene {
     }
 
     onShow() {
+        this.time = 0;
         this.gameEnded = false;
         this.gameContainer.removeChildren();
         this.gameContainer.position.set(0, 0);
@@ -90,6 +91,8 @@ export default class GameScene extends Scene {
     }
 
     onTick(delta) {
+        this.time += 1 / Config.fps;
+
         if (!this.gameEnded) {
             this.remainEnmeyCountText.text = `剩余敌机数量：${this.enemyMgr.getRemainEnemyCount()}`;
         }
@@ -235,8 +238,8 @@ export default class GameScene extends Scene {
         return Utils.isPointInRect(pos, rect);
     }
 
-    createBullet(pos, radians, creator) {
-        new Bullet(this.gameContainer, this.world, pos, radians, creator);
+    createBullet(bulletConfig, pos, radians, creator) {
+        new Bullet(this.gameContainer, this.world, bulletConfig, pos, radians, creator);
     }
 
     findNearestEnemy(self) {

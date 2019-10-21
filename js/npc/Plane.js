@@ -8,6 +8,7 @@ import BombExplode from "./BombExplode";
 import ElectricSaw from "./ElectricSaw";
 import Magnet from "./Magnet";
 import Shield from "./Shield";
+import WeaponAK from "./Weapon/WeaponAk";
 
 export default class Plane {
     constructor(world, parent, id, renderPosition) {
@@ -46,8 +47,10 @@ export default class Plane {
         this.maxShieldCount = 360 / Config.shield.angleInterval;
         this.shieldList = [];
 
-        this.bulletCreateInterval = Config.bullet.createInterval;
+        this.bulletCreateInterval = Config.weapon.default.createInterval;
         this.bulletCount = 0;
+
+        this.weaponTable = {};
 
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
@@ -95,6 +98,11 @@ export default class Plane {
     }
 
     onStep() {
+        if (this.atedItem) {
+            this.onAteItem(this.atedItem);
+            this.atedItem = undefined;
+        }
+
         this.bombCircle.rotation++;
 
         if (this.contacted) {
@@ -172,15 +180,13 @@ export default class Plane {
         this.bulletCount++;
         if (this.bulletCount / Config.fps > this.bulletCreateInterval) {
             this.bulletCount = 0;
-            let nearestEnemy = this.gameScene.findNearestEnemy(this);
-            if (nearestEnemy) {
-                this.shoot(nearestEnemy);
-            }
+            this.shootNearestEnemy(Config.bullet.default);
         }
 
-        if (this.atedItem) {
-            this.onAteItem(this.atedItem);
-            this.atedItem = undefined;
+        for (let type in this.weaponTable) {
+            if (this.weaponTable.hasOwnProperty(type)) {
+                this.weaponTable[type].update();
+            }
         }
     }
 
@@ -261,9 +267,22 @@ export default class Plane {
                 break;
             }
             case "Weapon": {
-                this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
-                if (this.bulletCreateInterval < Config.bullet.minCreateInterval) {
-                    this.bulletCreateInterval = Config.bullet.minCreateInterval;
+                // let type = Utils.randomChoose(Utils.keys(Config.weapon));
+                let type = "AK";
+                switch (type) {
+                    case "default": {
+                        this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
+                        if (this.bulletCreateInterval < Config.weapon.default.minCreateInterval) {
+                            this.bulletCreateInterval = Config.weapon.default.minCreateInterval;
+                        }
+                        break;
+                    }
+                    case "AK": {
+                        if (this.weaponTable.AK === undefined) {
+                            this.weaponTable.AK = new WeaponAK(this.gameScene, this);
+                        }
+                        this.weaponTable.AK.addSupply();
+                    }
                 }
                 break;
             }
@@ -343,9 +362,9 @@ export default class Plane {
         return this.pastPos[0];
     }
 
-    shoot(nearestEnemy) {
+    shoot(nearestEnemy, bulletConfig) {
         let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
-        this.gameScene.createBullet(this.body.getPosition(), radians, this);
+        this.gameScene.createBullet(bulletConfig, this.body.getPosition(), radians, this);
     }
 
     afterDestroyed() {
@@ -375,6 +394,13 @@ export default class Plane {
         this.sprite.position.set(pos.x * Config.meter2pixel, pos.y * Config.meter2pixel);
         if (!this.config.noRotation) {
             this.planeSprite.rotation = this.body.getAngle();
+        }
+    }
+
+    shootNearestEnemy(bulletConfig) {
+        let nearestEnemy = this.gameScene.findNearestEnemy(this);
+        if (nearestEnemy) {
+            this.shoot(nearestEnemy, bulletConfig);
         }
     }
 }

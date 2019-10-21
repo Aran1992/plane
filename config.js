@@ -643,20 +643,53 @@
         "Magnet",
         "Shield",
     ],
+    // 武器
+    weapon: {
+        // 默认武器
+        default:{
+            // 射击时间间隔（单位：秒）
+            createInterval: 1.3,
+            // 最小射击时间间隔（单位：秒）
+            minCreateInterval: 0.3,
+        },
+        // AK
+        AK: {
+            // 射击间隔（单位：秒）
+            shootInterval: 1.5,
+            // 每次射击多少子弹
+            bulletCountEachShoot: 3,
+            // 每次连续射击子弹之间出发的时间间隔（单位：秒）
+            bulletShootInterval: 0.1,
+            // 吃一次道具能够增加多少次射击
+            addedShootTimesEachSupply: 5,
+            // 最高能够存储多少次射击次数
+            upperLimitRemainShootTimes: 10,
+        }
+    },
     // 子弹相关配置
     bullet: {
-        // 半径（单位：像素）
-        radius: 10,
-        // 速度（单位：像素）
-        velocity: 650,
-        // 颜色
-        color: 0xff0000,
-        // 创建时间间隔（单位：秒）
-        createInterval: 1.3,
-        // 最小创建时间间隔（单位：秒）
-        minCreateInterval: 0.3,
-        // 伤害
-        damage: 1,
+        // 默认子弹
+        default: {
+            // 半径（单位：像素）
+            radius: 10,
+            // 速度（单位：像素）
+            velocity: 650,
+            // 颜色
+            color: 0xff0000,
+            // 伤害
+            damage: 1,
+        },
+        // AK子弹
+        AK: {
+            // 半径（单位：像素）
+            radius: 10,
+            // 速度（单位：像素）
+            velocity: 650,
+            // 颜色
+            color: 0x00ff00,
+            // 伤害
+            damage: 1,
+        }
     },
     // 敌机
     enemy: {

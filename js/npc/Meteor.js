@@ -58,7 +58,7 @@ export default class Meteor {
             this.exploded = true;
         }
         if (item instanceof window.Bullet) {
-            this.blood -= Config.bullet.damage;
+            this.blood -= item.damage;
             if (this.blood <= 0) {
                 this.exploded = true;
             }

@@ -47,7 +47,7 @@ export default class Worm {
             }
         }
         if (item instanceof window.Bullet) {
-            this.blood -= Config.bullet.damage;
+            this.blood -= item.damage;
             if (this.blood <= 0) {
                 this.exploded = true;
             }
