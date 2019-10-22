@@ -8,7 +8,13 @@ import BombExplode from "./BombExplode";
 import ElectricSaw from "./ElectricSaw";
 import Magnet from "./Magnet";
 import Shield from "./Shield";
+import WeaponDefault from "./Weapon/WeaponDefault";
 import WeaponAK from "./Weapon/WeaponAk";
+
+const weaponTypeClassTable = {
+    default: WeaponDefault,
+    AK: WeaponAK,
+};
 
 export default class Plane {
     constructor(world, parent, id, renderPosition) {
@@ -47,10 +53,9 @@ export default class Plane {
         this.maxShieldCount = 360 / Config.shield.angleInterval;
         this.shieldList = [];
 
-        this.bulletCreateInterval = Config.weapon.default.createInterval;
-        this.bulletCount = 0;
-
-        this.weaponTable = {};
+        this.weaponTable = {
+            default: new WeaponDefault(this.gameScene, this)
+        };
 
         this.world.registerEvent("begin-contact", this);
         this.world.registerEvent("step", this);
@@ -71,6 +76,12 @@ export default class Plane {
 
         if (this.magnet && !this.magnet.destroyed) {
             this.magnet.destroy();
+        }
+
+        for (let name in this.weaponTable) {
+            if (this.weaponTable.hasOwnProperty(name)) {
+                this.weaponTable[name].destroy();
+            }
         }
 
         this.sprite.destroy();
@@ -177,12 +188,6 @@ export default class Plane {
             }
         }
 
-        this.bulletCount++;
-        if (this.bulletCount / Config.fps > this.bulletCreateInterval) {
-            this.bulletCount = 0;
-            this.shootNearestEnemy(Config.bullet.default);
-        }
-
         for (let type in this.weaponTable) {
             if (this.weaponTable.hasOwnProperty(type)) {
                 this.weaponTable[type].update();
@@ -267,23 +272,11 @@ export default class Plane {
                 break;
             }
             case "Weapon": {
-                // let type = Utils.randomChoose(Utils.keys(Config.weapon));
-                let type = "AK";
-                switch (type) {
-                    case "default": {
-                        this.bulletCreateInterval -= Config.weaponItem.reduceBulletCreateInterval;
-                        if (this.bulletCreateInterval < Config.weapon.default.minCreateInterval) {
-                            this.bulletCreateInterval = Config.weapon.default.minCreateInterval;
-                        }
-                        break;
-                    }
-                    case "AK": {
-                        if (this.weaponTable.AK === undefined) {
-                            this.weaponTable.AK = new WeaponAK(this.gameScene, this);
-                        }
-                        this.weaponTable.AK.addSupply();
-                    }
+                let type = Utils.randomChoose(Utils.keys(Config.weapon));
+                if (this.weaponTable[type] === undefined) {
+                    this.weaponTable[type] = new weaponTypeClassTable[type](this.gameScene, this);
                 }
+                this.weaponTable[type].addSupply();
                 break;
             }
             case "Func": {
