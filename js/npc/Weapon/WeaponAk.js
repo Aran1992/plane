@@ -1,5 +1,6 @@
 import Config from "../../../config";
 import Utils from "../../utils/Utils";
+import {Sprite} from "../../libs/pixi-wrapper";
 
 export default class WeaponAK {
     constructor(gameScene, plane) {
@@ -51,4 +52,9 @@ export default class WeaponAK {
 
     destroy() {
     }
+}
+
+function x() {
+    const sprite = Sprite.from(Config.imagePath.bulletAK);
+    sprite.anchor.set(0.5, 0.5);
 }

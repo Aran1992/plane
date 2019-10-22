@@ -1,8 +1,16 @@
 import Config from "../../config";
 import Plane from "./Plane";
 import MusicMgr from "../mgr/MusicMgr";
+import WeaponAK from "./Weapon/WeaponAk";
 
 export default class Player extends Plane {
+    constructor(...args) {
+        super(...args);
+        this.invincible = true;
+        this.weaponTable.AK = new WeaponAK(this.gameScene, this);
+        this.weaponTable.AK.addSupply();
+    }
+
     onAteItem(type) {
         super.onAteItem(type);
         MusicMgr.playSound(Config.soundPath.pickItem);

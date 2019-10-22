@@ -1,6 +1,6 @@
 import Config from "../../config";
 import {Circle, Vec2} from "../libs/planck-wrapper";
-import {Graphics} from "../libs/pixi-wrapper";
+import {Graphics, Sprite} from "../libs/pixi-wrapper";
 import GameUtils from "../utils/GameUtils";
 import Utils from "../utils/Utils";
 
@@ -18,13 +18,20 @@ export default class Bullet {
         this.creator = creator;
         this.damage = config.damage;
 
-        this.sprite = this.parent.addChild(new Graphics()
-            .lineStyle(2, 0xFEEB77, 1)
-            .beginFill(config.color)
-            .drawCircle(0, 0, config.radius)
-            .endFill());
+        if (config.texture) {
+            this.sprite = Sprite.from(Config.imagePath[config.texture]);
+            this.sprite.anchor.set(0.5, 0.5);
+        } else if (config.color) {
+            this.sprite = new Graphics()
+                .lineStyle(2, 0xFEEB77, 1)
+                .beginFill(config.color)
+                .drawCircle(0, 0, config.radius)
+                .endFill();
+        }
+        this.parent.addChild(this.sprite);
         let {x, y} = GameUtils.physicalPos2renderPos(position);
         this.sprite.position.set(x, y);
+        this.sprite.rotation = radius;
 
         this.body = this.world.createBody();
         this.body.setUserData(this);

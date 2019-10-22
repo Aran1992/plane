@@ -361,6 +361,8 @@
     // 虫子爆炸掉落红心概率
     wormDropHeartProbability: 0.35,
     imagePath: {
+        bulletDefault: "images/bullet/default.png",
+        bulletAK: "images/bullet/ak.png",
         cloud1: "images/cloud-1.png",
         cloud2: "images/cloud-2.png",
         cloud3: "images/cloud-3.png",
@@ -646,7 +648,7 @@
     // 武器
     weapon: {
         // 默认武器
-        default:{
+        default: {
             // 射击时间间隔（单位：秒）
             createInterval: 1.3,
             // 最小射击时间间隔（单位：秒）
@@ -670,23 +672,23 @@
     bullet: {
         // 默认子弹
         default: {
+            // 样式
+            texture: "bulletDefault",
             // 半径（单位：像素）
             radius: 10,
             // 速度（单位：像素）
             velocity: 650,
-            // 颜色
-            color: 0xff0000,
             // 伤害
             damage: 1,
         },
         // AK子弹
         AK: {
+            // 样式
+            texture: "bulletAK",
             // 半径（单位：像素）
-            radius: 10,
+            radius: 18,
             // 速度（单位：像素）
             velocity: 650,
-            // 颜色
-            color: 0x00ff00,
             // 伤害
             damage: 1,
         }
