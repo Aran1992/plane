@@ -1,1 +1,1 @@
-node static-server
+http-server

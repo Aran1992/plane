@@ -1,9 +1,10 @@
-import {Application, loader, resources, Container} from "./libs/pixi-wrapper.js";
+import {Application, Container, loader, resources} from "./libs/pixi-wrapper.js";
 import GameScene from "./scenes/GameScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";
 import Utils from "./utils/Utils";
 import StartScene from "./scenes/StartScene";
 import Config from "../config.js";
+import MusicMgr from "./mgr/MusicMgr";
 
 export default class MyApplication extends Application {
     constructor(args) {
@@ -29,6 +30,8 @@ export default class MyApplication extends Application {
         this.sceneTable = {};
 
         this.eventTable = {};
+
+        this.listenGameRunStatus();
     }
 
     getScene(sceneName) {
@@ -77,5 +80,37 @@ export default class MyApplication extends Application {
         resPathList = Array.from(new Set(resPathList));
         resPathList = resPathList.filter(path => resources[path] === undefined);
         loader.add(resPathList).load(loadedCallback);
+    }
+
+    listenGameRunStatus() {
+        function getHiddenProp() {
+            let prefixes = ["webkit", "moz", "ms", "o"];
+            if ("hidden" in document) return "hidden";
+            for (let i = 0; i < prefixes.length; i++) {
+                if ((prefixes[i] + "Hidden") in document)
+                    return prefixes[i] + "Hidden";
+            }
+        }
+
+        function getVisibilityState() {
+            let prefixes = ["webkit", "moz", "ms", "o"];
+            if ("visibilityState" in document) return "visibilityState";
+            for (let i = 0; i < prefixes.length; i++) {
+                if ((prefixes[i] + "VisibilityState") in document)
+                    return prefixes[i] + "VisibilityState";
+            }
+        }
+
+        let visProp = getHiddenProp();
+        if (visProp) {
+            let evtname = visProp.replace(/[H|h]idden/, "") + "visibilitychange";
+            document.addEventListener(evtname, function () {
+                if (document[getVisibilityState()] === "visible") {
+                    MusicMgr.onGameStart();
+                } else {
+                    MusicMgr.onGameStop();
+                }
+            }, false);
+        }
     }
 }

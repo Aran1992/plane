@@ -24,6 +24,16 @@ class MusicMgr_ {
         audio.play();
         return audio;
     }
+
+    onGameStop() {
+        this.bgmAudio.pause();
+    }
+
+    onGameStart() {
+        if (this.bgmAudio && this.bgmAudio.src) {
+            this.bgmAudio.play();
+        }
+    }
 }
 
 const MusicMgr = new MusicMgr_();
