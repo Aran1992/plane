@@ -285,7 +285,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [300, 500],
         },
     ],
     // 飞船的统一配置
@@ -328,12 +328,12 @@
     meteor: {
         // 陨石数量随着时间的变化
         countBySeconds: {
-            "30": 10,
-            "60": 15,
-            "90": 20,
-            "120": 25,
-            "150": 30,
-            "180": 35,
+            "30": 5,
+            "60": 5,
+            "90": 10,
+            "120": 10,
+            "150": 15,
+            "180": 15,
         },
         // 血量
         blood: 1,
@@ -652,7 +652,7 @@
             // 射击时间间隔（单位：秒）
             createInterval: 1.3,
             // 最小射击时间间隔（单位：秒）
-            minCreateInterval: 0.3,
+            minCreateInterval: 0.5,
         },
         // AK
         AK: {
@@ -661,11 +661,11 @@
             // 每次射击多少子弹
             bulletCountEachShoot: 3,
             // 每次连续射击子弹之间出发的时间间隔（单位：秒）
-            bulletShootInterval: 0.1,
+            bulletShootInterval: 0.2,
             // 吃一次道具能够增加多少次射击
-            addedShootTimesEachSupply: 5,
+            addedShootTimesEachSupply: 6,
             // 最高能够存储多少次射击次数
-            upperLimitRemainShootTimes: 10,
+            upperLimitRemainShootTimes: 8,
         }
     },
     // 子弹相关配置
@@ -686,9 +686,11 @@
             // 样式
             texture: "bulletAK",
             // 半径（单位：像素）
-            radius: 18,
+            radius: 8,
             // 速度（单位：像素）
-            velocity: 650,
+            velocity: 30000,
+            // 颜色
+            color: 0x00ff00,
             // 伤害
             damage: 1,
         }
@@ -698,7 +700,7 @@
         // 总数
         totalCount: 99,
         // 战场上同时能存在的最大数量
-        maxCountInBattlefield: 2,
+        maxCountInBattlefield: 3,
         // 死亡掉落道具概率
         explodedDropFuncItemProbability: 0.35,
     },
