@@ -1,0 +1,9 @@
+﻿id,name,initFireInterval,minFireInterval,itemReduceFireInterval,initFireTimes,maxFireTimes,itemAddFireTimes,fireShootTimes,fireShootInterval
+ID,名称,初始攻击间隔,最小攻击间隔,道具减少攻击间隔,初始攻击次数,最大攻击次数,道具增加攻击次数,每次攻击子弹波数,每波子弹射击间隔
+string,string,number,number,number,number,number,number,number,number
+defaults,默认值,60,1,0,Infinity,Infinity,0,1,1
+basic,基本,60,30,5,,,,,
+ak,AK,90,,,4,10,4,3,5
+shot,霰弹枪,120,,,5,10,5,,
+gatlin,加特林,540,,,4,10,4,10,18
+mine,漂浮雷,180,,,10,10,10,,

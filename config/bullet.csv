@@ -1,0 +1,9 @@
+﻿id,name,initBulletVelocity,maxBulletVelocity,itemAddBulletVelocity,damage,texture,radius,color,bulletCountEachShoot,includedAngle
+ID,名称,初始子弹速度,最快子弹速度,道具增加子弹速度,伤害,图片,半径,颜色,每次射击发射子弹数量,子弹之间的夹角
+string,string,number,number,number,number,string,number,string,number,number
+defaults,默认值,10,Infinity,0,1,,,,1,0
+basic,基本,100,100,1,1,bulletDefault,10,ff0000,,
+ak,AK,10,,,1,bulletAK,8,ff0001,,
+shot,霰弹枪,50,,,1,,8,ff0002,3,5
+gatlin,加特林,10,,,1,,8,ff0003,,
+mine,漂浮雷,0,,,2,,8,ff0004,,

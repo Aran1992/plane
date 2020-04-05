@@ -54,6 +54,8 @@ export default class GameScene extends Scene {
     }
 
     onShow() {
+        Config.weapon = resources["./dist/weapon.json"].data;
+        Config.bullet = resources["./dist/bullet.json"].data;
         this.time = 0;
         this.gameEnded = false;
         this.gameContainer.removeChildren();
@@ -238,8 +240,8 @@ export default class GameScene extends Scene {
         return Utils.isPointInRect(pos, rect);
     }
 
-    createBullet(bulletConfig, pos, radians, creator) {
-        new Bullet(this.gameContainer, this.world, bulletConfig, pos, radians, creator);
+    createBullet(bulletConfig, bulletVelocity, pos, radians, creator) {
+        new Bullet(this.gameContainer, this.world, bulletConfig, bulletVelocity, pos, radians, creator);
     }
 
     findNearestEnemy(self) {
@@ -267,4 +269,4 @@ export default class GameScene extends Scene {
     }
 }
 
-GameScene.resPathList = Utils.recursiveValues(Config.imagePath);
+GameScene.resPathList = [...Utils.recursiveValues(Config.imagePath), "./dist/bullet.json", "./dist/weapon.json"];

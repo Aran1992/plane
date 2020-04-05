@@ -18,8 +18,8 @@ export default class Player extends Plane {
         this.gameScene.setBombCount(count);
     }
 
-    shoot(nearestEnemy, bulletConfig) {
-        super.shoot(nearestEnemy, bulletConfig);
+    shoot(...args) {
+        super.shoot(...args);
         MusicMgr.playSound(Config.soundPath.shoot);
     }
 

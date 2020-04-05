@@ -12,7 +12,7 @@ const GAME_VISIBLE_RECT = {
 };
 
 export default class Bullet {
-    constructor(parent, world, config, position, radius, creator) {
+    constructor(parent, world, config, velocity, position, radian, creator) {
         this.parent = parent;
         this.world = world;
         this.creator = creator;
@@ -31,7 +31,7 @@ export default class Bullet {
         this.parent.addChild(this.sprite);
         let {x, y} = GameUtils.physicalPos2renderPos(position);
         this.sprite.position.set(x, y);
-        this.sprite.rotation = radius;
+        this.sprite.rotation = radian;
 
         this.body = this.world.createBody();
         this.body.setUserData(this);
@@ -39,9 +39,9 @@ export default class Bullet {
         this.body.createFixture(Circle(config.radius * Config.pixel2meter), {isSensor: true});
         this.body.setPosition(position);
 
-        let velocity = config.velocity * Config.pixel2meter;
-        let vx = Math.cos(radius) * velocity;
-        let vy = Math.sin(radius) * velocity;
+        velocity *= Config.pixel2meter * Config.fps;
+        let vx = Math.cos(radian) * velocity;
+        let vy = Math.sin(radian) * velocity;
         this.body.setLinearVelocity(Vec2(vx, vy));
 
         this.world.registerEvent("begin-contact", this);

@@ -8,13 +8,7 @@ import BombExplode from "./BombExplode";
 import ElectricSaw from "./ElectricSaw";
 import Magnet from "./Magnet";
 import Shield from "./Shield";
-import WeaponDefault from "./Weapon/WeaponDefault";
-import WeaponAK from "./Weapon/WeaponAk";
-
-const weaponTypeClassTable = {
-    default: WeaponDefault,
-    AK: WeaponAK,
-};
+import Weapon from "./Weapon/Weapon";
 
 export default class Plane {
     constructor(world, parent, id, renderPosition) {
@@ -54,7 +48,7 @@ export default class Plane {
         this.shieldList = [];
 
         this.weaponTable = {
-            default: new WeaponDefault(this.gameScene, this)
+            basic: new Weapon(Config.weapon.basic, Config.bullet.basic, this)
         };
 
         this.world.registerEvent("begin-contact", this);
@@ -274,9 +268,10 @@ export default class Plane {
             case "Weapon": {
                 let type = Utils.randomChoose(Utils.keys(Config.weapon));
                 if (this.weaponTable[type] === undefined) {
-                    this.weaponTable[type] = new weaponTypeClassTable[type](this.gameScene, this);
+                    this.weaponTable[type] = new Weapon(Config.weapon[type], Config.bullet[type], this);
+                } else {
+                    this.weaponTable[type].addSupply();
                 }
-                this.weaponTable[type].addSupply();
                 break;
             }
             case "Func": {
@@ -355,9 +350,21 @@ export default class Plane {
         return this.pastPos[0];
     }
 
-    shoot(nearestEnemy, bulletConfig) {
-        let radians = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
-        this.gameScene.createBullet(bulletConfig, this.body.getPosition(), radians, this);
+    shootNearestEnemy(bulletConfig, bulletVelocity) {
+        let nearestEnemy = this.gameScene.findNearestEnemy(this);
+        if (nearestEnemy) {
+            this.shoot(nearestEnemy, bulletConfig, bulletVelocity);
+        }
+    }
+
+    shoot(nearestEnemy, bulletConfig, bulletVelocity) {
+        const baseRadian = Utils.calcRadians(this.body.getPosition(), nearestEnemy.body.getPosition());
+        const offset = (bulletConfig.bulletCountEachShoot - 1) / 2;
+        const includeAngle = Utils.angle2radian(bulletConfig.includedAngle);
+        for (let i = 0; i < bulletConfig.bulletCountEachShoot; i++) {
+            const radians = (i - offset) * includeAngle;
+            this.gameScene.createBullet(bulletConfig, bulletVelocity, this.body.getPosition(), baseRadian + radians, this);
+        }
     }
 
     afterDestroyed() {
@@ -387,13 +394,6 @@ export default class Plane {
         this.sprite.position.set(pos.x * Config.meter2pixel, pos.y * Config.meter2pixel);
         if (!this.config.noRotation) {
             this.planeSprite.rotation = this.body.getAngle();
-        }
-    }
-
-    shootNearestEnemy(bulletConfig) {
-        let nearestEnemy = this.gameScene.findNearestEnemy(this);
-        if (nearestEnemy) {
-            this.shoot(nearestEnemy, bulletConfig);
         }
     }
 }
