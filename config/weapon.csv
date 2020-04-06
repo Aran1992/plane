@@ -1,9 +1,9 @@
-ï»¿id,name,initFireInterval,minFireInterval,itemReduceFireInterval,initFireTimes,maxFireTimes,itemAddFireTimes,fireShootTimes,fireShootInterval
-ID,åç§°,åˆå§‹æ”»å‡»é—´éš”,æœ€å°æ”»å‡»é—´éš”,é“å…·å‡å°‘æ”»å‡»é—´éš”,åˆå§‹æ”»å‡»æ¬¡æ•°,æœ€å¤§æ”»å‡»æ¬¡æ•°,é“å…·å¢åŠ æ”»å‡»æ¬¡æ•°,æ¯æ¬¡æ”»å‡»å­å¼¹æ³¢æ•°,æ¯æ³¢å­å¼¹å°„å‡»é—´éš”
+id,name,initFireInterval,minFireInterval,itemReduceFireInterval,initFireTimes,maxFireTimes,itemAddFireTimes,fireShootTimes,fireShootInterval
+ID,Ãû³Æ,³õÊ¼¹¥»÷¼ä¸ô,×îĞ¡¹¥»÷¼ä¸ô,µÀ¾ß¼õÉÙ¹¥»÷¼ä¸ô,³õÊ¼¹¥»÷´ÎÊı,×î´ó¹¥»÷´ÎÊı,µÀ¾ßÔö¼Ó¹¥»÷´ÎÊı,Ã¿´Î¹¥»÷×Óµ¯²¨Êı,Ã¿²¨×Óµ¯Éä»÷¼ä¸ô
 string,string,number,number,number,number,number,number,number,number
-defaults,é»˜è®¤å€¼,60,1,0,Infinity,Infinity,0,1,1
-basic,åŸºæœ¬,60,30,5,,,,,
-ak,AK,90,,,4,10,4,3,5
-shot,éœ°å¼¹æª,120,,,5,10,5,,
-gatlin,åŠ ç‰¹æ—,540,,,4,10,4,10,18
-mine,æ¼‚æµ®é›·,180,,,10,10,10,,
+defaults,Ä¬ÈÏÖµ,60,1,0,Infinity,Infinity,0,1,1
+basic,»ù±¾,60,30,0,,,,1,
+ak,AK,80,,,7,10,1,3,5
+shot,ö±µ¯Ç¹,120,,,6,15,1,,
+gatlin,¼ÓÌØÁÖ,380,,,5,10,1,15,8
+mine,Æ¯¸¡À×,180,,,10,20,1,,

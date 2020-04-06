@@ -31,7 +31,7 @@
             // 飞机的描述
             dsc: "火箭：更难操控受更大的惯性，但拾取道具时获得双倍奖励。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 2,
@@ -54,7 +54,7 @@
             // 飞机的描述
             dsc: " 飞碟：更便于操作飘逸灵活。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 3,
@@ -75,7 +75,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 4,
@@ -96,7 +96,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 5,
@@ -117,7 +117,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 6,
@@ -138,7 +138,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 7,
@@ -159,7 +159,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 8,
@@ -180,7 +180,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 9,
@@ -201,7 +201,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 10,
@@ -222,7 +222,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 11,
@@ -243,7 +243,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 12,
@@ -264,7 +264,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [500, 900],
+            moveAroundDistanceRange: [200, 300],
         },
         {
             id: 13,
@@ -285,7 +285,7 @@
             // 飞机的描述
             dsc: "飞船：受到很小的惯性，操作灵活拥有更快的飞行速度。",
             // 作为敌机的时候绕着飞船转的距离的随机范围
-            moveAroundDistanceRange: [300, 500],
+            moveAroundDistanceRange: [200, 300],
         },
     ],
     // 飞船的统一配置
@@ -293,7 +293,7 @@
         // 生命面板相关配置
         lifePanel: {
             // 距离飞船中心Y轴的距离
-            y: -50,
+            y: -100,
             // 红心之间的距离
             heartOffset: 50,
         }
@@ -319,7 +319,7 @@
     // 初始化时生成陨石的最大数量
     meteorMaxCount: 5,
     // 陨石的弹性系数（0到1，数字越大，弹性越大）
-    meteorRestitution: 1.00,
+    meteorRestitution: 0.5,
     // 陨石的旋转速度
     meteorAngularVelocity: Math.PI / 180 * 65,
     // 每帧刷新陨石的可能性(0.01表示百分之一，0.5表示百分之五十)
@@ -328,18 +328,18 @@
     meteor: {
         // 陨石数量随着时间的变化
         countBySeconds: {
-            "30": 5,
+            "30": 3,
             "60": 5,
-            "90": 10,
-            "120": 10,
-            "150": 15,
-            "180": 15,
+            "90": 6,
+            "120": 7,
+            "150": 8,
+            "180": 9,
         },
         // 血量
-        blood: 1,
+        blood: 3,
     },
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount: 1,
+    refreshMeteorMinCount:0.1,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
     // 虫子的旋转速度
@@ -359,7 +359,7 @@
     // 世界边缘
     worldViewRectMargin: 300,
     // 虫子爆炸掉落红心概率
-    wormDropHeartProbability: 0.35,
+    wormDropHeartProbability: 0.5,
     imagePath: {
         bulletDefault: "images/bullet/default.png",
         bulletAK: "images/bullet/ak.png",
@@ -519,7 +519,7 @@
         // 高度(像素)
         height: 35,
         // 血量
-        blood: 2,
+        blood: 3,
     },
     // 红心相关配置
     heart: {
@@ -535,7 +535,7 @@
         // 高度(像素)
         height: 50,
         // 掉落概率（0-1）
-        probability: 0.75,
+        probability: 1,
     },
     // 物品相关配置
     item: {
@@ -559,7 +559,7 @@
         // 同时能存在的最大数量
         maxCount: 5,
         // 半径(像素)
-        radius: 35,
+        radius: 30,
     },
     // 炸弹爆炸半径列表
     bombExplodeRadiusList: [
@@ -574,7 +574,7 @@
         // 持续帧数
         countdown: 300,
         // 开始混乱无敌帧数
-        startInvincibleFrames: 200,
+        startInvincibleFrames: 300,
         // 结束混乱无敌帧数
         endInvincibleFrames: 100,
     },
@@ -607,9 +607,9 @@
         // 高（像素）
         height: 56,
         // 刷新时间间隔（单位：秒）
-        refreshInterval: 4,
+        refreshInterval: 1,
         // 吃下去之后减少子弹创建间隔（单位：秒）
-        reduceBulletCreateInterval: 0.1,
+        reduceBulletCreateInterval: 0,
     },
     // 刷新道具中心最少距离墙壁多少像素
     refreshItemOffset: 100,
@@ -628,14 +628,14 @@
     // 背景星星相关配置
     star: {
         // 数量
-        count: 60,
+        count: 50,
     },
     // 背景云相关配置
     cloud: {
         // 云每帧的最小速度
         minSpeed: 0.1,
         // 云每帧的最大速度
-        maxSpeed: 0.5
+        maxSpeed: 0.2
     },
     // 随机出来的道具类型
     randomItemList: [
@@ -650,9 +650,9 @@
         // 总数
         totalCount: 99,
         // 战场上同时能存在的最大数量
-        maxCountInBattlefield: 3,
+        maxCountInBattlefield: 2,
         // 死亡掉落道具概率
-        explodedDropFuncItemProbability: 0.35,
+        explodedDropFuncItemProbability: 0.5,
     },
     startScene: {
         title: {

@@ -1,9 +1,9 @@
-ï»¿id,name,initBulletVelocity,maxBulletVelocity,itemAddBulletVelocity,damage,texture,radius,color,bulletCountEachShoot,includedAngle
-ID,åç§°,åˆå§‹å­å¼¹é€Ÿåº¦,æœ€å¿«å­å¼¹é€Ÿåº¦,é“å…·å¢åŠ å­å¼¹é€Ÿåº¦,ä¼¤å®³,å›¾ç‰‡,åŠå¾„,é¢œè‰²,æ¯æ¬¡å°„å‡»å‘å°„å­å¼¹æ•°é‡,å­å¼¹ä¹‹é—´çš„å¤¹è§’
+id,name,initBulletVelocity,maxBulletVelocity,itemAddBulletVelocity,damage,texture,radius,color,bulletCountEachShoot,includedAngle
+ID,Ãû³Æ,³õÊ¼×Óµ¯ËÙ¶È,×î¿ì×Óµ¯ËÙ¶È,µÀ¾ßÔö¼Ó×Óµ¯ËÙ¶È,ÉËº¦,Í¼Æ¬,°ë¾¶,ÑÕÉ«,Ã¿´ÎÉä»÷·¢Éä×Óµ¯ÊıÁ¿,×Óµ¯Ö®¼äµÄ¼Ğ½Ç
 string,string,number,number,number,number,string,number,string,number,number
-defaults,é»˜è®¤å€¼,10,Infinity,0,1,,,,1,0
-basic,åŸºæœ¬,100,100,1,1,bulletDefault,10,ff0000,,
-ak,AK,10,,,1,bulletAK,8,ff0001,,
-shot,éœ°å¼¹æª,50,,,1,,8,ff0002,3,5
-gatlin,åŠ ç‰¹æ—,10,,,1,,8,ff0003,,
-mine,æ¼‚æµ®é›·,0,,,2,,8,ff0004,,
+defaults,Ä¬ÈÏÖµ,10,Infinity,0,1,,,,1,0
+basic,»ù±¾,10,15,0,1,bulletDefault,6,ff0000,,
+ak,AK,80,,,1,bulletAK,8,ff0001,,5
+shot,ö±µ¯Ç¹,50,,,1,,13,ff1782,3,10
+gatlin,¼ÓÌØÁÖ,7,,,1,,8,ff3333,,60
+mine,Æ¯¸¡À×,0,,,2,,25,ff1234,,
