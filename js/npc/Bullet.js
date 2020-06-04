@@ -5,10 +5,10 @@ import GameUtils from "../utils/GameUtils";
 import Utils from "../utils/Utils";
 
 const GAME_VISIBLE_RECT = {
-    x: -Config.designWidth / 2,
-    y: -Config.designHeight / 2,
-    width: Config.gameSceneWidth + Config.designWidth,
-    height: Config.gameSceneHeight + Config.designHeight
+    x: -Config.designWidth / 2 / Config.viewScale,
+    y: -Config.designHeight / 2 / Config.viewScale,
+    width: Config.gameSceneWidth + Config.designWidth / Config.viewScale,
+    height: Config.gameSceneHeight + Config.designHeight / Config.viewScale
 };
 
 export default class Bullet {

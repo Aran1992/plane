@@ -30,6 +30,7 @@ export default class GameScene extends Scene {
         this.on("pointerupoutside", this.onPointerup.bind(this));
 
         this.gameContainer = new Container();
+        this.gameContainer.scale.set(Config.viewScale, Config.viewScale);
         if (RunOption.debug) {
             let scale = RunOption.debugScale;
             this.cameraContainer = new Container();
@@ -110,8 +111,8 @@ export default class GameScene extends Scene {
         }
 
         if (!this.player.isDestroyed()) {
-            let x = Config.designWidth / 2 - this.player.sprite.x,
-                y = Config.designHeight / 2 - this.player.sprite.y;
+            let x = Config.designWidth / 2 - this.player.sprite.x * Config.viewScale,
+                y = Config.designHeight / 2 - this.player.sprite.y * Config.viewScale;
             this.gameContainer.position.set(x, y);
         }
 
@@ -234,8 +235,8 @@ export default class GameScene extends Scene {
         let rect = {
             x: -this.gameContainer.x,
             y: -this.gameContainer.y,
-            width: Config.designWidth,
-            height: Config.designHeight
+            width: Config.designWidth / Config.viewScale,
+            height: Config.designHeight / Config.viewScale
         };
         return Utils.isPointInRect(pos, rect);
     }

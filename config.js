@@ -1,8 +1,9 @@
 ﻿export default {
     designWidth: 1920,
     designHeight: 1080,
-    gameSceneWidth: 1920 * 2,
-    gameSceneHeight: 1080 * 2,
+    gameSceneWidth: 1920 * 4,
+    gameSceneHeight: 1080 * 4,
+    viewScale: 0.5,
     backgroundColor: 0x888888,
     fps: 60,
     gravity: 0,
@@ -339,7 +340,7 @@
         blood: 3,
     },
     // 每帧刷新陨石的最小数量
-    refreshMeteorMinCount:0.1,
+    refreshMeteorMinCount: 0.1,
     // 每帧刷新陨石的最大数量
     refreshMeteorMaxCount: 1,
     // 虫子的旋转速度

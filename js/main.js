@@ -18,7 +18,6 @@ export default function main() {
         backgroundColor: Config.backgroundColor,
         width: width,
         height: height,
-        antialias: true,
         transparent: false,
         view: canvas,
     });

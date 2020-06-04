@@ -7,24 +7,27 @@ export default class Background {
         this.world = world;
         this.container = container;
 
-        let texture = resources[Config.imagePath.bg].texture;
-        let bgSprite = new Sprite(texture);
-        bgSprite.width = Config.gameSceneWidth + Config.designWidth;
-        bgSprite.height = Config.gameSceneHeight + Config.designHeight;
-        this.container.addChild(bgSprite);
-        bgSprite.position.set(-Config.designWidth / 2, -Config.designHeight / 2);
+        const bgGraphics = new Graphics();
+        bgGraphics.beginFill(0x12122d);
+        bgGraphics.drawRect(
+            -Config.designWidth / 2 / Config.viewScale,
+            -Config.designHeight / 2 / Config.viewScale,
+            Config.gameSceneWidth + Config.designWidth / Config.viewScale,
+            Config.gameSceneHeight + Config.designHeight / Config.viewScale
+        );
+        this.container.addChild(bgGraphics);
 
-        let graphics = new Graphics();
-        graphics.beginFill(0x000000, 0);
+        let wallLineG = new Graphics();
+        wallLineG.beginFill(0x000000, 0);
         let borderConfig = Config.gameScene.border;
-        graphics.lineStyle(borderConfig.lineWidth, borderConfig.color, borderConfig.alpha);
-        graphics.moveTo(0, 0);
-        graphics.lineTo(Config.gameSceneWidth, 0);
-        graphics.lineTo(Config.gameSceneWidth, Config.gameSceneHeight);
-        graphics.lineTo(0, Config.gameSceneHeight);
-        graphics.lineTo(0, 0);
-        graphics.endFill();
-        this.container.addChild(graphics);
+        wallLineG.lineStyle(borderConfig.lineWidth, borderConfig.color, borderConfig.alpha);
+        wallLineG.moveTo(0, 0);
+        wallLineG.lineTo(Config.gameSceneWidth, 0);
+        wallLineG.lineTo(Config.gameSceneWidth, Config.gameSceneHeight);
+        wallLineG.lineTo(0, Config.gameSceneHeight);
+        wallLineG.lineTo(0, 0);
+        wallLineG.endFill();
+        this.container.addChild(wallLineG);
 
         let starList = [];
         for (let i = 0; i < Config.star.count; i++) {
